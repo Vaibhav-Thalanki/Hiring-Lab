@@ -1,0 +1,65 @@
+/*otp styling*/
+@import url('https://fonts.googleapis.com/css?family=Raleway:200');
+  body, html {
+       height: 100%;
+       margin: 0;
+       background: -webkit-linear-gradient(left, #42C2FF, #398AB9);
+       font-weight: 200;
+      font-family: 'Poppins', sans-serif;
+ }
+  body {
+       background: -webkit-linear-gradient(left, #42C2FF, #398AB9);
+       display: flex;
+       flex-direction: column;
+ }
+ .form,.prompt{
+   justify-content: center;
+   text-align: center;
+ }
+ .error{
+   font-size: 20px;
+   text-align: center;
+   padding-left: 15px;
+   color: #FF7C7C;
+ }
+ .slide-controls-error{
+   position: relative;
+   display: none;
+   height: 50px;
+   width: 100%;
+   overflow: hidden;
+   padding-top: 5px;
+   margin: 10px 0 10px 0;
+   background-color: #FFCCCB;
+   text-align: center;
+   border: 1px solid red;
+   border-radius: 5px;
+ }
+
+ h3{
+   padding-left:1100px;
+   padding-bottom: 200px;
+ }
+  .digit-group input {
+       width: 30px;
+       height: 50px;
+       border: none;
+       background: -webkit-linear-gradient(left, grey, white);
+       line-height: 50px;
+       text-align: center;
+       font-size: 30px;
+       font-weight: 200;
+         font-family: 'Poppins', sans-serif;
+       color: black;
+       margin: 0 2px;
+ }
+  .digit-group .splitter {
+       padding: 0 5px;
+       color: white;
+       font-size: 24px;
+ }
+  .prompt {
+       margin-bottom: 20px;
+       font-size: 25px;
+       color:black;
+ }

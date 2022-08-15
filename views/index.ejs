@@ -1,0 +1,111 @@
+<%- include('header-login') -%>
+     <h3 style="text-align:right;">The hiring <i class="fa-solid fa-flask-vial"></i></h3>
+      <div class="wrapper">
+         <%if(message == null || typeof message == 'undefined'){}else{%>
+            <p style="color: orange; text-align: center;"><%=message%></p>
+            <%}%>
+         <div class="title-text">
+            <div class="title login">
+               Login Form
+            </div>
+            <div class="title signup">
+               Signup Form
+            </div>
+         </div>
+         <div class="slide-controls-error" id="error-slide">
+           <label class="error" id="error-display">wow</label>
+         </div>
+
+         <div class="form-container">
+            <div class="slide-controls">
+               <input type="radio" name="slide" id="login" checked>
+               <input type="radio" name="slide" id="signup">
+               <label for="login" class="slide login">Login</label>
+               <label for="signup" class="slide signup">Join Now</label>
+               <div class="slider-tab"></div>
+            </div>
+            <div class="form-inner">
+               <form action="/" method="post" class="login" >
+                  <div class="field">
+                     <input type="email" id="login-email" placeholder="Email Address" 
+                     name="email"
+                     required>
+                  </div>
+                  <div class="field">
+                     <input type="password" placeholder="Password"
+                     name="password"
+                     required>
+                  </div>
+                  <div class="pass-link">
+                     <a href="#">Forgot password?</a>
+                  </div>
+                  <div class="field btn">
+                     <div class="btn-layer"></div>
+                     <input id="loginpress" type="submit" name="form" value="Login">
+                  </div>
+                  <div class="signup-link">
+                     Not a member? <a href="">Join now</a>
+                  </div>
+               </form>
+               <form action="/" method="post" class="signup">
+                  <div class="field">
+                     <input type="email" 
+                     name="email"
+                     placeholder="Email Address" required>
+                  </div>
+                  <div class="field">
+                     <input type="password" 
+                     name="password"
+                     placeholder="Password" required>
+                  </div>
+                  <div class="field">
+                     <input type="password" name="passwordRepeat" placeholder="Confirm password" required>
+                  </div>
+                  <div class="field btn">
+                     <div class="btn-layer"></div>
+                     <input type="submit" name="form" value="Join">
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+      <script>
+         const loginText = document.querySelector(".title-text .login");
+         const loginForm = document.querySelector("form.login");
+         const loginBtn = document.querySelector("label.login");
+         const signupBtn = document.querySelector("label.signup");
+         const signupLink = document.querySelector("form .signup-link a");
+
+         signupBtn.onclick = (()=>{
+           loginForm.style.marginLeft = "-50%";
+           loginText.style.marginLeft = "-50%";
+         });
+         loginBtn.onclick = (()=>{
+           loginForm.style.marginLeft = "0%";
+           loginText.style.marginLeft = "0%";
+         });
+         signupLink.onclick = (()=>{
+           signupBtn.click();
+           return false;
+         });
+
+         // function login_form_submission()
+         // {
+         //     const email=document.getElementById('login-email').value;
+
+         //     if(email==='naghaakshayaa@gmail.com')
+         //     {
+
+         //     }
+         //     else {
+         //       document.getElementById("error-display").innerText = "Email ID is incorrect";
+         //       $("#error-slide").css("display", "block");
+         //     }
+
+         //   }
+
+
+      </script>
+   </body>
+</html>
