@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .parallax1{
+           
+            height:100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            position:relative;
+            
+        
+        }
+        .parallax1 h1{
+            position: relative;
+            color:white
+        }
+        .parallax1::before{
+            content:"";
+            position:absolute;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            opacity: 0.3;
+            background-image: url(annie-spratt-dWYU3i-mqEo-unsplash.jpg);
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+
+
+
+        }
+        .parallax2{
+          background: violet;
+          height:60vh;
+            
+        }
+        .parallax3{
+            height:100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            position:relative;
+        }
+        .parallax3 h1{
+            color:white;
+        }
+        .parallax3::before{
+            content:"";
+            position:absolute;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            opacity: 0.3;
+            background-image: url(corinne-kutz-tMI2_-r5Nfo-unsplash.jpg);
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+
+
+
+        }
+        .parallax3 h1{
+            padding:180px 180px;
+        }
+  
+
+    </style>
+</head>
+<body>
+    <div class="parallax1">
+        <h1>This is the first section</h1>
+    </div>
+    <div class="parallax2">
+        <h1>This is the next section</h1>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt cupiditate officiis magnam dolorem quas aperiam beatae dicta ullam accusamus blanditiis quis optio, laudantium nihil. Impedit fugit animi consequatur rerum autem, excepturi labore ea aut aliquid est inventore a assumenda id architecto officia harum fugiat! Amet repudiandae hic laborum nulla incidunt.</p>
+    </div>
+    <div class="parallax3">
+        <h1>This is the third section</h1>
+    </div>
+    <div class="parallax4"></div>
+</body>
+</html>
