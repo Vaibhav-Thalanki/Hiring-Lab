@@ -1,0 +1,264 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "Roboto", sans-serif;
+}
+a{
+  padding-top: 13px;
+  color: inherit;
+  text-decoration: none;
+}
+.categories {
+    max-width: 1200px;
+    margin: 40px auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.category-item {
+    flex-grow: 1;
+    flex-basis: 0;
+    min-width: 33.33%;
+    border: 2px solid white;
+    box-sizing: border-box;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+}
+
+.category-item-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.category-item-inner > div {
+    padding: 5px 10px;
+    background: black;
+    color: white;
+    border-radius: 5px;
+    font-size: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+@media (max-width: 1000px) {
+    .category-item {
+        min-width: 50%;
+    }
+}
+
+@media (max-width: 800px) {
+    .category-item {
+        min-width: 100%;
+    }
+}
+
+.course-products {
+    margin-top: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 5px;
+}
+
+@media (max-width: 1000px) {
+    .course-products {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+    .course-products {
+        grid-template-columns: 1fr;
+    }
+}
+
+.Courses-title {
+    text-align: center;
+}
+
+.course-product-item {
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+}
+
+.course-item-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}
+
+.course-product-item > .title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.course-product-item > .description {
+    color: #666;
+}
+
+.course-product-item > .price {
+    font-style: italic;
+}
+
+button {
+    outline: none;
+    background: black;
+    font-family: "Roboto", sans-serif;
+    color: white;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+/* a{
+  text-decoration: none;
+  outline: none;
+  background: black;
+  font-family: "Roboto", sans-serif;
+  color: white;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-weight: bold;
+} */
+
+
+/* Header */
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(0,140,255);
+  padding: 0px;
+  margin: 0px;
+}
+h3{
+  margin: 0px;
+  padding: 0px;
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 950px;
+  height: 59px;
+  padding: 13px;
+}
+
+header .container #search {
+  display: flex;
+  width: 300px;
+}
+
+header .container #search div {
+  display: flex;
+  align-items: center;
+  background: #eef3f7;
+  border-radius: 7px;
+  padding: 10px;
+  height: 34px;
+  margin-left: 10px;
+}
+
+header .container #search div input {
+  background: transparent;
+  border: none;
+  outline: none;
+  height: 34px;
+  width: 200px;
+  padding: 10px;
+  transition: 0.2s;
+}
+
+header .container #search div input:focus {
+  width: 230px;
+}
+
+header .container #search div img {
+  height: 14px;
+  width: 14px;
+}
+
+header .container #menu {
+  display: flex;
+  justify-content: space-between;
+  width: 350px;
+}
+
+header .container #menu div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+header .container #menu div:hover {
+  opacity: 1;
+}
+
+header .container #menu div span {
+  font-size: 14px;
+}
+
+header .container #menu img {
+  height: 20px;
+  width: 20px;
+}
+
+header .container #profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+header .container #profile img {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+header .container #profile span {
+  font-size: 14px;
+}
+
+@media only screen and (max-width: 750px) {
+  header .container #search {
+    width: 50px;
+  }
+
+  header .container #menu {
+    width: 200px;
+  }
+
+  header .container #menu div span,
+  header .container #search div input,
+  header .container #profile span {
+    display: none;
+  }
+
+  header .container #search div {
+    background: transparent;
+    padding: 5px;
+  }
+
+  header .container #menu img {
+    height: 25px;
+    width: 25px;
+  }
+}
