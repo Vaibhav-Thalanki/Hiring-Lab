@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rambla:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/profileStyle.css" />
+    <script
+      src="https://kit.fontawesome.com/4e1e0e24e3.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <header>
+      <a
+        href="http://localhost:3000/home"
+        style="text-decoration: none; color: black"
+        ><h3 style="text-align: right">
+          The hiring <i class="fa-solid fa-flask-vial"></i></h3
+      ></a>
+
+      <div class="container">
+        <div id="search">
+          <div>
+            <img src="images/profile/search.png" alt="" />
+            <input type="text" placeholder="Search" />
+          </div>
+        </div>
+
+        <div id="menu">
+          <a href="http://localhost:3000/home">
+            <div>
+              <i class="fa-sharp fa-solid fa-house"></i>
+              <span>Home</span>
+            </div>
+          </a>
+          <a href="http://localhost:3000/maincourse">
+            <div>
+              <i class="fa-solid fa-vial"></i>
+              <span>Courses</span>
+            </div>
+          </a>
+          <a href="http://localhost:3000/chat">
+            <div>
+              <img src="images/profile/chat.png" alt="" />
+              <span>Messages</span>
+            </div>
+          </a>
+        </div>
+        <a href="http://localhost:3000/profile">
+          <div id="profile">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIg74DLmQxFVxzS_-jAsHnWeJGfNZEgQtWsA_cYgmmpg&s"
+              alt=""
+            />
+            <span>Anonymous User 1</span>
+          </div>
+        </a>
+      </div>
+    </header>
+    <main>
+      <div id="feed">
+        <section id="prl">
+          <div id="picture"></div>
+          <div id="banner"></div>
+          <div id="details">
+            <div class="container">
+              <h1 id="username">Username</h1>
+              <p id="about">A engineering student</p>
+              <p id="contactinfo">Chennai</p>
+              <span>
+                <p id="address">Vellore insitiute of Technology</p>
+              </span>
+              <button class="click-button" onclick="myProfileEditFunction()">
+                Edit
+              </button>
+            </div>
+          </div>
+          <div id="edit-profdetails">
+            <div class="edit-profdetails">
+              <table class="profile-table">
+                <tr>
+                  <th>User Name:</th>
+                  <td>
+                    <input type="text" id="uname" name="uname" value="" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>About:</th>
+                  <td><input type="text" id="abt" name="abt" value="" /></td>
+                </tr>
+                <tr>
+                  <th>Contact Info:</th>
+                  <td>
+                    <input type="text" id="cinfo" name="cinfo" value="" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Address:</th>
+                  <td><input type="text" id="add" name="add" value="" /></td>
+                </tr>
+                <tr>
+                  <td>
+                    <button
+                      class="click-button"
+                      onclick="myProfileSubmitFunction()"
+                    >
+                      Submit
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="guides">
+          <div class="article">
+            <h2>Experience</h2>
+            <div class="edit-content1">
+              <textarea id="edited-content1" rows="8" cols="80"></textarea
+              ><br />
+              <button class="click-button" onclick="mySubmitFunction1()">
+                Submit
+              </button>
+            </div>
+
+            <div class="display-content1">
+              <p id="show-final-content1">Enter your work Experience</p>
+              <button class="click-button" onclick="myEditFunction1()">
+                Edit
+              </button>
+            </div>
+          </div>
+          <span id="border"></span>
+
+          <div class="article">
+            <h2>Education</h2>
+            <div class="edit-content2">
+              <textarea id="edited-content2" rows="8" cols="80"></textarea
+              ><br />
+              <button class="click-button" onclick="mySubmitFunction2()">
+                Submit
+              </button>
+            </div>
+
+            <div class="display-content2">
+              <p id="show-final-content2">Enter your Education</p>
+              <button class="click-button" onclick="myEditFunction2()">
+                Edit
+              </button>
+            </div>
+          </div>
+          <div class="article">
+            <h2>Skills</h2>
+            <div class="edit-content3">
+              <textarea id="edited-content3" rows="8" cols="80"></textarea
+              ><br />
+              <button class="click-button" onclick="mySubmitFunction3()">
+                Submit
+              </button>
+            </div>
+
+            <div class="display-content3">
+              <p id="show-final-content3">Enter your Skills</p>
+              <button class="click-button" onclick="myEditFunction3()">
+                Edit
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <p></p>
+    </footer>
+    <script
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+      type="text/javascript"
+    ></script>
+    <script>
+      function myEditFunction1() {
+        $(".display-content1").css("display", "none");
+        $(".edit-content1").css("display", "block");
+      }
+      function mySubmitFunction1() {
+        const edit_content1 = document.getElementById("edited-content1").value;
+        $(".display-content1").css("display", "block");
+        $(".edit-content1").css("display", "none");
+        document.getElementById("show-final-content1").innerText =
+          edit_content1;
+      }
+      function myEditFunction2() {
+        $(".display-content2").css("display", "none");
+        $(".edit-content2").css("display", "block");
+      }
+      function mySubmitFunction2() {
+        const edit_content2 = document.getElementById("edited-content2").value;
+        $(".display-content2").css("display", "block");
+        $(".edit-content2").css("display", "none");
+        document.getElementById("show-final-content2").innerText =
+          edit_content2;
+      }
+      function myEditFunction3() {
+        $(".display-content3").css("display", "none");
+        $(".edit-content3").css("display", "block");
+      }
+      function mySubmitFunction3() {
+        const edit_content3 = document.getElementById("edited-content3").value;
+        $(".display-content3").css("display", "block");
+        $(".edit-content3").css("display", "none");
+        document.getElementById("show-final-content3").innerText =
+          edit_content3;
+      }
+      function myProfileEditFunction() {
+        $("#details").css("display", "none");
+        $("#edit-profdetails").css("display", "block");
+        document.getElementById("uname").value =
+          document.getElementById("username").innerText;
+        document.getElementById("abt").value =
+          document.getElementById("about").innerText;
+        document.getElementById("cinfo").value =
+          document.getElementById("contactinfo").innerText;
+        document.getElementById("add").value =
+          document.getElementById("address").innerText;
+      }
+      function myProfileSubmitFunction() {
+        const u_name = document.getElementById("uname").value;
+        const about = document.getElementById("abt").value;
+        const contact_info = document.getElementById("cinfo").value;
+        const address = document.getElementById("add").value;
+        $("#details").css("display", "block");
+        $("#edit-profdetails").css("display", "none");
+        document.getElementById("username").innerText = u_name;
+        document.getElementById("about").innerText = about;
+        document.getElementById("contactinfo").innerText = contact_info;
+        document.getElementById("address").innerText = address;
+      }
+    </script>
+  </body>
+</html>

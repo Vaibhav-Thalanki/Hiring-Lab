@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link rel="stylesheet" href="css/chat.css" />
+    <script
+      src="https://kit.fontawesome.com/4e1e0e24e3.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <header>
+      <a href="http://localhost:3000/home">
+        <h3 style="text-align: right">
+          The hiring <i class="fa-solid fa-flask-vial"></i>
+        </h3>
+      </a>
+      <div class="container">
+        <div id="search">
+          <div>
+            <img src="images/chat/search.png" alt="" />
+            <input id="search" type="text" placeholder="Search" />
+          </div>
+        </div>
+
+        <div id="menu">
+          <a href="http://localhost:3000/home">
+            <div>
+              <img src="images/chat/home.png" alt="" />
+              <span>Home</span>
+            </div>
+          </a>
+
+          <a href="http://localhost:3000/maincourse">
+            <div>
+              <i class="fa-solid fa-vial"></i>
+              <span>Courses</span>
+            </div>
+          </a>
+          <a href="http://localhost:3000/chat">
+            <div>
+              <i class="fa-solid fa-message"></i>
+              <span>Messages</span>
+            </div>
+          </a>
+        </div>
+        <a href="http://localhost:3000/profile">
+          <div id="profile">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIg74DLmQxFVxzS_-jAsHnWeJGfNZEgQtWsA_cYgmmpg&s"
+              alt=""
+            />
+            <span>Anonymous User 1</span>
+          </div>
+        </a>
+      </div>
+    </header>
+    <div class="container-chat">
+      <div class="chatbox">
+        <div class="top-bar">
+          <div class="avatar">
+            <img
+              src="https://th.bing.com/th/id/OIP.87l-uBbYME9uU42ahbluKwHaHa?w=176&h=180&c=7&r=0&o=5&pid=1.7"
+              alt="user-img"
+            />
+          </div>
+          <div class="name">Keerthana</div>
+          <div class="icons">
+            <img
+              src="https://th.bing.com/th?q=Symbol+for+Call&w=120&h=120&c=1&rs=1&qlt=90&cb=1&pid=InlineBlock&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247"
+              alt=""
+            />
+            <img
+              src="https://th.bing.com/th/id/OIP.GVZIpoGD61WrEIY3ILWjBgHaHa?w=205&h=206&c=7&r=0&o=5&pid=1.7"
+              alt=""
+            />
+          </div>
+          <div class="menu">
+            <div class="dots"></div>
+          </div>
+        </div>
+        <div class="middle">
+          <div class="voldemort">
+            <div class="incoming">
+              <div class="bubble">Hi, TechnoVIT is coming up...</div>
+              <br />
+              <div class="bubble">Hey, yeah i am aware of it</div>
+            </div>
+            <div class="outgoing">
+              <div class="bubble bubble2">
+                Yeah, I am thinking of participating. What about you?
+              </div>
+              <div class="bubble bubble2">Are you participating?</div>
+            </div>
+            <div class="incoming" style="padding-top: 35%">
+              <div class="bubble">Yes, I am!!</div>
+              <br />
+              <div class="bubble">Okay, Good Bye!!</div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-bar">
+          <div class="chat">
+            <img
+              src="https://img.icons8.com/external-basicons-line-edtgraphics/2x/external-Photo-images-basicons-line-edtgraphics-2.png"
+              alt=""
+            />
+            <input id="type" type="text" placeholder="Type a message..." />
+            <button type="submit">Send</button>
+          </div>
+        </div>
+      </div>
+      <div class="messages">
+        <div class="profile">
+          <div class="avatar">
+            <img
+              src="https://th.bing.com/th/id/OIP.87l-uBbYME9uU42ahbluKwHaHa?w=176&h=180&c=7&r=0&o=5&pid=1.7"
+              alt="user-img"
+            />
+          </div>
+          <div class="name2">
+            User
+            <p class="email">user123@gmail.com</p>
+          </div>
+        </div>
+        <div class="people">
+          <div class="person">
+            <span class="title">Keerthana </span>
+            <span class="time">2:50pm</span><br />
+            <span class="preview">What are you getting... Oh, oops...</span>
+          </div>
+          <div class="person">
+            <span class="title">Vaibhav Thalanki</span>
+            <span class="time">2:25pm</span><br />
+            <span class="preview">Have you did this anytime?</span>
+          </div>
+          <div class="person">
+            <span class="title">Vignesh</span>
+            <span class="time">2:12pm</span><br />
+            <span class="preview">Do you have class tomorrow?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      const person = document.getElementsByClassName("person");
+      person.addEventListener("click", function onClick(event) {
+        document.getElementsByClassName("person").style.backgroundColor =
+          "salmon";
+      });
+    </script>
+  </body>
+</html>

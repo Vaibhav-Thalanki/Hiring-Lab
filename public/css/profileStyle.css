@@ -1,0 +1,372 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Rambla', sans-serif;
+}
+
+body {
+  background: #f3f2ee;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(0,140,255);
+  padding-bottom: 14px;
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 950px;
+  height: 59px;
+  padding: 13px;
+}
+
+header .container #search {
+  display: flex;
+  width: 300px;
+}
+
+header .container #search div {
+  display: flex;
+  align-items: center;
+  background: #eef3f7;
+  border-radius: 7px;
+  padding: 10px;
+  height: 34px;
+  margin-left: 10px;
+}
+
+header .container #search div input {
+  background: transparent;
+  border: none;
+  outline: none;
+  height: 34px;
+  width: 200px;
+  padding: 10px;
+  transition: 0.2s;
+}
+
+header .container #search div input:focus {
+  width: 230px;
+}
+
+header .container #search div img {
+  height: 14px;
+  width: 14px;
+}
+
+header .container #menu {
+  display: flex;
+  justify-content: space-between;
+  width: 350px;
+}
+
+header .container #menu div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+header .container #menu div:hover {
+  opacity: 1;
+}
+
+header .container #menu div span {
+  font-size: 14px;
+}
+
+header .container #menu img {
+  height: 20px;
+  width: 20px;
+}
+
+header .container #profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+header .container #profile img {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+header .container #profile span {
+  font-size: 14px;
+}
+
+@media only screen and (max-width: 750px) {
+  header .container #search {
+    width: 50px;
+  }
+
+  header .container #menu {
+    width: 200px;
+  }
+
+  header .container #menu div span,
+  header .container #search div input,
+  header .container #profile span {
+    display: none;
+  }
+
+  header .container #search div {
+    background: transparent;
+    padding: 5px;
+  }
+
+  header .container #menu img {
+    height: 25px;
+    width: 25px;
+  }
+}
+
+/* Main */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 26px 10px;
+}
+
+main div#feed {
+  width: 100%;
+  max-width: 930px;
+}
+
+/* prl Box */
+section#prl {
+  position: relative;
+  height: 350px;
+}
+
+section#prl > div#picture {
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIg74DLmQxFVxzS_-jAsHnWeJGfNZEgQtWsA_cYgmmpg&s');
+  background-size: cover;
+  width: 80px;
+  height: 80px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+section#prl > div#banner {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 45%;
+  background: url("C:/Users/Admin/Desktop/Fall Sem 2022-23/CSE3002/J Comp/hiring lab-profile/PROFILE/banner.jpeg");
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px 10px 0 0;
+}
+
+section#prl > div#details {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 55%;
+  background: #fff;
+  border-radius: 0 0 10px 10px;
+}
+
+section#prl > div#details .container {
+  padding: 35px 25px;
+}
+
+section#prl > div#details .container h1 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+section#prl > div#details .container p {
+  font-size: 14px;
+}
+
+section#prl > div#details .container span {
+  color: #999999;
+}
+
+.click-button{
+  background-color: black;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  margin: 15px 10px 0 0;
+  width: auto;
+  min-width: 99px;
+  padding: 5px;
+  font-size: 12px;
+  background: #ffffff;
+  border: 1px solid #666666;
+  border-radius: 15px;
+  color: #666666;
+  cursor: pointer;
+}
+
+.disstuff
+{
+  display: none;
+  background-color: black;
+}
+.click-button:hover{
+  background: rgb(224, 224, 224);
+  border: 1px solid #000;
+}
+
+.article{
+  padding-left: 30px;
+  list-style-type: none;
+  font-size: 16px;
+    padding: 2px 26px 26px 26px;
+
+}
+
+.slide-controls-error{
+position: relative;
+display: none;
+height: 50px;
+width: 100%;
+overflow: hidden;
+padding-top: 5px;
+margin: 10px 0 10px 0;
+background-color: #FFCCCB;
+text-align: center;
+border: 1px solid red;
+border-radius: 5px;}
+
+.edit-content1,.edit-content2,.edit-content3
+{
+  display: none;
+}
+
+section#prl > div#details .container button {
+  border: none;
+  box-shadow: none;
+  outline: none;
+  margin: 15px 10px 0 0;
+  width: auto;
+  min-width: 99px;
+  padding: 5px;
+  font-size: 12px;
+  background: #ffffff;
+  border: 1px solid #666666;
+  border-radius: 15px;
+  color: #666666;
+  cursor: pointer;
+}
+
+section#prl > div#details .container button:hover {
+  background: rgb(224, 224, 224);
+  border: 1px solid #000;
+}
+
+section#prl > div#details .container button.selected {
+  background: #0b65c2;
+  border: none;
+  width: 131px;
+  color: #fff;
+}
+
+section#prl > div#details .container button.selected:hover {
+  background: #004182;
+  border: none;
+  width: 131px;
+  color: #fff;
+}
+
+@media only screen and (max-width: 750px) {
+  section#prl > div#details .container button {
+    margin: 15px 3px 0 0;
+    font-size: 11px;
+    min-width: 70px;
+  }
+
+  section#prl > div#details .container button.selected,
+  section#prl > div#details .container button.selected:hover {
+    width: 110px;
+  }
+}
+
+/* Guides Box */
+section#guides {
+  background: #fff;
+  border-radius: 10px;
+  margin-top: 40px;
+}
+
+section#guides h2 {
+  padding: 26px 0 36px 0;
+  font-size: 18px;
+}
+
+section#guides span#border {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #ebebeb;
+  margin: 10px 0 10px 0;
+}
+
+/* Footer */
+footer {
+  padding: 15px;
+  text-align: center;
+  font-weight: light;
+}
+
+footer p {
+  opacity: 0.3;
+}
+section#prl > div#edit-profdetails {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 55%;
+  background: #fff;
+  border-radius: 0 0 10px 10px;
+}
+
+section#prl > div#edit-profdetails .container {
+  padding: 35px 25px;
+}
+
+section#prl > div#edit-profdetails .container h1 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+section#prl > div#edit-profdetails .container p {
+  font-size: 14px;
+}
+
+section#prl > div#edit-profdetails .container span {
+  color: #999999;
+}
+
+#edit-profdetails{
+  display: none;
+}
+
+.profile-table{
+  padding-top: 30px;
+  padding-left: 20px;
+  text-align: left;
+}
+a{
+  text-decoration: none;
+  color: #000;
+}
