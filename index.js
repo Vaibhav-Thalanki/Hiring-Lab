@@ -15,23 +15,26 @@ app.get("/", (req, res) => {
   });
   message = null;
 });
+app.get("/test",(req,res)=>{
+  res.render("test");
+});
 app.get("/landing", (req, res) => {
   res.render("landing");
 });
 app.get("/course1", (req, res) => {
-  res.render("course1");
+  res.render("course1",{stylepath: "css/course1.css"});
 });
 app.get("/maincourse", (req, res) => {
-  res.render("maincourse");
+  res.render("maincourse",{stylepath: "css/maincoursestyle.css"});
 });
 app.get("/chat", (req, res) => {
-  res.render("chat");
+  res.render("chat",{stylepath: "css/chat.css"});
 });
 app.get("/home", (req, res) => {
-  res.render("home");
+  res.render("home",{stylepath: "css/home.css"});
 });
 app.get("/profile", (req, res) => {
-  res.render("profile");
+  res.render("profile",{stylepath: "css/profileStyle.css"});
 });
 app.post("/", (req, res) => {
   message = null;
