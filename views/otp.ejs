@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OTP Input</title>
+  <link rel="stylesheet" href="css/otpstyle.css" />
+  <script src="https://kit.fontawesome.com/4e1e0e24e3.js" crossorigin="anonymous"></script>
+  <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init("mkuQU8UUkWqx0xbWg");
+   })();
+</script>
+ </head>
+ <body>
+   <h3>The hiring  <i class="fa-solid fa-flask-vial"></i></h3>
+   <div class="container">
+               <div class = wrapper>
+                 <p style="color: orange; text-align: center;" id="error"></p>
+                 <div class="title-text">
+                    <div class="title login">
+                       verify OTP
+                     </div>
+                 </div>
+                 <p><center>An OTP has been sent to the Email ID<center></p>
+
+                 <br><br><br>
+               <div class="form-container">
+                  <div class="form">
+                     <form class="login" onsubmit="Validate();return false">
+                        <div class="field">
+                          <input class="otp" id="1" type="text" oninput='digitValidate(this)' onkeyup='tabChange(1)' maxlength=1 >
+                          <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(2)' maxlength=1 >
+                          <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(3)' maxlength=1 >
+                          <input class="otp" type="text" oninput='digitValidate(this)'onkeyup='tabChange(4)' maxlength=1 >
+                        </div>
+                        <br><br><br>
+                        <div class="field btn">
+                           <div class="btn-layer"></div>
+                           <input id="loginpress" type="submit" name="form" value="Verify">
+                        </div>
+                     </form>
+                  </div>
+               <hr>
+             </div>
+           </div>
+         </div>
+     </div>
+   </div>
+   <script type="text/javascript">
+     <%if(emailsend == null || typeof emailsend == 'undefined'){}else{%>
+        var emailid = "<%=emailsend%>";
+        <%}%>
+
+      var otp = 1234;//Math.floor(Math.random() * 10000) + 1;
+     function sendEmail() {
+       var params = {
+         name: "User",
+         email: emailid,
+         message: otp
+       }
+       const serviceID = "service_e9fheny";
+       const templateID = "template_r2obcfw";
+      /*emailjs.send(serviceID, templateID,params)
+       .then((res)=>{
+         alert("Mail Sent");
+       }).catch((err) => console.log(err));*/
+}
+  sendEmail();
+
+     let digitValidate = function(ele){
+    console.log(ele.value);
+    ele.value = ele.value.replace(/[^0-9]/g,'');}
+
+  function Validate()
+  {
+    var num=0;
+    for(var i=0;i<4;i++){
+      num = num*10 + parseInt(document.querySelectorAll('input')[i].value)
+    }
+    if(num!=otp)
+    {
+      //alert("Invalid OTP");
+      document.getElementById("error").innerText="Retry!! Invalid OTP";
+      for(var i=0;i<4;i++)
+      document.querySelectorAll('input')[i].value=null;
+      return false;
+    }
+    else{
+      window.location.replace("http://localhost:3000/profile");
+    }
+  }
+let tabChange = function(val){
+    let ele = document.querySelectorAll('input');
+    if(ele[val-1].value != ''){
+      ele[val].focus()
+    }else if(ele[val-1].value == ''){
+      ele[val-2].focus()
+    }
+ }
+   </script>
+ </body>
+</html>
