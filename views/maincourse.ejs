@@ -1,6 +1,28 @@
 <%- include('header') -%>
     <h2 class="Courses-title">Courses available</h2>
     <section class="course-products">
+
+      <% courses.forEach((element)=>{ %>
+        <div class="course-product-item">
+          <% var link = "background-image: url('"+element.courseImg+"');"%>
+          <div
+            style='<%=link%>'
+            class="course-item-image"
+          ></div>
+          <p class="title"><%=element.courseName%></p>
+          <p class="description">
+            <%=element.courseDesc%>
+          </p>
+          <form action='/maincourse' method="post" >
+          <button name="courseID" value='<%=element.courseID%>'>
+            View Course
+          </button>
+        </form>
+        </div>
+    <% }) %>
+    
+
+<!-- 
       <div class="course-product-item">
         <div
           style="
@@ -17,6 +39,9 @@
           <a href="http://localhost:3000/course1">View Course</a>
         </button>
       </div>
+
+
+
       <div class="course-product-item">
         <div
           style="
@@ -34,6 +59,9 @@
           <a href="http://localhost:3000/course1">View Course</a>
         </button>
       </div>
+
+
+
       <div class="course-product-item">
         <div
           style="
@@ -50,7 +78,7 @@
         <button>
           <a href="http://localhost:3000/course1">View Course</a>
         </button>
-      </div>
+      </div> -->
     </section>
   </body>
 </html>
