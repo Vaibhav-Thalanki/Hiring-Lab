@@ -173,6 +173,7 @@ const Showscore = () => {
   }
   document.getElementById('finalsendoff').value = result;
   time2.textContent = "time over!!";
+  document.getElementById('finalsendoffscore').value = score;
   console.log(score);
 
   //<------------------a function if you want to get the name-------------------->

@@ -74,14 +74,23 @@ app.post("/:custom", (req, res) => {
   try {
     finalID = req.params.custom;
     result = req.body.testDone;
+    score = req.body.testScore;
+    console.log("score : ",score);
     console.log(email);
     if (result === "pass") {
-      
+
       Login.findOne({ email_id: email }, (er, found) => {
         console.log(found);
         console.log(found.courses);
+
         var courseToBeAdded = "course" + String(finalID);
         found.courses.push(eval(courseToBeAdded));
+        found.courses.forEach((element)=>{
+          console.log("test : ",element.courseID);
+          if(element.courseID === finalID){
+
+          }
+        });
         found.save();
       });
     }
@@ -155,6 +164,7 @@ const courseSchema = new mongoose.Schema({
   courseDesc: String,
   courseID: Number,
   courseImg: String,
+  score: Number
 });
 const LoginSchema = new mongoose.Schema({
   user_id: Number,
@@ -162,6 +172,7 @@ const LoginSchema = new mongoose.Schema({
   password: String,
   name: String,
   courses: [courseSchema],
+
 });
 // const userSchema = new mongoose.Schema({
 //   username: String,
