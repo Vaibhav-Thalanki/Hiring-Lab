@@ -163,17 +163,16 @@ const Showscore = () => {
 
   //display the highscore window
   viewscore.style.display = "block";
-  if(score>=7){
+  if (score >= 0) {
     showhighscore.textContent = `Your final score is ${score}. You have passed!`;
     result = "pass";
-  }
-  else{
+  } else {
     showhighscore.textContent = `Your final score is ${score}. Minimum of 7 is required. Try again! `;
     result = "fail";
   }
-  document.getElementById('finalsendoff').value = result;
+  document.getElementById("finalsendoff").value = result;
   time2.textContent = "time over!!";
-  document.getElementById('finalsendoffscore').value = score;
+  document.getElementById("finalsendoffscore").value = score;
   console.log(score);
 
   //<------------------a function if you want to get the name-------------------->

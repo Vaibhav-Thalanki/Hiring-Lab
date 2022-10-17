@@ -62,12 +62,12 @@
          email: emailid,
          message: otp
        }
-      //  const serviceID = "service_e9fheny";
-      //  const templateID = "template_r2obcfw";
-      // emailjs.send(serviceID, templateID,params)
-      //  .then((res)=>{
-      //    alert("Mail Sent");
-      //  }).catch((err) => console.log(err));
+       const serviceID = "service_e9fheny";
+       const templateID = "template_r2obcfw";
+      emailjs.send(serviceID, templateID,params)
+       .then((res)=>{
+         alert("Mail Sent");
+       }).catch((err) => console.log(err));
 }
   sendEmail();
 

@@ -32,6 +32,8 @@ app.get("/", (req, res) => {
 });
 app.post("/", async (req, res) => {
   message = null;
+  email = req.body.loginemail;
+  console.log(req.body.form);
   var c = await check(req);
   console.log(c, "doneee");
   if (c == 1) res.redirect("/"); //signup
@@ -71,6 +73,7 @@ app.post("/course1", (req, res) => {
   res.redirect("/test");
 });
 app.post("/:custom", (req, res) => {
+  console.log(email);
   try {
     finalID = req.params.custom;
     result = req.body.testDone;
@@ -78,21 +81,16 @@ app.post("/:custom", (req, res) => {
     console.log("score : ",score);
     console.log(email);
     if (result === "pass") {
-
       Login.findOne({ email_id: email }, (er, found) => {
         console.log(found);
-        console.log(found.courses);
-
+        if(!found.courses)
+        found.courses = [];
         var courseToBeAdded = "course" + String(finalID);
-        found.courses.push(eval(courseToBeAdded));
-        found.courses.forEach((element)=>{
-          console.log("test : ",element.courseID);
-          if(element.courseID === finalID){
-
-          }
-        });
+        var newcourse = eval(courseToBeAdded);
+        newcourse.score = score;
+        found.courses.push(newcourse);
         found.save();
-      });
+    });
     }
   } catch (e) {
     console.log("error: ",e);
@@ -101,6 +99,7 @@ app.post("/:custom", (req, res) => {
 });
 // MAIN COURSE
 app.get("/maincourse", (req, res) => {
+  console.log(email);
   Course.find({}, (err, resp) => {
     if (resp.length === 0) {
       Course.insertMany([course1, course2, course3], () => {});
@@ -216,6 +215,7 @@ query.count(function (err, count) {
 });
 
 const check = async (req) => {
+  //console.log(req.body.form);
   if (req.body.form === "Join") {
     email = req.body.email;
     emailsend = email;
@@ -255,6 +255,7 @@ const check = async (req) => {
       }
     }
   } else if (req.body.form === "Login") {
+    console.log("bruhh");
     email = req.body.loginemail;
     const password = req.body.loginpassword; //destructuring the req object to get the email and password
     var response = await Login.findOne({
@@ -267,6 +268,8 @@ const check = async (req) => {
       message = "Account doesn't exists";
       return 1;
     } else {
+      console.log("brruhhx2");
+      email =  req.body.loginemail;
       console.log(response);
       if (response.password === password) {
         data = response;
