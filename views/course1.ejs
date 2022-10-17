@@ -3,7 +3,11 @@
     <div class="course-container">
       <div class="module">
         <br><br>
-          <button><a href="http://localhost:3000/test">Take Test</a></button><br><br>
+        <form action="/course1" method="post" >
+          
+          <button type="submit" name="testTake" value='<%=ID%>' id="">Take Test</button><br><br>
+       </form>
+          <!-- <button><a href="http://localhost:3000/test">Take Test</a></button><br><br> -->
           <label  class="course-title"><font size="5">Course Outline</font></label><hr>
           <label class="modulept" for="" onclick="disp('1')">Module 1</label><hr>
           <label  class="modulept" for="" onclick="disp('2')">Module 2</label><hr>
