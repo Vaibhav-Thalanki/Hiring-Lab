@@ -46,7 +46,7 @@ app.post("/", async (req, res) => {
 });
 
 app.get("/header", (req, res) => {
-    console.log(req.body.name);
+  console.log(req.body.name);
 });
 
 app.get("/otp", (req, res) => {
@@ -71,7 +71,7 @@ app.get("/course1", (req, res) => {
   res.render("course1", {
     ID: ID,
     stylepath: "css/course1.css",
-    path:"course1"
+    path: "course1",
   });
 });
 app.post("/course1", (req, res) => {
@@ -86,13 +86,13 @@ app.post("/course1", (req, res) => {
 })*/
 
 //Extract the path which is searching the name in header.js
-app.post('/:path/search', function (req, res) {
-    console.log("From path: ", req.params['path']);
-    var a = '/'+req.params['path'];
-    var name = req.body.name; //nameoftheaccount
-    console.log(name);
-    res.redirect(a);
-})
+app.post("/:path/search", function (req, res) {
+  console.log("From path: ", req.params["path"]);
+  var a = "/" + req.params["path"];
+  var name = req.body.name; //nameoftheaccount
+  console.log(name);
+  res.redirect(a);
+});
 
 app.post("/:custom", (req, res) => {
   console.log(email);
@@ -100,22 +100,21 @@ app.post("/:custom", (req, res) => {
     finalID = req.params.custom;
     result = req.body.testDone;
     score = req.body.testScore;
-    console.log("score : ",score);
+    console.log("score : ", score);
     console.log(email);
     if (result === "pass") {
       Login.findOne({ email_id: email }, (er, found) => {
         console.log(found);
-        if(!found.courses)
-        found.courses = [];
+        if (!found.courses) found.courses = [];
         var courseToBeAdded = "course" + String(finalID);
         var newcourse = eval(courseToBeAdded);
         newcourse.score = score;
         found.courses.push(newcourse);
         found.save();
-    });
+      });
     }
   } catch (e) {
-    console.log("error: ",e);
+    console.log("error: ", e);
   }
   res.redirect("/profile");
 });
@@ -130,7 +129,7 @@ app.get("/maincourse", (req, res) => {
       res.render("maincourse", {
         stylepath: "css/maincoursestyle.css",
         courses: resp,
-        path:"maincourse"
+        path: "maincourse",
       });
     }
   });
@@ -139,14 +138,14 @@ app.get("/maincourse", (req, res) => {
 app.get("/chat", (req, res) => {
   res.render("chat", {
     stylepath: "css/chat.css",
-    path:"chat"
+    path: "chat",
   });
 });
 app.get("/home", (req, res) => {
   console.log(req.body.name11);
   res.render("home", {
     stylepath: "css/home.css",
-    path:"home"
+    path: "home",
   });
 });
 app.post("/home", (req, res) => {
@@ -158,7 +157,7 @@ app.get("/profile", (req, res) => {
   res.render("profile", {
     stylepath: "css/profileStyle.css",
     data: data,
-    path:"profile"
+    path: "profile",
   });
 });
 
@@ -194,7 +193,7 @@ const courseSchema = new mongoose.Schema({
   courseDesc: String,
   courseID: Number,
   courseImg: String,
-  score: Number
+  score: Number,
 });
 const LoginSchema = new mongoose.Schema({
   user_id: Number,
@@ -202,7 +201,12 @@ const LoginSchema = new mongoose.Schema({
   password: String,
   name: String,
   courses: [courseSchema],
-
+  address: String,
+  contact: String,
+  about: String,
+  // Experience
+  // Education
+  // Skills
 });
 // const userSchema = new mongoose.Schema({
 //   username: String,
@@ -299,7 +303,7 @@ const check = async (req) => {
       return 1;
     } else {
       console.log("brruhhx2");
-      email =  req.body.loginemail;
+      email = req.body.loginemail;
       console.log(response);
       if (response.password === password) {
         data = response;
