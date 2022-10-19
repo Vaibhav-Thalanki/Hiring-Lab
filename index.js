@@ -125,6 +125,7 @@ app.get("/home", (req, res) => {
 });
 
 app.get("/profile", (req, res) => {
+  console.log(data.courses[0].score);
   res.render("profile", {
     stylepath: "css/profileStyle.css",
     data: data,
@@ -165,12 +166,22 @@ const courseSchema = new mongoose.Schema({
   courseImg: String,
   score: Number
 });
+const profileSchema=new mongoose.Schema({
+  name: String,
+  contactInfo: Number,
+  address: String,
+  experience: String,
+  education: String,
+  skills: String
+});
+const Profile = mongoose.model('Profile', profileSchema);
 const LoginSchema = new mongoose.Schema({
   user_id: Number,
   email_id: String,
   password: String,
   name: String,
   courses: [courseSchema],
+  profile:[profileSchema]
 });
 // const userSchema = new mongoose.Schema({
 //   username: String,
@@ -205,19 +216,9 @@ const course3 = new Course({
   courseID: 3,
   courseImg: "https://blog.logrocket.com/wp-content/uploads/2020/06/CSS-3.png",
 });
-const profileSchema=new mongoose.Schema({
-  name: String,
-  contactInfo: Number,
-  address: String,
-  experience: String,
-  education: String,
-  skills: String
-});
-const Profile = mongoose.model('Profile', profileSchema);
 
 app.post('/profile', (req,res) =>{
-  console.log("Hi");
-  console.log(req.body.uname,req.body.cinfo,req.body.add,req.body.exp,req.body.edu,req.body.skill);
+  console.log(req.body.uname,req.body.email_id,req.body.cinfo,req.body.add,req.body.exp,req.body.edu,req.body.skill);
   const profile = new Profile({
     name: req.body.uname,
     contactInfo: req.body.cinfo,
@@ -226,6 +227,7 @@ app.post('/profile', (req,res) =>{
     education: req.body.edu,
     skills: req.body.skill
     });
+
     Profile.findOneAndReplace(
     { name: req.body.uname },
     {name: req.body.uname,
@@ -236,9 +238,10 @@ app.post('/profile', (req,res) =>{
     skills: req.body.skill},
     function(err, result) {
       if (err) {
+        console.log("ins error")
         res.send(err);
       } else {
-        res.send(result);
+        console.log("outs error")
       }
     }
   );
