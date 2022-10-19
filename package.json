@@ -1,19 +1,22 @@
 {
-  "name": "hiring-lab",
+  "name": "views",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Profiles",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
-  "author": "Vaibhav Thalanki",
+  "author": "Keerthana",
   "license": "ISC",
   "dependencies": {
-    "assert": "^2.0.0",
-    "body-parser": "^1.20.0",
+    "body-parser": "^1.20.1",
     "ejs": "^3.1.8",
-    "express": "^4.18.1",
+    "express": "^4.18.2",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.3",
     "mongodb": "^4.10.0",
-    "mongoose": "^6.6.4"
-  }
+    "mongoose": "^6.6.5"
+  },
+  "keywords": []
 }

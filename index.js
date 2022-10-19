@@ -72,7 +72,7 @@ app.post("/course1", (req, res) => {
   IDcontinue = req.body.testTake;
   res.redirect("/test");
 });
-app.post("/:custom", (req, res) => {
+app.post("/as:custom", (req, res) => {
   console.log(email);
   try {
     finalID = req.params.custom;
@@ -171,7 +171,6 @@ const LoginSchema = new mongoose.Schema({
   password: String,
   name: String,
   courses: [courseSchema],
-
 });
 // const userSchema = new mongoose.Schema({
 //   username: String,
@@ -205,6 +204,46 @@ const course3 = new Course({
     "Cascading Style Sheets is a style sheet language used for describing the presentation of a document written in a markup language such as HTML or XML.",
   courseID: 3,
   courseImg: "https://blog.logrocket.com/wp-content/uploads/2020/06/CSS-3.png",
+});
+const profileSchema=new mongoose.Schema({
+  name: String,
+  contactInfo: Number,
+  address: String,
+  experience: String,
+  education: String,
+  skills: String
+});
+const Profile = mongoose.model('Profile', profileSchema);
+
+app.post('/profile', (req,res) =>{
+  console.log("Hi");
+  console.log(req.body.uname,req.body.cinfo,req.body.add,req.body.exp,req.body.edu,req.body.skill);
+  const profile = new Profile({
+    name: req.body.uname,
+    contactInfo: req.body.cinfo,
+    address: req.body.add,
+    experience: req.body.exp,
+    education: req.body.edu,
+    skills: req.body.skill
+    });
+    Profile.findOneAndReplace(
+    { name: req.body.uname },
+    {name: req.body.uname,
+    contactInfo: req.body.cinfo,
+    address: req.body.add,
+    experience: req.body.exp,
+    education: req.body.edu,
+    skills: req.body.skill},
+    function(err, result) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+    profile.save();
+    res.redirect("/profile");
 });
 
 var c = 0; //find the count of datas present
