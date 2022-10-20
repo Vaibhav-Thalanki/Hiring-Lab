@@ -72,7 +72,7 @@ app.post("/course1", (req, res) => {
   IDcontinue = req.body.testTake;
   res.redirect("/test");
 });
-app.post("/as:custom", (req, res) => {
+app.post("/:custom/test", (req, res) => {
   console.log(email);
   try {
     finalID = req.params.custom;
