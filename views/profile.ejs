@@ -1,115 +1,113 @@
 <%- include('header') -%>
     <main>
       <div id="feed">
-        <section id="prl">
-          <div id="picture"></div>
-          <div id="banner"></div>
-          <div id="details">
-            <div class="container">
-              <h1 id="username">Username</h1>
-              <p id="about">A engineering student</p>
-              <p id="contactinfo">Chennai</p>
-              <span>
-                <p id="address">Vellore insitiute of Technology</p>
-              </span>
-              <button class="click-button" onclick="myProfileEditFunction()">
-                Edit
-              </button>
+        <form action="/profile" method="post">
+          <section id="prl">
+            <div id="picture"></div>
+            <div id="banner"></div>
+            <div id="details">
+              <div class="container">
+                <h1 id="username">User</h1>
+                <p id="about">About</p>
+                <p id="contactinfo">Contact Info</p>
+                <p id="email_id">Email ID</p>
+                <span>
+                  <p id="address">Address</p>
+                </span>
+                <!-- <button class="click-button" onclick="myProfileEditFunction()">
+                  Edit
+                </button> -->
+              </div>
             </div>
-          </div>
-          <div id="edit-profdetails">
-            <div class="edit-profdetails">
-              <table class="profile-table">
-                <tr>
-                  <th>User Name:</th>
-                  <td>
-                    <input type="text" id="uname" name="uname" value="" />
-                  </td>
-                </tr>
-                <tr>
-                  <th>About:</th>
-                  <td><input type="text" id="abt" name="abt" value="" /></td>
-                </tr>
-                <tr>
-                  <th>Contact Info:</th>
-                  <td>
-                    <input type="text" id="cinfo" name="cinfo" value="" />
-                  </td>
-                </tr>
-                <tr>
-                  <th>Address:</th>
-                  <td><input type="text" id="add" name="add" value="" /></td>
-                </tr>
-                <tr>
-                  <td>
-                    <button
-                      class="click-button"
-                      onclick="myProfileSubmitFunction()"
-                    >
-                      Submit
-                    </button>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </section>
+            <div id="edit-profdetails">
+              <div class="edit-profdetails">
+                  <table class="profile-table">
+                    <tr>
+                      <th>User Name:</th>
+                      <td>
+                        <input type="text" id="uname" name="uname" value="" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>About:</th>
+                      <td><input type="text" id="abt" name="abt" value="" /></td>
+                    </tr>
+                    <tr>
+                      <th>Contact Info:</th>
+                      <td>
+                        <input type="text" id="cinfo" name="cinfo" value="" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Address:</th>
+                      <td><input type="text" id="add" name="add" value="" /></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <!-- <button
+                          class="click-button"
+                          onclick="myProfileSubmitFunction()"
+                        >
+                          Submit
+                        </button> -->
+                      </td>
+                    </tr>
+                  </table>
 
-        <section id="guides">
-          <div class="article">
-            <h2>Experience</h2>
-            <div class="edit-content1">
-              <textarea id="edited-content1" rows="8" cols="80"></textarea
-              ><br />
-              <button class="click-button" onclick="mySubmitFunction1()">
-                Submit
-              </button>
+              </div>
             </div>
+          </section>
 
-            <div class="display-content1">
-              <p id="show-final-content1">Enter your work Experience</p>
-              <button class="click-button" onclick="myEditFunction1()">
-                Edit
-              </button>
-            </div>
-          </div>
-          <span id="border"></span>
+          <section id="guides">
+            <div class="article">
+              <h2>Experience</h2>
+              <div class="edit-content1">
+                  <textarea name="exp" id="edited-content1" rows="8" cols="80"></textarea
+                  ><br />
+                  <!-- <button class="click-button" onclick="mySubmitFunction1()">
+                    Submit
+                  </button> -->
 
-          <div class="article">
-            <h2>Education</h2>
-            <div class="edit-content2">
-              <textarea id="edited-content2" rows="8" cols="80"></textarea
-              ><br />
-              <button class="click-button" onclick="mySubmitFunction2()">
-                Submit
-              </button>
+              </div>
+
+              <div class="display-content1">
+                <p id="show-final-content1">Enter your work Experience</p>
+                <!-- <button class="click-button" onclick="myEditFunction1()">
+                  Edit
+                </button> -->
+              </div>
             </div>
 
-            <div class="display-content2">
-              <p id="show-final-content2">Enter your Education</p>
-              <button class="click-button" onclick="myEditFunction2()">
-                Edit
-              </button>
-            </div>
-          </div>
-          <div class="article">
-            <h2>Skills</h2>
-            <div class="edit-content3">
-              <textarea id="edited-content3" rows="8" cols="80"></textarea
-              ><br />
-              <button class="click-button" onclick="mySubmitFunction3()">
-                Submit
-              </button>
-            </div>
+            <div class="article">
+              <h2>Education</h2>
+              <div class="edit-content2">
+                  <textarea name="edu" id="edited-content2" rows="8" cols="80"></textarea
+                  ><br />
+                  <!-- <button class="click-button" onclick="mySubmitFunction2()">
+                    Submit
+                  </button> -->
 
-            <div class="display-content3">
-              <p id="show-final-content3">Enter your Skills</p>
-              <button class="click-button" onclick="myEditFunction3()">
-                Edit
-              </button>
+              </div>
+              <div class="display-content2">
+                <p id="show-final-content2">Enter your Education</p>
+                <!-- <button class="click-button" onclick="myEditFunction2()">
+                  Edit
+                </button> -->
+              </div>
             </div>
-          </div>
-        </section>
+            <div class="article">
+              <h2>Skills</h2>
+              <div class="edit-content3">
+                  <textarea name="skill" id="edited-content3" rows="8" cols="80"></textarea><br />
+                  <input type="submit" class="click-button" value="Submit" onclick="mySubmitFunction()">
+              </div>
+              <div class="display-content3">
+                <p id="show-final-content3">Enter your Skills</p>
+                <input type="button" class="click-button" value="Edit" onclick="myEditFunction()">
+              </div>
+            </div>
+          </section>
+        </form>
       </div>
     </main>
     <footer>
@@ -120,40 +118,30 @@
       type="text/javascript"
     ></script>
     <script>
-      function myEditFunction1() {
+      <%if(data.profile == null || typeof data.profile == 'undefined'){%> neww=1;<%}else{%>
+        document.getElementById("username").innerText = <%=data.profile[0].name%>;
+        document.getElementById("about").innerText = <%=data.profile[0].name%>;
+        document.getElementById("contactinfo").innerText = <%=data.profile[0].contactInfo%>;
+        document.getElementById("address").innerText = <%=data.profile[0].address%>;
+         <%}%>
+
+     document.getElementById("username").innerText = "data";
+      document.getElementById("about").innerText = "about";
+      document.getElementById("contactinfo").innerText = "contact_info";
+      document.getElementById("address").innerText = "address";
+      alert("<%=data.email_id%>");
+      document.getElementById("email_id").innerText = "<%=data.email_id%>";
+
+      function myEditFunction() {
         $(".display-content1").css("display", "none");
         $(".edit-content1").css("display", "block");
-      }
-      function mySubmitFunction1() {
-        const edit_content1 = document.getElementById("edited-content1").value;
-        $(".display-content1").css("display", "block");
-        $(".edit-content1").css("display", "none");
-        document.getElementById("show-final-content1").innerText =
-          edit_content1;
-      }
-      function myEditFunction2() {
+
         $(".display-content2").css("display", "none");
         $(".edit-content2").css("display", "block");
-      }
-      function mySubmitFunction2() {
-        const edit_content2 = document.getElementById("edited-content2").value;
-        $(".display-content2").css("display", "block");
-        $(".edit-content2").css("display", "none");
-        document.getElementById("show-final-content2").innerText =
-          edit_content2;
-      }
-      function myEditFunction3() {
+
         $(".display-content3").css("display", "none");
         $(".edit-content3").css("display", "block");
-      }
-      function mySubmitFunction3() {
-        const edit_content3 = document.getElementById("edited-content3").value;
-        $(".display-content3").css("display", "block");
-        $(".edit-content3").css("display", "none");
-        document.getElementById("show-final-content3").innerText =
-          edit_content3;
-      }
-      function myProfileEditFunction() {
+
         $("#details").css("display", "none");
         $("#edit-profdetails").css("display", "block");
         document.getElementById("uname").value =
@@ -165,18 +153,37 @@
         document.getElementById("add").value =
           document.getElementById("address").innerText;
       }
-      function myProfileSubmitFunction() {
-        const u_name = document.getElementById("uname").value;
-        const about = document.getElementById("abt").value;
-        const contact_info = document.getElementById("cinfo").value;
-        const address = document.getElementById("add").value;
-        $("#details").css("display", "block");
-        $("#edit-profdetails").css("display", "none");
-        document.getElementById("username").innerText = u_name;
-        document.getElementById("about").innerText = about;
-        document.getElementById("contactinfo").innerText = contact_info;
-        document.getElementById("address").innerText = address;
+      function mySubmitFunction() {
+        const edit_content1 = document.getElementById("edited-content1").value;
+        $(".display-content1").css("display", "block");
+        $(".edit-content1").css("display", "none");
+        document.getElementById("show-final-content1").innerText ="edit_content1";
+
+
+        const edit_content2 = document.getElementById("edited-content2").value;
+        $(".display-content2").css("display", "block");
+        $(".edit-content2").css("display", "none");
+        document.getElementById("show-final-content2").innerText = "edit_content2";
+
+        const edit_content3 = document.getElementById("edited-content3").value;
+        $(".display-content3").css("display", "block");
+        $(".edit-content3").css("display", "none");
+        document.getElementById("show-final-content3").innerText = "edit_content3";
+
+
+          const u_name = document.getElementById("uname").value;
+          const about = document.getElementById("abt").value;
+          const contact_info = document.getElementById("cinfo").value;
+          const address = document.getElementById("add").value;
+          $("#details").css("display", "block");
+          $("#edit-profdetails").css("display", "none");
+          document.getElementById("username").innerText = "u_name";
+          document.getElementById("about").innerText = "about";
+          document.getElementById("contactinfo").innerText = "contact_info";
+          document.getElementById("address").innerText = "address";
       }
+
+
     </script>
   </body>
 </html>

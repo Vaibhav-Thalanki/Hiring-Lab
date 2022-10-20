@@ -78,6 +78,8 @@ app.post("/course1", (req, res) => {
   IDcontinue = req.body.testTake;
   res.redirect("/test");
 });
+app.post("/:custom/test", (req, res) => {
+
 
 /*app.get('/profile/:start/:end', function (req, res) {
     console.log("Starting Page: ", req.params['start']);
@@ -94,7 +96,6 @@ app.post('/:path/search', function (req, res) {
     res.redirect(a);
 })
 
-app.post("/:custom", (req, res) => {
   console.log(email);
   try {
     finalID = req.params.custom;
@@ -155,6 +156,7 @@ app.post("/home", (req, res) => {
 });
 
 app.get("/profile", (req, res) => {
+  console.log(data.courses[0].score);
   res.render("profile", {
     stylepath: "css/profileStyle.css",
     data: data,
@@ -196,13 +198,23 @@ const courseSchema = new mongoose.Schema({
   courseImg: String,
   score: Number
 });
+const profileSchema=new mongoose.Schema({
+  name: String,
+  email_id:String,
+  contactInfo: String,
+  address: String,
+  experience: String,
+  education: String,
+  skills: String
+});
+const Profile = mongoose.model('Profile', profileSchema);
 const LoginSchema = new mongoose.Schema({
   user_id: Number,
   email_id: String,
   password: String,
   name: String,
   courses: [courseSchema],
-
+  profile:profileSchema
 });
 // const userSchema = new mongoose.Schema({
 //   username: String,
@@ -236,6 +248,87 @@ const course3 = new Course({
     "Cascading Style Sheets is a style sheet language used for describing the presentation of a document written in a markup language such as HTML or XML.",
   courseID: 3,
   courseImg: "https://blog.logrocket.com/wp-content/uploads/2020/06/CSS-3.png",
+});
+
+app.post('/profile', (req,res) =>{
+  console.log(req.body.uname,email,req.body.cinfo,req.body.add,req.body.exp,req.body.edu,req.body.skill);
+  /*function(err, result) {
+    console.log(result);
+    if(result == null){
+      const profile = new Profile({
+        name: req.body.uname,
+        contactInfo: req.body.cinfo,
+        address: req.body.add,
+        email_id: email,
+        experience: req.body.exp,
+        education: req.body.edu,
+        skills: req.body.skill
+      });
+      profile.save();
+    }
+
+  }*/
+  Profile.findOne({email_id: email},function(err, result) {
+    console.log(result);
+    if(result == null){
+      const profile = new Profile({
+        name: req.body.uname,
+        contactInfo: req.body.cinfo,
+        address: req.body.add,
+        email_id: email,
+        experience: req.body.exp,
+        education: req.body.edu,
+        skills: req.body.skill
+      });
+      profile.save();
+      Login.findOneAndUpdate({email_id:email},{$set: { profile: profile } },{new: true}, (err, doc) => {
+    if (err) {
+        console.log("Something wrong when updating data!",err);
+    }
+
+    console.log(doc);
+});
+    }
+    else{
+      const profile = new Profile({
+        name: req.body.uname,
+        contactInfo: req.body.cinfo,
+        address: req.body.add,
+        email_id: email,
+        experience: req.body.exp,
+        education: req.body.edu,
+        skills: req.body.skill
+      });
+      console.log("haha",data.email_id,email);
+      Profile.findOneAndUpdate(
+      { email_id: email },
+      {name: req.body.uname,
+        email_id: data.email_id,
+      contactInfo: req.body.cinfo,
+      address: req.body.add,
+      experience: req.body.exp,
+      education: req.body.edu,
+      skills: req.body.skill}, {new: true}, (err, doc) => {
+    if (err) {
+        console.log("Something wrong when updating data!",err);
+    }
+
+    console.log(doc);
+}
+    );
+    Login.findOneAndUpdate({email_id:email},{$set: { profile: profile } },{new: true}, (err, doc) => {
+  if (err) {
+      console.log("Something wrong when updating data!",err);
+  }
+
+  console.log(doc);
+});
+
+
+    }
+  }
+);
+    res.redirect("/profile");
 });
 
 var c = 0; //find the count of datas present
