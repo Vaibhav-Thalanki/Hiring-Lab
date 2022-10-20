@@ -249,8 +249,24 @@ app.post('/profile', (req,res) =>{
         skills: req.body.skill
       });
       profile.save();
+      Login.findOneAndUpdate({email_id:email},{$set: { profile: profile } },{new: true}, (err, doc) => {
+    if (err) {
+        console.log("Something wrong when updating data!",err);
+    }
+
+    console.log(doc);
+});
     }
     else{
+      const profile = new Profile({
+        name: req.body.uname,
+        contactInfo: req.body.cinfo,
+        address: req.body.add,
+        email_id: email,
+        experience: req.body.exp,
+        education: req.body.edu,
+        skills: req.body.skill
+      });
       console.log("haha",data.email_id,email);
       Profile.findOneAndUpdate(
       { email_id: email },
@@ -268,6 +284,15 @@ app.post('/profile', (req,res) =>{
     console.log(doc);
 }
     );
+    Login.findOneAndUpdate({email_id:email},{$set: { profile: profile } },{new: true}, (err, doc) => {
+  if (err) {
+      console.log("Something wrong when updating data!",err);
+  }
+
+  console.log(doc);
+});
+
+
     }
   }
 );
