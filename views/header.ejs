@@ -21,9 +21,11 @@
           </h3>
         </a>
         <div class="header-search">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          &nbsp;&nbsp;
-          <input type="text" placeholder="Search" />
+          <form action="/<%=path%>/search" onsubmit="clickk()" method="post">
+            <input style="border:none;background: none;outline: none;" id="search" type="text" name= "name" placeholder="Search"/>
+             <i class="fa-solid fa-magnifying-glass"></i>
+          </form>
+
         </div>
       </div>
       <div class="header-right">
@@ -57,3 +59,17 @@
         </a>
       </div>
     </div>
+  </body>
+  <script type="text/javascript">
+      var input = document.getElementById("search");
+      input.addEventListener("keypress", function(event) {
+    // If the user presses the "Enter" key on the keyboard
+    if (event.key === "Enter") {
+      var nametosearch = input.value;
+      alert(nametosearch);
+    }
+    });
+    function click(){
+      alert("clicked");
+    }
+  </script>

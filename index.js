@@ -24,6 +24,7 @@ app.post("/maincourse", (req, res) => {
   ID = req.body.courseID;
   res.redirect("/course1");
 });
+
 app.get("/", (req, res) => {
   res.render("index", {
     message,
@@ -42,6 +43,10 @@ app.post("/", async (req, res) => {
   } else if (c == 3) {
     res.redirect("/otp"); //otp
   }
+});
+
+app.get("/header", (req, res) => {
+    console.log(req.body.name);
 });
 
 app.get("/otp", (req, res) => {
@@ -66,6 +71,7 @@ app.get("/course1", (req, res) => {
   res.render("course1", {
     ID: ID,
     stylepath: "css/course1.css",
+    path:"course1"
   });
 });
 app.post("/course1", (req, res) => {
@@ -73,6 +79,23 @@ app.post("/course1", (req, res) => {
   res.redirect("/test");
 });
 app.post("/:custom/test", (req, res) => {
+
+
+/*app.get('/profile/:start/:end', function (req, res) {
+    console.log("Starting Page: ", req.params['start']);
+    console.log("Ending Page: ", req.params['end']);
+    res.send();
+})*/
+
+//Extract the path which is searching the name in header.js
+app.post('/:path/search', function (req, res) {
+    console.log("From path: ", req.params['path']);
+    var a = '/'+req.params['path'];
+    var name = req.body.name; //nameoftheaccount
+    console.log(name);
+    res.redirect(a);
+})
+
   console.log(email);
   try {
     finalID = req.params.custom;
@@ -108,6 +131,7 @@ app.get("/maincourse", (req, res) => {
       res.render("maincourse", {
         stylepath: "css/maincoursestyle.css",
         courses: resp,
+        path:"maincourse"
       });
     }
   });
@@ -116,12 +140,19 @@ app.get("/maincourse", (req, res) => {
 app.get("/chat", (req, res) => {
   res.render("chat", {
     stylepath: "css/chat.css",
+    path:"chat"
   });
 });
 app.get("/home", (req, res) => {
+  console.log(req.body.name11);
   res.render("home", {
     stylepath: "css/home.css",
+    path:"home"
   });
+});
+app.post("/home", (req, res) => {
+  console.log(req.body.name11);
+  res.redirect("/home");
 });
 
 app.get("/profile", (req, res) => {
@@ -129,6 +160,7 @@ app.get("/profile", (req, res) => {
   res.render("profile", {
     stylepath: "css/profileStyle.css",
     data: data,
+    path:"profile"
   });
 });
 
@@ -347,7 +379,6 @@ const check = async (req) => {
       }
     }
   } else if (req.body.form === "Login") {
-    console.log("bruhh");
     email = req.body.loginemail;
     const password = req.body.loginpassword; //destructuring the req object to get the email and password
     var response = await Login.findOne({
