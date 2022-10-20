@@ -20,11 +20,49 @@ app.use(
     extended: true,
   })
 );
-app.post("/maincourse", (req, res) => {
-  ID = req.body.courseID;
-  res.redirect("/course1");
+
+//STARTING SERVER
+app.listen(port, () => {
+  console.log("Server Started on port " + port);
 });
 
+//DATABASE CONNECTION
+main().catch((err) => console.log(err));
+async function main() {
+  await mongoose.connect("mongodb://localhost:27017/HIRINGLAB");
+}
+
+//SCHEMAS
+const courseSchema = new mongoose.Schema({
+  courseName: String,
+  courseDesc: String,
+  courseID: Number,
+  courseImg: String,
+  score: Number
+});
+const profileSchema=new mongoose.Schema({
+  name: String,
+  email_id:String,
+  about:String,
+  contactInfo: String,
+  address: String,
+  experience: String,
+  education: String,
+  skills: String
+});
+const Profile = mongoose.model('Profile', profileSchema);
+const LoginSchema = new mongoose.Schema({
+  user_id: Number,
+  email_id: String,
+  password: String,
+  name: String,
+  courses: [courseSchema],
+  profile:profileSchema
+});
+
+
+
+//WELCOME PAGE
 app.get("/", (req, res) => {
   res.render("index", {
     message,
@@ -45,14 +83,41 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.get("/header", (req, res) => {
-    console.log(req.body.name);
-});
-
+//OTP
 app.get("/otp", (req, res) => {
   res.render("otp", {
     emailsend,
   });
+});
+
+
+//LANDING
+app.get("/landing", (req, res) => {
+  res.render("landing");
+});
+
+var nametosearch = null;
+var SearchPersonData = null;
+//GETTING NAME TO SEARCH FROM HEADER
+//Extract the path which is searching the name in header.js
+app.post('/:path/search', function (req, res) {
+    console.log("From path: ", req.params.path);
+    var a = '/'+req.params.path;
+    nametosearch = req.body.name; //nameoftheaccount
+    console.log(nametosearch);
+
+    Profile.findOne({name: nametosearch},function(err, result) {
+      console.log(result);
+      if(result == null){
+      console.log("No record found");
+      res.redirect(a);
+    }
+      else{
+        console.log(result);
+        SearchPersonData = result;
+        res.redirect("/profilePage")
+      }
+    });
 });
 
 // TEST
@@ -61,41 +126,7 @@ app.get("/test", (req, res) => {
     ID: IDcontinue,
   });
 });
-
-app.get("/landing", (req, res) => {
-  res.render("landing");
-});
-
-// COURSE 1
-app.get("/course1", (req, res) => {
-  res.render("course1", {
-    ID: ID,
-    stylepath: "css/course1.css",
-    path:"course1"
-  });
-});
-app.post("/course1", (req, res) => {
-  IDcontinue = req.body.testTake;
-  res.redirect("/test");
-});
 app.post("/:custom/test", (req, res) => {
-
-
-/*app.get('/profile/:start/:end', function (req, res) {
-    console.log("Starting Page: ", req.params['start']);
-    console.log("Ending Page: ", req.params['end']);
-    res.send();
-})*/
-
-//Extract the path which is searching the name in header.js
-app.post('/:path/search', function (req, res) {
-    console.log("From path: ", req.params['path']);
-    var a = '/'+req.params['path'];
-    var name = req.body.name; //nameoftheaccount
-    console.log(name);
-    res.redirect(a);
-})
-
   console.log(email);
   try {
     finalID = req.params.custom;
@@ -120,7 +151,26 @@ app.post('/:path/search', function (req, res) {
   }
   res.redirect("/profile");
 });
+
+// COURSE 1
+app.get("/course1", (req, res) => {
+  res.render("course1", {
+    ID: ID,
+    stylepath: "css/course1.css",
+    path:"course1"
+  });
+});
+app.post("/course1", (req, res) => {
+  IDcontinue = req.body.testTake;
+  res.redirect("/test");
+});
+
 // MAIN COURSE
+app.post("/maincourse", (req, res) => {
+  ID = req.body.courseID;
+  res.redirect("/course1");
+});
+
 app.get("/maincourse", (req, res) => {
   console.log(email);
   Course.find({}, (err, resp) => {
@@ -137,94 +187,7 @@ app.get("/maincourse", (req, res) => {
   });
 });
 
-app.get("/chat", (req, res) => {
-  res.render("chat", {
-    stylepath: "css/chat.css",
-    path:"chat"
-  });
-});
-app.get("/home", (req, res) => {
-  console.log(req.body.name11);
-  res.render("home", {
-    stylepath: "css/home.css",
-    path:"home"
-  });
-});
-app.post("/home", (req, res) => {
-  console.log(req.body.name11);
-  res.redirect("/home");
-});
-
-app.get("/profile", (req, res) => {
-  console.log(data.courses[0].score);
-  res.render("profile", {
-    stylepath: "css/profileStyle.css",
-    data: data,
-    path:"profile"
-  });
-});
-
-app.listen(port, () => {
-  console.log("Server Started on port " + port);
-});
-
-var valacc = -1;
-async function checkacc(email) {
-  await Login.findOne(
-    {
-      email_id: email,
-    },
-    function (err, docs) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("Result : ", docs);
-        if (docs == null) valacc = 0;
-        else valacc = 1;
-      }
-    }
-  ).clone();
-}
-
-main().catch((err) => console.log(err));
-async function main() {
-  await mongoose.connect("mongodb://localhost:27017/HIRINGLAB");
-}
-
-const courseSchema = new mongoose.Schema({
-  courseName: String,
-  courseDesc: String,
-  courseID: Number,
-  courseImg: String,
-  score: Number
-});
-const profileSchema=new mongoose.Schema({
-  name: String,
-  email_id:String,
-  contactInfo: String,
-  address: String,
-  experience: String,
-  education: String,
-  skills: String
-});
-const Profile = mongoose.model('Profile', profileSchema);
-const LoginSchema = new mongoose.Schema({
-  user_id: Number,
-  email_id: String,
-  password: String,
-  name: String,
-  courses: [courseSchema],
-  profile:profileSchema
-});
-// const userSchema = new mongoose.Schema({
-//   username: String,
-// email: String,
-// password: String,
-// name
-// courses
-// connected
-// posts
-// });
+//ADDING COURSES
 const Course = mongoose.model("courses", courseSchema);
 const Login = mongoose.model("Login", LoginSchema);
 const course1 = new Course({
@@ -250,29 +213,73 @@ const course3 = new Course({
   courseImg: "https://blog.logrocket.com/wp-content/uploads/2020/06/CSS-3.png",
 });
 
+
+
+//CHAT
+app.get("/chat", (req, res) => {
+  res.render("chat", {
+    stylepath: "css/chat.css",
+    path:"chat"
+  });
+});
+
+//HOME
+app.get("/home", (req, res) => {
+  res.render("home", {
+    stylepath: "css/home.css",
+    path:"home"
+  });
+});
+app.post("/home", (req, res) => {
+  res.redirect("/home");
+});
+
+
+var valacc = -1;
+async function checkacc(email) {
+  await Login.findOne(
+    {
+      email_id: email,
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Result : ", docs);
+        if (docs == null) valacc = 0;
+        else valacc = 1;
+      }
+    }
+  ).clone();
+}
+//SHOW PROFILE
+app.get("/profilePage", (req, res) => {
+  res.render("profilePage", {
+    stylepath: "css/profileStyle.css",
+    data: SearchPersonData,
+    path:"profile"
+  });
+});
+
+
+
+//PROFILE
+app.get("/profile", (req, res) => {
+  res.render("profile", {
+    stylepath: "css/profileStyle.css",
+    data: data,
+    path:"profile"
+  });
+});
+
 app.post('/profile', (req,res) =>{
   console.log(req.body.uname,email,req.body.cinfo,req.body.add,req.body.exp,req.body.edu,req.body.skill);
-  /*function(err, result) {
-    console.log(result);
-    if(result == null){
-      const profile = new Profile({
-        name: req.body.uname,
-        contactInfo: req.body.cinfo,
-        address: req.body.add,
-        email_id: email,
-        experience: req.body.exp,
-        education: req.body.edu,
-        skills: req.body.skill
-      });
-      profile.save();
-    }
-
-  }*/
   Profile.findOne({email_id: email},function(err, result) {
     console.log(result);
     if(result == null){
       const profile = new Profile({
         name: req.body.uname,
+        about: req.body.abt,
         contactInfo: req.body.cinfo,
         address: req.body.add,
         email_id: email,
@@ -280,6 +287,7 @@ app.post('/profile', (req,res) =>{
         education: req.body.edu,
         skills: req.body.skill
       });
+      console.log("creating new");
       profile.save();
       Login.findOneAndUpdate({email_id:email},{$set: { profile: profile } },{new: true}, (err, doc) => {
     if (err) {
@@ -294,6 +302,7 @@ app.post('/profile', (req,res) =>{
         name: req.body.uname,
         contactInfo: req.body.cinfo,
         address: req.body.add,
+        about: req.body.abt,
         email_id: email,
         experience: req.body.exp,
         education: req.body.edu,
@@ -305,6 +314,7 @@ app.post('/profile', (req,res) =>{
       {name: req.body.uname,
         email_id: data.email_id,
       contactInfo: req.body.cinfo,
+      about: req.body.abt,
       address: req.body.add,
       experience: req.body.exp,
       education: req.body.edu,
@@ -338,6 +348,7 @@ query.count(function (err, count) {
   else c = count;
 });
 
+//LOGIN CHECK
 const check = async (req) => {
   //console.log(req.body.form);
   if (req.body.form === "Join") {

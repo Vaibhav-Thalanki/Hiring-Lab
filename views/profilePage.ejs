@@ -1,1 +1,43 @@
-<%- include('header-login') -%> login succesful
+<%- include('header') -%>
+<main>
+  <div id="feed">
+    <form action="/profile" method="post">
+      <section id="prl">
+        <div id="picture"></div>
+        <div id="banner"></div>
+        <div id="details">
+          <div class="container">
+            <h1 id="username"><%=data.name%></h1></h1>
+            <p id="about"><%=data.about%></p>
+            <p id="contactinfo"><%=data.contactInfo%></p>
+            <p id="email_id"><%=data.email_id%></p>
+            <span>
+              <p id="address"><%=data.address%></p>
+            </span>
+            <button type="button" name="connect">CONNECT</button>
+          </div>
+        </div>
+      </section>
+      <section id="guides">
+        <div class="article">
+          <h2>Experience</h2>
+          <div class="display-content1">
+            <p id="show-final-content1"><%=data.experience%></p>
+          </div>
+        </div>
+        <div class="article">
+          <h2>Education</h2>
+          <div class="display-content2">
+            <p id="show-final-content2"><%=data.education%></p>
+          </div>
+        </div>
+        <div class="article">
+          <h2>Skills</h2>
+          <div class="display-content3">
+            <p id="show-final-content3"><%=data.skills%></p>
+          </div>
+        </div>
+      </section>
+    </form>
+  </div>
+</main>
