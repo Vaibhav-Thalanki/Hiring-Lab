@@ -78,7 +78,7 @@ app.post("/course1", (req, res) => {
   IDcontinue = req.body.testTake;
   res.redirect("/test");
 });
-app.post("/:custom/test", (req, res) => {
+
 
 
 /*app.get('/profile/:start/:end', function (req, res) {
@@ -94,8 +94,8 @@ app.post('/:path/search', function (req, res) {
     var name = req.body.name; //nameoftheaccount
     console.log(name);
     res.redirect(a);
-})
-
+});
+app.post('/:custom/test',function(req,res){
   console.log(email);
   try {
     finalID = req.params.custom;
@@ -144,7 +144,6 @@ app.get("/chat", (req, res) => {
   });
 });
 app.get("/home", (req, res) => {
-  console.log(req.body.name11);
   res.render("home", {
     stylepath: "css/home.css",
     path:"home"
@@ -156,7 +155,7 @@ app.post("/home", (req, res) => {
 });
 
 app.get("/profile", (req, res) => {
-  console.log(data.courses[0].score);
+  //console.log(data.courses[0].score);
   res.render("profile", {
     stylepath: "css/profileStyle.css",
     data: data,

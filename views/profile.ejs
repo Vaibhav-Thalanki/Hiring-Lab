@@ -119,10 +119,10 @@
     ></script>
     <script>
       <%if(data.profile == null || typeof data.profile == 'undefined'){%> neww=1;<%}else{%>
-        document.getElementById("username").innerText = <%=data.profile[0].name%>;
-        document.getElementById("about").innerText = <%=data.profile[0].name%>;
-        document.getElementById("contactinfo").innerText = <%=data.profile[0].contactInfo%>;
-        document.getElementById("address").innerText = <%=data.profile[0].address%>;
+        document.getElementById("username").innerText = <%=data.profile.name%>;
+        document.getElementById("about").innerText = <%=data.profile.name%>;
+        document.getElementById("contactinfo").innerText = <%=data.profile.contactInfo%>;
+        document.getElementById("address").innerText = <%=data.profile.address%>;
          <%}%>
 
      document.getElementById("username").innerText = "data";
