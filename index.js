@@ -168,7 +168,8 @@ const courseSchema = new mongoose.Schema({
 });
 const profileSchema=new mongoose.Schema({
   name: String,
-  contactInfo: Number,
+  email_id:String,
+  contactInfo: String,
   address: String,
   experience: String,
   education: String,
@@ -181,7 +182,7 @@ const LoginSchema = new mongoose.Schema({
   password: String,
   name: String,
   courses: [courseSchema],
-  profile:[profileSchema]
+  profile:profileSchema
 });
 // const userSchema = new mongoose.Schema({
 //   username: String,
@@ -218,34 +219,58 @@ const course3 = new Course({
 });
 
 app.post('/profile', (req,res) =>{
-  console.log(req.body.uname,req.body.email_id,req.body.cinfo,req.body.add,req.body.exp,req.body.edu,req.body.skill);
-  const profile = new Profile({
-    name: req.body.uname,
-    contactInfo: req.body.cinfo,
-    address: req.body.add,
-    experience: req.body.exp,
-    education: req.body.edu,
-    skills: req.body.skill
-    });
-
-    Profile.findOneAndReplace(
-    { name: req.body.uname },
-    {name: req.body.uname,
-    contactInfo: req.body.cinfo,
-    address: req.body.add,
-    experience: req.body.exp,
-    education: req.body.edu,
-    skills: req.body.skill},
-    function(err, result) {
-      if (err) {
-        console.log("ins error")
-        res.send(err);
-      } else {
-        console.log("outs error")
-      }
+  console.log(req.body.uname,email,req.body.cinfo,req.body.add,req.body.exp,req.body.edu,req.body.skill);
+  /*function(err, result) {
+    console.log(result);
+    if(result == null){
+      const profile = new Profile({
+        name: req.body.uname,
+        contactInfo: req.body.cinfo,
+        address: req.body.add,
+        email_id: email,
+        experience: req.body.exp,
+        education: req.body.edu,
+        skills: req.body.skill
+      });
+      profile.save();
     }
-  );
-    profile.save();
+
+  }*/
+  Profile.findOne({email_id: email},function(err, result) {
+    console.log(result);
+    if(result == null){
+      const profile = new Profile({
+        name: req.body.uname,
+        contactInfo: req.body.cinfo,
+        address: req.body.add,
+        email_id: email,
+        experience: req.body.exp,
+        education: req.body.edu,
+        skills: req.body.skill
+      });
+      profile.save();
+    }
+    else{
+      console.log("haha",data.email_id,email);
+      Profile.findOneAndUpdate(
+      { email_id: email },
+      {name: req.body.uname,
+        email_id: data.email_id,
+      contactInfo: req.body.cinfo,
+      address: req.body.add,
+      experience: req.body.exp,
+      education: req.body.edu,
+      skills: req.body.skill}, {new: true}, (err, doc) => {
+    if (err) {
+        console.log("Something wrong when updating data!",err);
+    }
+
+    console.log(doc);
+}
+    );
+    }
+  }
+);
     res.redirect("/profile");
 });
 
