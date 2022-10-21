@@ -118,19 +118,25 @@
       type="text/javascript"
     ></script>
     <script>
-      <%if(data.profile == null || typeof data.profile == 'undefined'){%> neww=1;<%}else{%>
-        document.getElementById("username").innerText = <%=data.profile.name%>;
-        document.getElementById("about").innerText = <%=data.profile.name%>;
-        document.getElementById("contactinfo").innerText = <%=data.profile.contactInfo%>;
-        document.getElementById("address").innerText = <%=data.profile.address%>;
-         <%}%>
+      <%if(data.profile == null || typeof data.profile == 'undefined'){%>
+        document.getElementById("username").innerText = "Username";
+        document.getElementById("about").innerText = "About";
+        document.getElementById("contactinfo").innerText = "Contact Info";
+        document.getElementById("address").innerText = "Address";
+        document.getElementById("email_id").innerText = '<%=data.email_id%>';
+         <%} else {%>
+        alert('<%=data.email_id%>')
+        document.getElementById("username").innerText = '<%=data.profile.name%>';
+        document.getElementById("about").innerText = '<%=data.profile.about%>';
+        document.getElementById("contactinfo").innerText = '<%=data.profile.contactInfo%>';
+        document.getElementById("address").innerText = '<%=data.profile.address%>';
+        document.getElementById("email_id").innerText = '<%=data.email_id%>';
+        document.getElementById("show-final-content1").innerText = '<%=data.profile.experience%>';
+        document.getElementById("show-final-content2").innerText ='<%=data.profile.education%>';
+        document.getElementById("show-final-content3").innerText ='<%=data.profile.skills%>';
+        document.getElementById("picture").style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/en/thumb/e/e2/IMG_Academy_Logo.svg/800px-IMG_Academy_Logo.svg.png')";
+        <%}%>
 
-     document.getElementById("username").innerText = "data";
-      document.getElementById("about").innerText = "about";
-      document.getElementById("contactinfo").innerText = "contact_info";
-      document.getElementById("address").innerText = "address";
-      alert("<%=data.email_id%>");
-      document.getElementById("email_id").innerText = "<%=data.email_id%>";
 
       function myEditFunction() {
         $(".display-content1").css("display", "none");
@@ -159,7 +165,6 @@
         $(".edit-content1").css("display", "none");
         document.getElementById("show-final-content1").innerText ="edit_content1";
 
-
         const edit_content2 = document.getElementById("edited-content2").value;
         $(".display-content2").css("display", "block");
         $(".edit-content2").css("display", "none");
@@ -181,6 +186,7 @@
           document.getElementById("about").innerText = "about";
           document.getElementById("contactinfo").innerText = "contact_info";
           document.getElementById("address").innerText = "address";
+
       }
 
 
