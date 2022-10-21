@@ -1,7 +1,7 @@
 <%- include('header') -%>
 <main>
   <div id="feed">
-    <form action="/profile" method="post">
+    <form action="/profilePage" method="post">
       <section id="prl">
         <div id="picture"></div>
         <div id="banner"></div>
@@ -14,7 +14,16 @@
             <span>
               <p id="address"><%=data.address%></p>
             </span>
-            <button type="button" name="connect">CONNECT</button>
+            <%connectedAlready = 0%>
+            <% connectedAlreadyCheck.forEach((element)=>{ %>
+            <% if(element == data.email_id){ connectedAlready = 1}%>
+            <%})%>
+            <input type="hidden" value='<%=data.email_id%>' name="connectperson" >
+            <%if(connectedAlready == 0){%>
+            <input type="submit" name="connect" value="Connect">
+            <%}else{%>
+              <p>Already connected</p>
+              <%}%>
           </div>
         </div>
       </section>

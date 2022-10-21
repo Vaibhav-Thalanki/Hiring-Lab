@@ -38,29 +38,28 @@ const courseSchema = new mongoose.Schema({
   courseDesc: String,
   courseID: Number,
   courseImg: String,
-  score: Number
+  score: Number,
 });
-const profileSchema=new mongoose.Schema({
+const profileSchema = new mongoose.Schema({
   name: String,
-  email_id:String,
-  about:String,
+  email_id: String,
+  about: String,
   contactInfo: String,
   address: String,
   experience: String,
   education: String,
-  skills: String
+  skills: String,
 });
-const Profile = mongoose.model('Profile', profileSchema);
+const Profile = mongoose.model("Profile", profileSchema);
 const LoginSchema = new mongoose.Schema({
   user_id: Number,
   email_id: String,
   password: String,
   name: String,
   courses: [courseSchema],
-  profile:profileSchema
+  profile: profileSchema,
+  connected: [String],
 });
-
-
 
 //WELCOME PAGE
 app.get("/", (req, res) => {
@@ -90,7 +89,6 @@ app.get("/otp", (req, res) => {
   });
 });
 
-
 //LANDING
 app.get("/landing", (req, res) => {
   res.render("landing");
@@ -100,24 +98,23 @@ var nametosearch = null;
 var SearchPersonData = null;
 //GETTING NAME TO SEARCH FROM HEADER
 //Extract the path which is searching the name in header.js
-app.post('/:path/search', function (req, res) {
-    console.log("From path: ", req.params.path);
-    var a = '/'+req.params.path;
-    nametosearch = req.body.name; //nameoftheaccount
-    console.log(nametosearch);
+app.post("/:path/search", function (req, res) {
+  console.log("From path: ", req.params.path);
+  var a = "/" + req.params.path;
+  nametosearch = req.body.name; //nameoftheaccount
+  console.log(nametosearch);
 
-    Profile.findOne({name: nametosearch},function(err, result) {
-      console.log(result);
-      if(result == null){
+  Profile.findOne({ name: nametosearch }, function (err, result) {
+    console.log(result);
+    if (result == null) {
       console.log("No record found");
       res.redirect(a);
+    } else {
+      console.log(result);
+      SearchPersonData = result;
+      res.redirect("/profilePage");
     }
-      else{
-        console.log(result);
-        SearchPersonData = result;
-        res.redirect("/profilePage")
-      }
-    });
+  });
 });
 
 // TEST
@@ -132,22 +129,21 @@ app.post("/:custom/test", (req, res) => {
     finalID = req.params.custom;
     result = req.body.testDone;
     score = req.body.testScore;
-    console.log("score : ",score);
+    console.log("score : ", score);
     console.log(email);
     if (result === "pass") {
       Login.findOne({ email_id: email }, (er, found) => {
         console.log(found);
-        if(!found.courses)
-        found.courses = [];
+        if (!found.courses) found.courses = [];
         var courseToBeAdded = "course" + String(finalID);
         var newcourse = eval(courseToBeAdded);
         newcourse.score = score;
         found.courses.push(newcourse);
         found.save();
-    });
+      });
     }
   } catch (e) {
-    console.log("error: ",e);
+    console.log("error: ", e);
   }
   res.redirect("/profile");
 });
@@ -157,7 +153,7 @@ app.get("/course1", (req, res) => {
   res.render("course1", {
     ID: ID,
     stylepath: "css/course1.css",
-    path:"course1"
+    path: "course1",
   });
 });
 app.post("/course1", (req, res) => {
@@ -181,7 +177,7 @@ app.get("/maincourse", (req, res) => {
       res.render("maincourse", {
         stylepath: "css/maincoursestyle.css",
         courses: resp,
-        path:"maincourse"
+        path: "maincourse",
       });
     }
   });
@@ -213,13 +209,11 @@ const course3 = new Course({
   courseImg: "https://blog.logrocket.com/wp-content/uploads/2020/06/CSS-3.png",
 });
 
-
-
 //CHAT
 app.get("/chat", (req, res) => {
   res.render("chat", {
     stylepath: "css/chat.css",
-    path:"chat"
+    path: "chat",
   });
 });
 
@@ -227,13 +221,12 @@ app.get("/chat", (req, res) => {
 app.get("/home", (req, res) => {
   res.render("home", {
     stylepath: "css/home.css",
-    path:"home"
+    path: "home",
   });
 });
 app.post("/home", (req, res) => {
   res.redirect("/home");
 });
-
 
 var valacc = -1;
 async function checkacc(email) {
@@ -254,29 +247,54 @@ async function checkacc(email) {
 }
 //SHOW PROFILE
 app.get("/profilePage", (req, res) => {
-  res.render("profilePage", {
-    stylepath: "css/profileStyle.css",
-    data: SearchPersonData,
-    path:"profile"
+  Login.findOne({ email_id: email }, (er, found) => {
+    res.render("profilePage", {
+      stylepath: "css/profileStyle.css",
+      data: SearchPersonData,
+      path: "profile",
+      connectedAlreadyCheck: found.connected,
+    });
   });
 });
-
-
+app.post("/profilePage", (req, res) => {
+  console.log("req is ", req.body);
+  Login.findOne({ email_id: email }, (er, found) => {
+    found.connected.push(req.body.connectperson);
+    found.save();
+  });
+  res.redirect("/profilePage");
+});
 
 //PROFILE
 app.get("/profile", (req, res) => {
+  console.log("data is", data);
   res.render("profile", {
     stylepath: "css/profileStyle.css",
     data: data,
-    path:"profile"
+    path: "profile",
   });
 });
 
-app.post('/profile', (req,res) =>{
-  console.log(req.body.uname,email,req.body.cinfo,req.body.add,req.body.exp,req.body.edu,req.body.skill);
-  Profile.findOne({email_id: email},function(err, result) {
+app.post("/profile", (req, res) => {
+  console.log(
+    req.body.uname,
+    email,
+    req.body.cinfo,
+    req.body.add,
+    req.body.exp,
+    req.body.edu,
+    req.body.skill
+  );
+  data.profile.name = req.body.uname;
+  data.profile.contactInfo = req.body.cinfo;
+  data.profile.address = req.body.add;
+  data.profile.experience = req.body.exp;
+  data.profile.skills = req.body.skill;
+  data.profile.education = req.body.edu;
+  data.profile.about = req.body.abt;
+  Profile.findOne({ email_id: email }, function (err, result) {
     console.log(result);
-    if(result == null){
+    if (result == null) {
       const profile = new Profile({
         name: req.body.uname,
         about: req.body.abt,
@@ -285,19 +303,23 @@ app.post('/profile', (req,res) =>{
         email_id: email,
         experience: req.body.exp,
         education: req.body.edu,
-        skills: req.body.skill
+        skills: req.body.skill,
       });
       console.log("creating new");
       profile.save();
-      Login.findOneAndUpdate({email_id:email},{$set: { profile: profile } },{new: true}, (err, doc) => {
-    if (err) {
-        console.log("Something wrong when updating data!",err);
-    }
+      Login.findOneAndUpdate(
+        { email_id: email },
+        { $set: { profile: profile } },
+        { new: true },
+        (err, doc) => {
+          if (err) {
+            console.log("Something wrong when updating data!", err);
+          }
 
-    console.log(doc);
-});
-    }
-    else{
+          console.log(doc);
+        }
+      );
+    } else {
       const profile = new Profile({
         name: req.body.uname,
         contactInfo: req.body.cinfo,
@@ -306,39 +328,45 @@ app.post('/profile', (req,res) =>{
         email_id: email,
         experience: req.body.exp,
         education: req.body.edu,
-        skills: req.body.skill
+        skills: req.body.skill,
       });
-      console.log("haha",data.email_id,email);
+      console.log("haha", data.email_id, email);
       Profile.findOneAndUpdate(
-      { email_id: email },
-      {name: req.body.uname,
-        email_id: data.email_id,
-      contactInfo: req.body.cinfo,
-      about: req.body.abt,
-      address: req.body.add,
-      experience: req.body.exp,
-      education: req.body.edu,
-      skills: req.body.skill}, {new: true}, (err, doc) => {
-    if (err) {
-        console.log("Something wrong when updating data!",err);
+        { email_id: email },
+        {
+          name: req.body.uname,
+          email_id: data.email_id,
+          contactInfo: req.body.cinfo,
+          about: req.body.abt,
+          address: req.body.add,
+          experience: req.body.exp,
+          education: req.body.edu,
+          skills: req.body.skill,
+        },
+        { new: true },
+        (err, doc) => {
+          if (err) {
+            console.log("Something wrong when updating data!", err);
+          }
+
+          console.log(doc);
+        }
+      );
+      Login.findOneAndUpdate(
+        { email_id: email },
+        { $set: { profile: profile } },
+        { new: true },
+        (err, doc) => {
+          if (err) {
+            console.log("Something wrong when updating data!", err);
+          }
+
+          console.log(doc);
+        }
+      );
     }
-
-    console.log(doc);
-}
-    );
-    Login.findOneAndUpdate({email_id:email},{$set: { profile: profile } },{new: true}, (err, doc) => {
-  if (err) {
-      console.log("Something wrong when updating data!",err);
-  }
-
-  console.log(doc);
-});
-
-
-    }
-  }
-);
-    res.redirect("/profile");
+  });
+  res.redirect("/profile");
 });
 
 var c = 0; //find the count of datas present
@@ -375,6 +403,8 @@ const check = async (req) => {
             user_id: uid,
             email_id: email,
             password: pass,
+            profile: null,
+            connected: [],
           });
           data.save();
           message = "Account Succesfully added";
@@ -403,7 +433,7 @@ const check = async (req) => {
       return 1;
     } else {
       console.log("brruhhx2");
-      email =  req.body.loginemail;
+      email = req.body.loginemail;
       console.log(response);
       if (response.password === password) {
         data = response;
