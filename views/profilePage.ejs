@@ -3,7 +3,12 @@
   <div id="feed">
     <form action="/profilePage" method="post">
       <section id="prl">
-        <div id="picture"></div>
+        <div id="picture">
+          <%if(image === null || typeof image == 'undefined'){}else{%>
+            <img src="data:image/<%=image.contentType%>;base64,
+        <%=image.data.toString('base64')%>">
+        <%}%>
+        </div>
         <div id="banner"></div>
         <div id="details">
           <div class="container">

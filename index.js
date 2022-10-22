@@ -269,12 +269,27 @@ async function checkacc(email) {
 //SHOW PROFILE
 app.get("/profilePage", (req, res) => {
   Login.findOne({ email_id: email }, (er, found) => {
-    res.render("profilePage", {
-      stylepath: "css/profileStyle.css",
-      data2: SearchPersonData,
-      path: "profile",
-      connectedAlreadyCheck: found.connected,
-      data,
+    Profile.findOne({email_id:SearchPersonData.email_id},(err,found2)=>{
+      if (JSON.stringify(found2.profilePicture) === '{}') {
+        res.render("profilePage", {
+          stylepath: "css/profileStyle.css",
+          data2: SearchPersonData,
+          path: "profile",
+          connectedAlreadyCheck: found.connected,
+          data,
+          image:null
+        });
+      }else{
+        res.render("profilePage", {
+          stylepath: "css/profileStyle.css",
+          data2: SearchPersonData,
+          path: "profile",
+          connectedAlreadyCheck: found.connected,
+          data,
+          image: found2.profilePicture
+        });
+      }
+      
     });
   });
 });
@@ -301,7 +316,6 @@ app.get("/profile", (req, res) => {
       });
     }
     else{
-      console.log("pic ",element.profilePicture);
     if (JSON.stringify(element.profilePicture) === '{}' ) {
       console.log("why here",element);
       res.render("profile", {
