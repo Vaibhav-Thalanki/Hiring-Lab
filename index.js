@@ -4,8 +4,8 @@ const path = require("path");
 const assert = require("assert");
 const mongoose = require("mongoose");
 const profiles = require("./utils/profiles.js");
-const fs = require('fs');
-const multer = require('multer'); // for image file upload
+const fs = require("fs");
+const multer = require("multer"); // for image file upload
 const bodyParser = require("body-parser");
 const res = require("express/lib/response.js");
 const port = process.env.PORT || 3000;
@@ -25,11 +25,11 @@ app.use(
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads')
+    cb(null, "uploads");
   },
   filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now())
-  }
+    cb(null, file.fieldname + "-" + Date.now());
+  },
 });
 var upload = multer({ storage: storage });
 
@@ -290,18 +290,39 @@ app.post("/profilePage", (req, res) => {
 //PROFILE
 app.get("/profile", (req, res) => {
   console.log("data is", data);
-  Profile.findOne({email_id:email},(err,element)=>{
-    res.render("profile", {
-      stylepath: "css/profileStyle.css",
-      data: data,
-      path: "profile",
-      image: element.profilePicture
-    });
-  })
-  
+  Profile.findOne({ email_id: email }, (err, element) => {
+    
+    if(element==null){
+      res.render("profile", {
+        stylepath: "css/profileStyle.css",
+        data: data,
+        path: "profile",
+        image: null,
+      });
+    }
+    else{
+      console.log("pic ",element.profilePicture);
+    if (JSON.stringify(element.profilePicture) === '{}' ) {
+      console.log("why here",element);
+      res.render("profile", {
+        stylepath: "css/profileStyle.css",
+        data: data,
+        path: "profile",
+        image: null,
+      });
+    } 
+    console.log("bssssss ffs");
+      res.render("profile", {
+        stylepath: "css/profileStyle.css",
+        data: data,
+        path: "profile",
+        image: element.profilePicture,
+      });
+  }
+  });
 });
 
-app.post("/profile", upload.single('image'),(req, res,next) => {
+app.post("/profile", upload.single("image"), (req, res, next) => {
   console.log(
     req.body.uname,
     email,
@@ -319,12 +340,6 @@ app.post("/profile", upload.single('image'),(req, res,next) => {
   data.profile.education = req.body.edu;
   data.profile.about = req.body.abt;
 
-  var img= {
-    data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-    contentType: 'image/png'
-  }
-  Profile.findOneAndUpdate({email_id:email},{$set:{profilePicture:img}},{new:true},(err,result)=>{});
-  //data.profile.profilePicture = img;
   Profile.findOne({ email_id: email }, function (err, result) {
     console.log(result);
     if (result == null) {
@@ -337,6 +352,7 @@ app.post("/profile", upload.single('image'),(req, res,next) => {
         experience: req.body.exp,
         education: req.body.edu,
         skills: req.body.skill,
+        profilePicture: {},
       });
       console.log("creating new");
       profile.save();
@@ -363,7 +379,6 @@ app.post("/profile", upload.single('image'),(req, res,next) => {
         education: req.body.edu,
         skills: req.body.skill,
       });
-      console.log("haha", data.email_id, email);
       Profile.findOneAndUpdate(
         { email_id: email },
         {
@@ -399,6 +414,21 @@ app.post("/profile", upload.single('image'),(req, res,next) => {
       );
     }
   });
+  console.log(req.file);
+  if (req.file == null || typeof req.file === 'undefined'){}else {
+    var img = {
+      data: fs.readFileSync(
+        path.join(__dirname + "/uploads/" + req.file.filename)
+      ),
+      contentType: "image/png",
+    };
+    Profile.findOneAndUpdate(
+      { email_id: email },
+      { $set: { profilePicture: img } },
+      { new: true },
+      (err, result) => {}
+    );
+  }
   res.redirect("/profile");
 });
 
