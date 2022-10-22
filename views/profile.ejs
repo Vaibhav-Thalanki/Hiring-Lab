@@ -62,8 +62,7 @@
             <div class="article">
               <h2>Experience</h2>
               <div class="edit-content1">
-                  <textarea name="exp" id="edited-content1" rows="8" cols="80"></textarea
-                  ><br />
+                  <textarea type="text" width=20% name="exp" id="edited-content1" rows="8" cols="80"><%if(data.profile == null || typeof data.profile == 'undefined'){%>Enter your experience <%}else{%><%=data.profile.experience%><%}%></textarea><br/>
                   <!-- <button class="click-button" onclick="mySubmitFunction1()">
                     Submit
                   </button> -->
@@ -81,8 +80,7 @@
             <div class="article">
               <h2>Education</h2>
               <div class="edit-content2">
-                  <textarea name="edu" id="edited-content2" rows="8" cols="80"></textarea
-                  ><br />
+                  <textarea type="text" name="edu" id="edited-content2" rows="8" cols="80"><%if(data.profile == null || typeof data.profile == 'undefined'){%>Enter your education<%}else{%><%=data.profile.education%><%}%></textarea><br/>
                   <!-- <button class="click-button" onclick="mySubmitFunction2()">
                     Submit
                   </button> -->
@@ -98,7 +96,7 @@
             <div class="article">
               <h2>Skills</h2>
               <div class="edit-content3">
-                  <textarea name="skill" id="edited-content3" rows="8" cols="80"></textarea><br />
+                  <textarea name="skill" type="text" id="edited-content3" rows="8" cols="80"><%if(data.profile == null || typeof data.profile == 'undefined'){%>Enter your skills <%}else{%><%=data.profile.skills%><%}%></textarea><br />
                   <input type="submit" class="click-button" value="Submit" onclick="mySubmitFunction()">
               </div>
               <div class="display-content3">
@@ -118,14 +116,15 @@
       type="text/javascript"
     ></script>
     <script>
-      <%if(data.profile == null || typeof data.profile == 'undefined'){%>
+      <%if(data.profile.name == "" || typeof data.profile.name == 'undefined'){%>
+        <%console.log(data.email_id)%>
         document.getElementById("username").innerText = "Username";
         document.getElementById("about").innerText = "About";
         document.getElementById("contactinfo").innerText = "Contact Info";
         document.getElementById("address").innerText = "Address";
         document.getElementById("email_id").innerText = '<%=data.email_id%>';
          <%} else {%>
-        alert('<%=data.email_id%>')
+        <%console.log(data.email_id)%>
         document.getElementById("username").innerText = '<%=data.profile.name%>';
         document.getElementById("about").innerText = '<%=data.profile.about%>';
         document.getElementById("contactinfo").innerText = '<%=data.profile.contactInfo%>';
@@ -158,34 +157,42 @@
           document.getElementById("contactinfo").innerText;
         document.getElementById("add").value =
           document.getElementById("address").innerText;
+          document.getElementById("edit_content1").innerText =
+            document.getElementById("show-final-content1").innerText;
+            document.getElementById("edit_content2").value =
+              document.getElementById("show-final-content2").innerText;
+              document.getElementById("edit_content3").value =
+                document.getElementById("show-final-content3").innerText;
+
+
       }
       function mySubmitFunction() {
-        const edit_content1 = document.getElementById("edited-content1").value;
+        //const edit_content1 = document.getElementById("edited-content1").value;
         $(".display-content1").css("display", "block");
         $(".edit-content1").css("display", "none");
-        document.getElementById("show-final-content1").innerText ="edit_content1";
+      //  document.getElementById("show-final-content1").innerText ="edit_content1";
 
-        const edit_content2 = document.getElementById("edited-content2").value;
+        //const edit_content2 = document.getElementById("edited-content2").value;
         $(".display-content2").css("display", "block");
         $(".edit-content2").css("display", "none");
-        document.getElementById("show-final-content2").innerText = "edit_content2";
+      //  document.getElementById("show-final-content2").innerText = "edit_content2";
 
-        const edit_content3 = document.getElementById("edited-content3").value;
+        //const edit_content3 = document.getElementById("edited-content3").value;
         $(".display-content3").css("display", "block");
         $(".edit-content3").css("display", "none");
-        document.getElementById("show-final-content3").innerText = "edit_content3";
+        //document.getElementById("show-final-content3").innerText = "edit_content3";
 
 
-          const u_name = document.getElementById("uname").value;
+          /*const u_name = document.getElementById("uname").value;
           const about = document.getElementById("abt").value;
           const contact_info = document.getElementById("cinfo").value;
-          const address = document.getElementById("add").value;
+          const address = document.getElementById("add").value;*/
           $("#details").css("display", "block");
           $("#edit-profdetails").css("display", "none");
-          document.getElementById("username").innerText = "u_name";
+          /*document.getElementById("username").innerText = "u_name";
           document.getElementById("about").innerText = "about";
           document.getElementById("contactinfo").innerText = "contact_info";
-          document.getElementById("address").innerText = "address";
+          document.getElementById("address").innerText = "address";*/
 
       }
 

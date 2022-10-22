@@ -65,6 +65,7 @@ const LoginSchema = new mongoose.Schema({
 app.get("/", (req, res) => {
   res.render("index", {
     message,
+    data,
   });
   message = null;
 });
@@ -154,6 +155,7 @@ app.get("/course1", (req, res) => {
     ID: ID,
     stylepath: "css/course1.css",
     path: "course1",
+    data,
   });
 });
 app.post("/course1", (req, res) => {
@@ -178,6 +180,7 @@ app.get("/maincourse", (req, res) => {
         stylepath: "css/maincoursestyle.css",
         courses: resp,
         path: "maincourse",
+        data,
       });
     }
   });
@@ -214,6 +217,7 @@ app.get("/chat", (req, res) => {
   res.render("chat", {
     stylepath: "css/chat.css",
     path: "chat",
+    data,
   });
 });
 
@@ -222,6 +226,7 @@ app.get("/home", (req, res) => {
   res.render("home", {
     stylepath: "css/home.css",
     path: "home",
+    data,
   });
 });
 app.post("/home", (req, res) => {
@@ -253,6 +258,7 @@ app.get("/profilePage", (req, res) => {
       data: SearchPersonData,
       path: "profile",
       connectedAlreadyCheck: found.connected,
+      data,
     });
   });
 });
@@ -403,7 +409,7 @@ const check = async (req) => {
             user_id: uid,
             email_id: email,
             password: pass,
-            profile: null,
+            profile: {name:"",},
             connected: [],
           });
           data.save();

@@ -18,11 +18,11 @@
             <% connectedAlreadyCheck.forEach((element)=>{ %>
             <% if(element == data.email_id){ connectedAlready = 1}%>
             <%})%>
-            <input type="hidden" value='<%=data.email_id%>' name="connectperson" >
+            <input type="hidden"  value='<%=data.email_id%>' name="connectperson" >
             <%if(connectedAlready == 0){%>
-            <input type="submit" name="connect" value="Connect">
+            <input type="submit" class = "click-button" name="connect" value="Connect">
             <%}else{%>
-              <p>Already connected</p>
+              <input type="submit" class = "click-button" name="connect" value="Connected" disabled>
               <%}%>
           </div>
         </div>
