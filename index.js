@@ -4,6 +4,8 @@ const path = require("path");
 const assert = require("assert");
 const mongoose = require("mongoose");
 const profiles = require("./utils/profiles.js");
+const fs = require('fs');
+const multer = require('multer'); // for image file upload
 const bodyParser = require("body-parser");
 const res = require("express/lib/response.js");
 const port = process.env.PORT || 3000;
@@ -20,6 +22,16 @@ app.use(
     extended: true,
   })
 );
+
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+});
+var upload = multer({ storage: storage });
 
 //STARTING SERVER
 app.listen(port, () => {
@@ -49,6 +61,10 @@ const profileSchema = new mongoose.Schema({
   experience: String,
   education: String,
   skills: String,
+  profilePicture: {
+    data: Buffer,
+    contentType: String,
+  },
 });
 const Profile = mongoose.model("Profile", profileSchema);
 const LoginSchema = new mongoose.Schema({
@@ -255,7 +271,7 @@ app.get("/profilePage", (req, res) => {
   Login.findOne({ email_id: email }, (er, found) => {
     res.render("profilePage", {
       stylepath: "css/profileStyle.css",
-      data: SearchPersonData,
+      data2: SearchPersonData,
       path: "profile",
       connectedAlreadyCheck: found.connected,
       data,
@@ -274,14 +290,18 @@ app.post("/profilePage", (req, res) => {
 //PROFILE
 app.get("/profile", (req, res) => {
   console.log("data is", data);
-  res.render("profile", {
-    stylepath: "css/profileStyle.css",
-    data: data,
-    path: "profile",
-  });
+  Profile.findOne({email_id:email},(err,element)=>{
+    res.render("profile", {
+      stylepath: "css/profileStyle.css",
+      data: data,
+      path: "profile",
+      image: element.profilePicture
+    });
+  })
+  
 });
 
-app.post("/profile", (req, res) => {
+app.post("/profile", upload.single('image'),(req, res,next) => {
   console.log(
     req.body.uname,
     email,
@@ -298,6 +318,13 @@ app.post("/profile", (req, res) => {
   data.profile.skills = req.body.skill;
   data.profile.education = req.body.edu;
   data.profile.about = req.body.abt;
+
+  var img= {
+    data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+    contentType: 'image/png'
+  }
+  Profile.findOneAndUpdate({email_id:email},{$set:{profilePicture:img}},{new:true},(err,result)=>{});
+  //data.profile.profilePicture = img;
   Profile.findOne({ email_id: email }, function (err, result) {
     console.log(result);
     if (result == null) {
@@ -409,7 +436,7 @@ const check = async (req) => {
             user_id: uid,
             email_id: email,
             password: pass,
-            profile: {name:"",},
+            profile: { name: "" },
             connected: [],
           });
           data.save();

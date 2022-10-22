@@ -1,9 +1,15 @@
 <%- include('header') -%>
     <main>
       <div id="feed">
-        <form action="/profile" method="post">
+        <form action="/profile" method="post" enctype="multipart/form-data">
           <section id="prl">
-            <div id="picture"></div>
+            <div id="picture">
+             
+              <%if(image === null || typeof image == 'undefined'){}else{%>
+              <img src="data:image/<%=image.contentType%>;base64,
+					<%=image.data.toString('base64')%>">
+          <%}%>
+            </div>
             <div id="banner"></div>
             <div id="details">
               <div class="container">
@@ -91,12 +97,18 @@
                 <!-- <button class="click-button" onclick="myEditFunction2()">
                   Edit
                 </button> -->
+                
               </div>
             </div>
             <div class="article">
               <h2>Skills</h2>
               <div class="edit-content3">
                   <textarea name="skill" type="text" id="edited-content3" rows="8" cols="80"><%if(data.profile == null || typeof data.profile == 'undefined'){%>Enter your skills <%}else{%><%=data.profile.skills%><%}%></textarea><br />
+                  <br><br>
+                  <label for="image"><h3>Profile Picture</h3></label>
+                  <br>
+                  <input type="file" id="image" name="image" value="" >
+                  <br> <br> <br>
                   <input type="submit" class="click-button" value="Submit" onclick="mySubmitFunction()">
               </div>
               <div class="display-content3">
@@ -133,7 +145,9 @@
         document.getElementById("show-final-content1").innerText = '<%=data.profile.experience%>';
         document.getElementById("show-final-content2").innerText ='<%=data.profile.education%>';
         document.getElementById("show-final-content3").innerText ='<%=data.profile.skills%>';
+        <%if(image == null || typeof image == 'undefined'){%>
         document.getElementById("picture").style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/en/thumb/e/e2/IMG_Academy_Logo.svg/800px-IMG_Academy_Logo.svg.png')";
+        <%}%>
         <%}%>
 
 
