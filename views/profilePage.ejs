@@ -7,22 +7,22 @@
         <div id="banner"></div>
         <div id="details">
           <div class="container">
-            <h1 id="username"><%=data.name%></h1></h1>
-            <p id="about"><%=data.about%></p>
-            <p id="contactinfo"><%=data.contactInfo%></p>
-            <p id="email_id"><%=data.email_id%></p>
+            <h1 id="username"><%=data2.name%></h1></h1>
+            <p id="about"><%=data2.about%></p>
+            <p id="contactinfo"><%=data2.contactInfo%></p>
+            <p id="email_id"><%=data2.email_id%></p>
             <span>
-              <p id="address"><%=data.address%></p>
+              <p id="address"><%=data2.address%></p>
             </span>
             <%connectedAlready = 0%>
             <% connectedAlreadyCheck.forEach((element)=>{ %>
-            <% if(element == data.email_id){ connectedAlready = 1}%>
+            <% if(element == data2.email_id){ connectedAlready = 1}%>
             <%})%>
-            <input type="hidden" value='<%=data.email_id%>' name="connectperson" >
+            <input type="hidden"  value='<%=data2.email_id%>' name="connectperson" >
             <%if(connectedAlready == 0){%>
-            <input type="submit" name="connect" value="Connect">
+            <input type="submit" class = "click-button" name="connect" value="Connect">
             <%}else{%>
-              <p>Already connected</p>
+              <input type="submit" class = "click-button" name="connect" value="Connected" disabled>
               <%}%>
           </div>
         </div>
@@ -31,19 +31,19 @@
         <div class="article">
           <h2>Experience</h2>
           <div class="display-content1">
-            <p id="show-final-content1"><%=data.experience%></p>
+            <p id="show-final-content1"><%=data2.experience%></p>
           </div>
         </div>
         <div class="article">
           <h2>Education</h2>
           <div class="display-content2">
-            <p id="show-final-content2"><%=data.education%></p>
+            <p id="show-final-content2"><%=data2.education%></p>
           </div>
         </div>
         <div class="article">
           <h2>Skills</h2>
           <div class="display-content3">
-            <p id="show-final-content3"><%=data.skills%></p>
+            <p id="show-final-content3"><%=data2.skills%></p>
           </div>
         </div>
       </section>

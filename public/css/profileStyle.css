@@ -115,13 +115,18 @@ section#prl > div#picture {
   border-radius: 70%;
   z-index: 1;
 }
+div#picture>img{
+  width: 150px;
+  height: 150px;
+  border-radius: 70%;
+  background-size: cover;
+}
 
 section#prl > div#banner {
   position: absolute;
   top: 0;
   width: 100%;
   height: 45%;
-  background: url("C:/Users/Admin/Desktop/Fall Sem 2022-23/CSE3002/J Comp/hiring lab-profile/PROFILE/banner.jpeg");
   background-size: cover;
   background-position: center;
   border-radius: 10px 10px 0 0;
@@ -154,6 +159,23 @@ section#prl > div#details .container span {
 }
 
 .click-button{
+  background-color: black;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  margin: 15px 10px 0 0;
+  width: auto;
+  min-width: 99px;
+  padding: 5px;
+  font-size: 12px;
+  background: #ffffff;
+  border: 1px solid #666666;
+  border-radius: 15px;
+  color: #666666;
+  cursor: pointer;
+}
+
+.connbutton{
   background-color: black;
   border: none;
   box-shadow: none;
