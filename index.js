@@ -3,6 +3,7 @@ const app = express();
 const path = require("path");
 const assert = require("assert");
 const mongoose = require("mongoose");
+const nodemailer = require('nodemailer');
 const profiles = require("./utils/profiles.js");
 const fs = require("fs");
 const multer = require("multer"); // for image file upload
@@ -23,6 +24,7 @@ app.use(
   })
 );
 
+//PROFILE PICTURE
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads");
@@ -75,6 +77,15 @@ const LoginSchema = new mongoose.Schema({
   courses: [courseSchema],
   profile: profileSchema,
   connected: [String],
+});
+
+//MAIL CONFIGURE
+let mailTransporter = nodemailer.createTransport({
+	service: 'gmail',
+	auth: {
+		user: 'naghaakshayaa@gmail.com',
+		pass: 'uflsagkwnxigmrsa'
+	}
 });
 
 //WELCOME PAGE
@@ -289,7 +300,7 @@ app.get("/profilePage", (req, res) => {
           image: found2.profilePicture
         });
       }
-      
+
     });
   });
 });
@@ -306,7 +317,7 @@ app.post("/profilePage", (req, res) => {
 app.get("/profile", (req, res) => {
   console.log("data is", data);
   Profile.findOne({ email_id: email }, (err, element) => {
-    
+
     if(element==null){
       res.render("profile", {
         stylepath: "css/profileStyle.css",
@@ -317,14 +328,14 @@ app.get("/profile", (req, res) => {
     }
     else{
     if (JSON.stringify(element.profilePicture) === '{}' ) {
-      console.log("why here",element);
+      //console.log("why here",element);
       res.render("profile", {
         stylepath: "css/profileStyle.css",
         data: data,
         path: "profile",
         image: null,
       });
-    } 
+    }
     console.log("bssssss ffs");
       res.render("profile", {
         stylepath: "css/profileStyle.css",
@@ -474,7 +485,6 @@ const check = async (req) => {
         message = "Password must atleast contain one special character";
         return 1;
       } else {
-        console.log(valacc);
         if (valacc == 0) {
           const data = new Login({
             user_id: uid,
@@ -486,9 +496,36 @@ const check = async (req) => {
           data.save();
           message = "Account Succesfully added";
           valacc = -1;
-          return 3;
           emailsend = email;
-          //res.render("index",{message:message});
+          console.log("gonna send");
+          setTimeout(() => {
+            let mailDetails = {
+            	from: 'naghaakshayaa@gmail.com',
+            	to: 'naghaakshayaa@gmail.com',
+            	subject: 'Welcome to Hiring Lab',
+            	text: 'Welcome to hiring Lab,\n\tYou are at the right place to make your network strong.\n\nCheck the attachment below for more information.\n\nThe Hiring Lab.',
+              attachments: [
+                    {
+                        filename: 'THE_HIRING_LAB.pdf',
+                        path: __dirname + '/THE_HIRING_LAB.pdf',
+                        cid: 'uniq-THE_HIRING_LAB.pdf'
+                    }
+                ]
+            };
+
+            mailTransporter.sendMail(mailDetails, function(err, data) {
+            	if(err) {
+            		console.log('Error Occurs');
+            	} else {
+            		console.log('Email sent successfully');
+            	}
+
+            });
+          }, 3000)
+
+          console.log("out of mail");
+                    //res.render("index",{message:message});
+              return 3;
         } else {
           message = "Account already exists";
           valacc = -1;
