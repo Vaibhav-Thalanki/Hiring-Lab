@@ -3,7 +3,7 @@ const app = express();
 const path = require("path");
 const assert = require("assert");
 const mongoose = require("mongoose");
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 const profiles = require("./utils/profiles.js");
 const fs = require("fs");
 const multer = require("multer"); // for image file upload
@@ -81,11 +81,11 @@ const LoginSchema = new mongoose.Schema({
 
 //MAIL CONFIGURE
 let mailTransporter = nodemailer.createTransport({
-	service: 'gmail',
-	auth: {
-		user: 'naghaakshayaa@gmail.com',
-		pass: 'uflsagkwnxigmrsa'
-	}
+  service: "gmail",
+  auth: {
+    user: "naghaakshayaa@gmail.com",
+    pass: "uflsagkwnxigmrsa",
+  },
 });
 
 //WELCOME PAGE
@@ -280,27 +280,26 @@ async function checkacc(email) {
 //SHOW PROFILE
 app.get("/profilePage", (req, res) => {
   Login.findOne({ email_id: email }, (er, found) => {
-    Profile.findOne({email_id:SearchPersonData.email_id},(err,found2)=>{
-      if (JSON.stringify(found2.profilePicture) === '{}') {
+    Profile.findOne({ email_id: SearchPersonData.email_id }, (err, found2) => {
+      if (JSON.stringify(found2.profilePicture) === "{}") {
         res.render("profilePage", {
           stylepath: "css/profileStyle.css",
           data2: SearchPersonData,
           path: "profile",
           connectedAlreadyCheck: found.connected,
           data,
-          image:null
+          image: null,
         });
-      }else{
+      } else {
         res.render("profilePage", {
           stylepath: "css/profileStyle.css",
           data2: SearchPersonData,
           path: "profile",
           connectedAlreadyCheck: found.connected,
           data,
-          image: found2.profilePicture
+          image: found2.profilePicture,
         });
       }
-
     });
   });
 });
@@ -317,33 +316,31 @@ app.post("/profilePage", (req, res) => {
 app.get("/profile", (req, res) => {
   console.log("data is", data);
   Profile.findOne({ email_id: email }, (err, element) => {
-
-    if(element==null){
+    if (element == null) {
       res.render("profile", {
         stylepath: "css/profileStyle.css",
         data: data,
         path: "profile",
         image: null,
       });
-    }
-    else{
-    if (JSON.stringify(element.profilePicture) === '{}' ) {
-      //console.log("why here",element);
-      res.render("profile", {
-        stylepath: "css/profileStyle.css",
-        data: data,
-        path: "profile",
-        image: null,
-      });
-    }
-    console.log("bssssss ffs");
+    } else {
+      if (JSON.stringify(element.profilePicture) === "{}") {
+        //console.log("why here",element);
+        res.render("profile", {
+          stylepath: "css/profileStyle.css",
+          data: data,
+          path: "profile",
+          image: null,
+        });
+      }
+      console.log("bssssss ffs");
       res.render("profile", {
         stylepath: "css/profileStyle.css",
         data: data,
         path: "profile",
         image: element.profilePicture,
       });
-  }
+    }
   });
 });
 
@@ -440,7 +437,8 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
     }
   });
   console.log(req.file);
-  if (req.file == null || typeof req.file === 'undefined'){}else {
+  if (req.file == null || typeof req.file === "undefined") {
+  } else {
     var img = {
       data: fs.readFileSync(
         path.join(__dirname + "/uploads/" + req.file.filename)
@@ -500,32 +498,31 @@ const check = async (req) => {
           console.log("gonna send");
           setTimeout(() => {
             let mailDetails = {
-            	from: 'naghaakshayaa@gmail.com',
-            	to: 'naghaakshayaa@gmail.com',
-            	subject: 'Welcome to Hiring Lab',
-            	text: 'Welcome to hiring Lab,\n\tYou are at the right place to make your network strong.\n\nCheck the attachment below for more information.\n\nThe Hiring Lab.',
+              from: "naghaakshayaa@gmail.com",
+              to: emailsend,
+              subject: "Welcome to Hiring Lab",
+              text: "Welcome to hiring Lab,\n\tYou are at the right place to make your network strong.\n\nCheck the attachment below for more information.\n\nThe Hiring Lab.",
               attachments: [
-                    {
-                        filename: 'THE_HIRING_LAB.pdf',
-                        path: __dirname + '/THE_HIRING_LAB.pdf',
-                        cid: 'uniq-THE_HIRING_LAB.pdf'
-                    }
-                ]
+                {
+                  filename: "THE_HIRING_LAB.pdf",
+                  path: __dirname + "/THE_HIRING_LAB.pdf",
+                  cid: "uniq-THE_HIRING_LAB.pdf",
+                },
+              ],
             };
 
-            mailTransporter.sendMail(mailDetails, function(err, data) {
-            	if(err) {
-            		console.log('Error Occurs');
-            	} else {
-            		console.log('Email sent successfully');
-            	}
-
+            mailTransporter.sendMail(mailDetails, function (err, data) {
+              if (err) {
+                console.log("Error Occurred in emailing");
+              } else {
+                console.log("Email sent successfully");
+              }
             });
-          }, 3000)
+          }, 15000);
 
           console.log("out of mail");
-                    //res.render("index",{message:message});
-              return 3;
+          //res.render("index",{message:message});
+          return 3;
         } else {
           message = "Account already exists";
           valacc = -1;
