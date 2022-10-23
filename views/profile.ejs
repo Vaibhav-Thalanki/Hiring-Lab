@@ -114,6 +114,20 @@
               <div class="display-content3">
                 <p id="show-final-content3">Enter your Skills</p>
                 <input type="button" class="click-button" value="Edit" onclick="myEditFunction()">
+                <br><br><br>
+                <%if(data.courses == null || typeof data.courses == 'undefined' || JSON.stringify(data.courses) == '[]'){}else{%>
+                <h2>Courses</h2>
+                <div id="allCourses">
+                  <%data.courses.forEach((element)=>{%>
+                    <div class = 'course'>
+                    <b class="courseName"><%=element.courseName%></b>
+                    <small class="courseScore">Score: <%=element.score%>/10</small>
+                  </div>
+                    <br><hr>
+                    <br>
+                <%})}%>
+              </div>
+              
               </div>
             </div>
           </section>
@@ -152,6 +166,7 @@
 
 
       function myEditFunction() {
+        console.log("hahah")
         $(".display-content1").css("display", "none");
         $(".edit-content1").css("display", "block");
 

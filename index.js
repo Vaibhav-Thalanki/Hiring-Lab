@@ -167,6 +167,8 @@ app.post("/:custom/test", (req, res) => {
         var newcourse = eval(courseToBeAdded);
         newcourse.score = score;
         found.courses.push(newcourse);
+        data.courses.push(newcourse);
+        console.log('again data is',data);
         found.save();
       });
     }
@@ -324,22 +326,21 @@ app.get("/profile", (req, res) => {
         image: null,
       });
     } else {
-      if (JSON.stringify(element.profilePicture) === "{}") {
-        //console.log("why here",element);
+      if (element.profilePicture=={} || JSON.stringify(element.profilePicture) === '{}' || element.profilePicture == null || typeof element.profilePicture == 'undefined') {
         res.render("profile", {
           stylepath: "css/profileStyle.css",
           data: data,
           path: "profile",
           image: null,
         });
-      }
-      console.log("bssssss ffs");
+      }else{
       res.render("profile", {
         stylepath: "css/profileStyle.css",
         data: data,
         path: "profile",
         image: element.profilePicture,
       });
+    }
     }
   });
 });

@@ -345,3 +345,14 @@ a{
   text-decoration: none;
   color: #000;
 }
+/* COURSE LIST */
+div.course{
+  display: flex;
+  justify-content:  space-around;
+}
+b.courseName{
+  color: #666666;
+}
+small.courseScore{
+  color: #999999;
+}
