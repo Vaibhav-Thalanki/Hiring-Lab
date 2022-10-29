@@ -4,7 +4,7 @@
         <form action="/profile" method="post" enctype="multipart/form-data">
           <section id="prl">
             <div id="picture">
-             
+
               <%if(image === null || typeof image == 'undefined'){}else{%>
               <img src="data:image/<%=image.contentType%>;base64,
 					<%=image.data.toString('base64')%>">
@@ -97,7 +97,7 @@
                 <!-- <button class="click-button" onclick="myEditFunction2()">
                   Edit
                 </button> -->
-                
+
               </div>
             </div>
             <div class="article">
@@ -127,7 +127,7 @@
                     <br>
                 <%})}%>
               </div>
-              
+
               </div>
             </div>
           </section>

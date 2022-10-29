@@ -3,7 +3,7 @@
     padding: 0;
 }
 body{
-    background-color: lightblue;
+    background-color: #f3f2ee;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -77,8 +77,8 @@ div.header-search> input{
     align-items: center;
 }
 .header div#profile img{
-    height: 35px;
-    width: 35px;
+    height: 39px;
+    width: 39px;
     border-radius: 50%;
 }
 .header div#profile span{

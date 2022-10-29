@@ -8,7 +8,17 @@ const profiles = require("./utils/profiles.js");
 const fs = require("fs");
 const multer = require("multer"); // for image file upload
 const bodyParser = require("body-parser");
+const User=require("./userSchema")
 const res = require("express/lib/response.js");
+
+
+// mongoose.connect("mongodb://localhost/Hiring-lab");
+var urlencodedParaser=bodyParser.urlencoded({extended:true})
+
+const router=express.Router();
+var curr_user="xxxx";
+
+
 const port = process.env.PORT || 3000;
 var data = null;
 var message = null;
@@ -23,6 +33,7 @@ app.use(
     extended: true,
   })
 );
+
 
 //PROFILE PICTURE
 var storage = multer.diskStorage({
@@ -47,6 +58,12 @@ async function main() {
 }
 
 //SCHEMAS
+const userSchema=new mongoose.Schema({
+  name:String,
+  post:[String],
+  connected_users:[String]
+})
+
 const courseSchema = new mongoose.Schema({
   courseName: String,
   courseDesc: String,
@@ -54,6 +71,12 @@ const courseSchema = new mongoose.Schema({
   courseImg: String,
   score: Number,
 });
+
+const postSchema = new mongoose.Schema({
+  email_id: String,
+  post: String,
+},{ timestamps: true });
+
 const profileSchema = new mongoose.Schema({
   name: String,
   email_id: String,
@@ -68,6 +91,7 @@ const profileSchema = new mongoose.Schema({
     contentType: String,
   },
 });
+const Post = mongoose.model("Post", postSchema);
 const Profile = mongoose.model("Profile", profileSchema);
 const LoginSchema = new mongoose.Schema({
   user_id: Number,
@@ -77,7 +101,10 @@ const LoginSchema = new mongoose.Schema({
   courses: [courseSchema],
   profile: profileSchema,
   connected: [String],
+  posts:[String],
 });
+
+
 
 //MAIL CONFIGURE
 let mailTransporter = nodemailer.createTransport({
@@ -250,13 +277,47 @@ app.get("/chat", (req, res) => {
   });
 });
 
+var posts=[];
+async function getpostdata(element){
+  var c=0;
+  //db.posts.find({email_id:{$in:['a@11','a@1']}})
+  await Post.findOne({ email_id: element }, (err, prof) => {
+    console.log(prof,"the posts of ",element," are ",prof.posts)
+    if(prof.posts[0]!=''){
+        prof.posts.forEach(p => {
+        posts[c]=p;
+        c=c+1;
+        console.log(c,posts)
+      })
+    }
+ }).clone();
+ return true;
+}
 //HOME
-app.get("/home", (req, res) => {
-  res.render("home", {
-    stylepath: "css/home.css",
-    path: "home",
-    data,
-  });
+app.get("/home", async (req, res) => {
+    console.log(data.connected)
+    var feeds=[]
+    //db.posts.find({email_id:{$in:['a@11','a@1']}})
+    Post.find({email_id:{$in:data.connected}}).sort({"createdAt":-1}).exec(function(err, feed) {
+      console.log(feed)
+      feeds=feed
+    });
+    alldatas=[]
+    Login.find().exec(function(err,alldata){alldatas=alldata})
+    /*await data.connected.forEach( async element =>{
+    console.log("Checking for posts of email id ",element)
+    await getpostdata(element);
+  })*/
+   setTimeout(() => {
+     res.render("home", {
+     stylepath: "css/home.css",
+     path: "home",
+     data,
+     feed:feeds,
+     alldata:alldatas,
+   });
+ }, "2000")
+
 });
 app.post("/home", (req, res) => {
   res.redirect("/home");
@@ -310,6 +371,7 @@ app.post("/profilePage", (req, res) => {
   Login.findOne({ email_id: email }, (er, found) => {
     found.connected.push(req.body.connectperson);
     found.save();
+    data = found;
   });
   res.redirect("/profilePage");
 });
@@ -317,6 +379,8 @@ app.post("/profilePage", (req, res) => {
 //PROFILE
 app.get("/profile", (req, res) => {
   console.log("data is", data);
+  curr_user=data.email_id;
+  console.log(` Current_user is ${curr_user}`)
   Profile.findOne({ email_id: email }, (err, element) => {
     if (element == null) {
       res.render("profile", {
@@ -472,6 +536,7 @@ const check = async (req) => {
     var pass = req.body.password;
     var uid = c + 1;
     await checkacc(email);
+
     if (req.body.password != req.body.passwordRepeat) {
       message = "Passwords don't match...";
       return 1;
@@ -568,3 +633,109 @@ const check = async (req) => {
     return 2;*/
   }
 };
+
+
+//SECTION
+// add_post("a@gmail.com","fourth post as walter")
+const global_ans=[];
+
+async function show_posts(email){
+    console.log("inside show post")
+  const user=await Login.where("email_id").equals(email).select("posts -_id");
+  return user[0].posts;
+}
+
+async function add_post(uname,post1,about){
+  console.log(email)
+  /*Login.findOne({ email_id: email },async (er, user) => {
+    console.log(user);
+    user.posts.push(post1)
+     await Login.updateOne(
+        {email_id:email},
+        {posts:user.posts},
+        {upsert:true}
+    )}*/
+    const data = new Post({
+      email_id: email,
+      post: post1,
+    });
+    data.save();
+    console.log("new record created");
+}
+
+
+app.get("/show-posts",async (req,res)=>{
+
+  /*show_posts(curr_user).then((ans)=>{
+    console.log(ans)
+    // global_ans.push(ans)
+    res.render('posts.ejs',{global_ans:ans})
+
+  }).catch((err)=>{
+    console.log("oops an error has occured!")
+  });
+  // console.log(`ans is ${ans2}`)
+  console.log(`global ans is ${global_ans}`)
+  // res.render('posts.ejs',{global_ans:global_ans})*/
+  var postss=[]
+  var c=0
+  await Post.find({ email_id:email }, function (err, docs) {
+  if (err){
+      console.log(err);
+  }
+  else{
+    docs.forEach(element => {
+      postss[c]=element.post;
+      c=c+1;
+      console.log(element.post);
+    });
+  }
+}).clone();
+  console.log(postss)
+  res.render('posts.ejs',{post:postss})
+})
+
+app.get("/feed",(req,res)=>{
+  res.render('feed.ejs',{curr_user:curr_user})
+})
+app.post("/feed",urlencodedParaser,async (req,res)=>{
+    //add_post(curr_user,req.body.txtarea)
+    console.log(data.profile.name,req.body.txtarea)
+    var post = await req.body.txtarea;
+    add_post(data.profile.name,post)
+    res.redirect(301,"/show-posts")
+})
+// run()
+// async function run(){
+//     const user=await Login.create ({
+//        name:"Basha",
+//        posts:['Posted1',"posted2"]
+//     });
+//     await user.save()
+//     console.log(user)
+// }
+
+
+// add_post("jeet","post39");
+
+// async function show_posts(Name){
+//   const user=await userSchema.where("name").equals(Name).select("post -_id");
+//   return user[0].post
+// }
+
+// app.get("/show_posts",(req,res)=>{
+
+//   console.log("redirected ")
+
+//   const post=show_posts("jeet")
+//       const p=post[0]
+//   res.render( "posts.ejs",{p:p} )
+// })
+
+
+
+
+
+// exports.curr_user=curr_user
+// const feedRouter=require('./routes/feed')
+// app.use('/feed',feedRouter)

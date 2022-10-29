@@ -16,8 +16,9 @@
             width="40px"
             class="profile"
           />
-          <h2>Anonymous User 1</h2>
-          <h4>anonymous1.2022@gmail.com</h4>
+
+          <h2><%=data.profile.name%></h2>
+          <h4><%=data.email_id%></h4>
         </div>
         <div id="sidebar-statistics">
           <div class="sidebar-stat">
@@ -54,8 +55,8 @@
         <div class="feed-input-container">
           <div class="feed-input">
             <i class="fa-solid fa-pen"></i>
-            <form action="">
-              <input type="text" name="" id="" />
+            <form action="/feed" method="POST">
+              <input type="text" name="txtarea" id="" />
             </form>
           </div>
           <div class="feed-input-options">
@@ -78,22 +79,32 @@
           </div>
         </div>
         <!-- Post 1 -->
+        <% console.log(alldatas)%>
+        <% feed.forEach((element)=>{ %>
+        <%alldatas.forEach((dat)=>{{if(dat.email_id===element.email_id){%>
         <div class="posted">
           <div class="post-header">
+            <%if (dat.profile.profilePicture=={} || JSON.stringify(dat.profile.profilePicture) === '{}' || dat.profile.profilePicture == null || typeof dat.profile.profilePicture == 'undefined') { console.log("no-pic");%>
             <img
               src="/images/home/profile-user.png"
               alt=""
               height="40px"
               width="40px"
               class="profile"
-            />
+            /> <%}else{%>
+              <img src="data:profilePicture/<%=dat.profile.profilePicture.contentType%>;base64,
+          <%=dat.profile.profilePicture.data.toString('base64')%>"   alt=""
+            height="40px"
+            width="40px"
+            class="profile"/>
+              <%}%>
             <div class="post-info">
-              <h2>Vaibhav</h2>
-              <p>Job Description</p>
+              <h2><%=dat.profile.name%></h2>
+              <p><%=dat.profile.about%></p>
             </div>
           </div>
           <div class="post--body">
-            <p>Message here</p>
+            <p><%=element.post%></p>
           </div>
           <div class="feed-input-options">
             <div class="input-option">
@@ -110,139 +121,8 @@
             </div>
           </div>
         </div>
-        <!-- Post 2 -->
-        <div class="posted">
-          <div class="post-header">
-            <img
-              src="/images/home/profile-user.png"
-              alt=""
-              height="40px"
-              width="40px"
-              class="profile"
-            />
-            <div class="post-info">
-              <h2>Nagha Akshayaa</h2>
-              <p>Job Description</p>
-            </div>
-          </div>
-          <div class="post--body">
-            <p>Message here</p>
-          </div>
-          <div class="feed-input-options">
-            <div class="input-option">
-              <i class="fa-solid fa-heart" style="color: gray"></i>
-              <h4>Like</h4>
-            </div>
-            <div class="input-option">
-              <i class="fa-solid fa-comment-dots"></i>
-              <h4>Comment</h4>
-            </div>
-            <div class="input-option">
-              <i class="fa-solid fa-share"></i>
-              <h4>Share</h4>
-            </div>
-          </div>
-        </div>
-        <!-- Post 3 -->
-        <div class="posted">
-          <div class="post-header">
-            <img
-              src="/images/home/profile-user.png"
-              alt=""
-              height="40px"
-              width="40px"
-              class="profile"
-            />
-            <div class="post-info">
-              <h2>Vignesh</h2>
-              <p>Job Description</p>
-            </div>
-          </div>
-          <div class="post--body">
-            <p>Message here</p>
-          </div>
-          <div class="feed-input-options">
-            <div class="input-option">
-              <i class="fa-solid fa-heart" style="color: gray"></i>
-              <h4>Like</h4>
-            </div>
-            <div class="input-option">
-              <i class="fa-solid fa-comment-dots"></i>
-              <h4>Comment</h4>
-            </div>
-            <div class="input-option">
-              <i class="fa-solid fa-share"></i>
-              <h4>Share</h4>
-            </div>
-          </div>
-        </div>
-        <!-- Post 4 -->
-        <div class="posted">
-          <div class="post-header">
-            <img
-              src="/images/home/profile-user.png"
-              alt=""
-              height="40px"
-              width="40px"
-              class="profile"
-            />
-            <div class="post-info">
-              <h2>Keerthana</h2>
-              <p>Job Description</p>
-            </div>
-          </div>
-          <div class="post--body">
-            <p>Message here</p>
-          </div>
-          <div class="feed-input-options">
-            <div class="input-option">
-              <i class="fa-solid fa-heart" style="color: gray"></i>
-              <h4>Like</h4>
-            </div>
-            <div class="input-option">
-              <i class="fa-solid fa-comment-dots"></i>
-              <h4>Comment</h4>
-            </div>
-            <div class="input-option">
-              <i class="fa-solid fa-share"></i>
-              <h4>Share</h4>
-            </div>
-          </div>
-        </div>
-        <!-- Post 5 -->
-        <div class="posted">
-          <div class="post-header">
-            <img
-              src="/images/home/profile-user.png"
-              alt=""
-              height="40px"
-              width="40px"
-              class="profile"
-            />
-            <div class="post-info">
-              <h2>Anonymous User 1</h2>
-              <p>Job Description</p>
-            </div>
-          </div>
-          <div class="post--body">
-            <p>Message here</p>
-          </div>
-          <div class="feed-input-options">
-            <div class="input-option">
-              <i class="fa-solid fa-heart" style="color: gray"></i>
-              <h4>Like</h4>
-            </div>
-            <div class="input-option">
-              <i class="fa-solid fa-comment-dots"></i>
-              <h4>Comment</h4>
-            </div>
-            <div class="input-option">
-              <i class="fa-solid fa-share"></i>
-              <h4>Share</h4>
-            </div>
-          </div>
-        </div>
-      </div>
+        <%}}})%>
+          <% }) %>
       <!-- Widget -->
       <div id="widget">
         <div class="widget-header">
@@ -281,6 +161,7 @@
         </div>
         <!-- Article 4 -->
         <div class="widget-article">
+
           <div class="widget-article-left">
             <i class="fa-solid fa-circle"></i>
           </div>
@@ -291,7 +172,6 @@
         </div>
       </div>
     </div>
-
     <!-- End -->
   </body>
 </html>
