@@ -10,11 +10,8 @@ const multer = require("multer"); // for image file upload
 const bodyParser = require("body-parser");
 const User=require("./userSchema")
 const res = require("express/lib/response.js");
-// var session = require('express-session')
-// const store = new session.MemoryStore();
-
-
-// mongoose.connect("mongodb://localhost/Hiring-lab");
+const sessionstorage = require('node-sessionstorage'); // sessions
+const session = require('express-session');
 var urlencodedParaser=bodyParser.urlencoded({extended:true})
 
 const router=express.Router();
@@ -139,18 +136,8 @@ app.post("/", async (req, res) => {
   
   if (c == 1) res.redirect("/"); //signup
   else if (c == 2) {
-    // console.log("login ",req.sessionID);
-    // req.session.user = {
-    //   email_session: req.loginemail,
-    //   pass_session: req.loginpassword
-    // };
     res.redirect("/profile"); //login
   } else if (c == 3) {
-    // console.log("signup ",req.sessionID);
-    // req.session.user = {
-    //   email_session: req.email,
-    //   pass_session: req.password
-    // };
     res.redirect("/otp"); //otp for signup
   }
 });
@@ -313,8 +300,6 @@ async function getpostdata(element){
 }
 //HOME
 app.get("/home", async (req, res) => {
-  console.log("session", req.session);
-    console.log(data.connected)
     var feeds=[]
     var feedswithemail = {
       feeds : [],
@@ -547,8 +532,12 @@ query.count(function (err, count) {
 
 //LOGIN CHECK
 const check = async (req) => {
+  
   if (req.body.form === "Join") {
-    email = req.body.email;
+    console.log("setting ",req.body.email);
+  sessionstorage.setItem('email_session', req.body.email);
+    email = sessionstorage.getItem('email_session');
+    
     emailsend = email;
     var pass = req.body.password;
 
@@ -616,7 +605,9 @@ const check = async (req) => {
       }
     }
   } else if (req.body.form === "Login") {
-    email = req.body.loginemail;
+    console.log("setting ",req.body.loginemail);
+  sessionstorage.setItem('email_session', req.body.loginemail);
+    email = sessionstorage.getItem('email_session');
     const password = req.body.loginpassword; //destructuring the req object to get the email and password
     var response = await Login.findOne({
       email_id: email,
@@ -628,7 +619,6 @@ const check = async (req) => {
       message = "Account doesn't exists";
       return 1;
     } else {
-      console.log("brruhhx2");
       email = req.body.loginemail;
       console.log(response);
       if (response.password === password) {
