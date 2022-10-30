@@ -10,10 +10,15 @@ const multer = require("multer"); // for image file upload
 const bodyParser = require("body-parser");
 const User=require("./userSchema")
 const res = require("express/lib/response.js");
-const sessionstorage = require('node-sessionstorage'); // sessions
+// session storage
+const sessionstorage = require('node-sessionstorage'); 
 const session = require('express-session');
 var urlencodedParaser=bodyParser.urlencoded({extended:true})
-
+app.use(session({
+  secret: 'Your_Secret_Key',
+  resave: true,
+  saveUninitialized: true
+}))
 const router=express.Router();
 var curr_user="xxxx";
 
@@ -165,7 +170,7 @@ app.post("/:path/search", function (req, res) {
   console.log(nametosearch);
 
   Profile.findOne({ name: nametosearch }, function (err, result) {
-    console.log(result);
+    //console.log(result);
     if (result == null) {
       console.log("No record found");
       res.redirect(a);
@@ -313,12 +318,14 @@ app.get("/home", async (req, res) => {
     alldatas=[]
     Profile.find((err,response)=>{
       alldatas = response;
+      var name = req.session.name
       res.render("home", {
         stylepath: "css/home.css",
         path: "home",
         data,
         feed:feeds,
         alldata:alldatas,
+        name
       });
     })
     /*await data.connected.forEach( async element =>{
@@ -391,6 +398,7 @@ app.get("/profile", (req, res) => {
   console.log(` Current_user is ${curr_user}`)
   Profile.findOne({ email_id: email }, (err, element) => {
     if (element == null) {
+      req.session.name = "Username"
       res.render("profile", {
         stylepath: "css/profileStyle.css",
         data: data,
@@ -398,6 +406,7 @@ app.get("/profile", (req, res) => {
         image: null,
       });
     } else {
+      req.session.name = element.name;
       if (element.profilePicture=={} || JSON.stringify(element.profilePicture) === '{}' || element.profilePicture == null || typeof element.profilePicture == 'undefined') {
         res.render("profile", {
           stylepath: "css/profileStyle.css",
@@ -416,6 +425,18 @@ app.get("/profile", (req, res) => {
     }
   });
 });
+app.get("/session", function(req, res){
+
+  var name = req.session.name
+  return res.send(name)
+
+  /*  To destroy session you can use
+      this function
+   req.session.destroy(function(error){
+      console.log("Session Destroyed")
+  })
+  */
+})
 
 app.post("/profile", upload.single("image"), (req, res, next) => {
   console.log(
@@ -427,6 +448,7 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
     req.body.edu,
     req.body.skill
   );
+  req.session.name = req.body.uname;
   data.profile.name = req.body.uname;
   data.profile.contactInfo = req.body.cinfo;
   data.profile.address = req.body.add;
@@ -436,7 +458,7 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
   data.profile.about = req.body.abt;
 
   Profile.findOne({ email_id: email }, function (err, result) {
-    console.log(result);
+    //console.log(result);
     if (result == null) {
       const profile = new Profile({
         name: req.body.uname,
