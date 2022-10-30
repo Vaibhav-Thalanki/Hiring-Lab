@@ -79,28 +79,28 @@
           </div>
         </div>
         <!-- Post 1 -->
-        <% console.log(alldatas)%>
         <% feed.forEach((element)=>{ %>
-        <%alldatas.forEach((dat)=>{{if(dat.email_id===element.email_id){%>
+        <%alldatas.forEach((dat)=>{{if(dat.email_id===element.email_id){ %>
+        
         <div class="posted">
           <div class="post-header">
-            <%if (dat.profile.profilePicture=={} || JSON.stringify(dat.profile.profilePicture) === '{}' || dat.profile.profilePicture == null || typeof dat.profile.profilePicture == 'undefined') { console.log("no-pic");%>
+            <%if (dat.profilePicture == null || typeof dat.profilePicture == 'undefined' || dat.profilePicture=={} || JSON.stringify(dat.profilePicture) === '{}' ) { console.log("no-pic");%>
             <img
-              src="/images/home/profile-user.png"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIg74DLmQxFVxzS_-jAsHnWeJGfNZEgQtWsA_cYgmmpg&s"
               alt=""
               height="40px"
               width="40px"
               class="profile"
             /> <%}else{%>
-              <img src="data:profilePicture/<%=dat.profile.profilePicture.contentType%>;base64,
-          <%=dat.profile.profilePicture.data.toString('base64')%>"   alt=""
+              <img src="data:profilePicture/<%=dat.profilePicture.contentType%>;base64,
+          <%=dat.profilePicture.data.toString('base64')%>"   alt=""
             height="40px"
             width="40px"
             class="profile"/>
               <%}%>
             <div class="post-info">
-              <h2><%=dat.profile.name%></h2>
-              <p><%=dat.profile.about%></p>
+              <h2><%=dat.name%></h2>
+              <p><%=dat.about%></p>
             </div>
           </div>
           <div class="post--body">

@@ -10,6 +10,8 @@ const multer = require("multer"); // for image file upload
 const bodyParser = require("body-parser");
 const User=require("./userSchema")
 const res = require("express/lib/response.js");
+// var session = require('express-session')
+// const store = new session.MemoryStore();
 
 
 // mongoose.connect("mongodb://localhost/Hiring-lab");
@@ -28,13 +30,20 @@ var IDcontinue = 1;
 var email;
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
+// app.use(session({
+//   secret: 'some secret',
+//   cookie: {maxAge: 300000},
+//   saveUninitialized: false,
+//   store
+// }));
 app.use(
   bodyParser.urlencoded({
     extended: true,
   })
 );
-
-
+// app.use((req,res,next)=>{
+//   next();
+// })
 //PROFILE PICTURE
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -101,7 +110,7 @@ const LoginSchema = new mongoose.Schema({
   courses: [courseSchema],
   profile: profileSchema,
   connected: [String],
-  posts:[String],
+  posts:[postSchema],
 });
 
 
@@ -125,15 +134,24 @@ app.get("/", (req, res) => {
 });
 app.post("/", async (req, res) => {
   message = null;
-  email = req.body.loginemail;
-  console.log(req.body.form);
   var c = await check(req);
   console.log(c, "doneee");
+  
   if (c == 1) res.redirect("/"); //signup
   else if (c == 2) {
+    // console.log("login ",req.sessionID);
+    // req.session.user = {
+    //   email_session: req.loginemail,
+    //   pass_session: req.loginpassword
+    // };
     res.redirect("/profile"); //login
   } else if (c == 3) {
-    res.redirect("/otp"); //otp
+    // console.log("signup ",req.sessionID);
+    // req.session.user = {
+    //   email_session: req.email,
+    //   pass_session: req.password
+    // };
+    res.redirect("/otp"); //otp for signup
   }
 });
 
@@ -165,7 +183,7 @@ app.post("/:path/search", function (req, res) {
       console.log("No record found");
       res.redirect(a);
     } else {
-      console.log(result);
+      //console.log(result);
       SearchPersonData = result;
       res.redirect("/profilePage");
     }
@@ -295,28 +313,34 @@ async function getpostdata(element){
 }
 //HOME
 app.get("/home", async (req, res) => {
+  console.log("session", req.session);
     console.log(data.connected)
     var feeds=[]
-    //db.posts.find({email_id:{$in:['a@11','a@1']}})
+    var feedswithemail = {
+      feeds : [],
+      email:"",
+    }
+    // RECOMMEND FEEDS BASED ON CREATION DATE
     Post.find({email_id:{$in:data.connected}}).sort({"createdAt":-1}).exec(function(err, feed) {
-      console.log(feed)
+      
       feeds=feed
     });
     alldatas=[]
-    Login.find().exec(function(err,alldata){alldatas=alldata})
+    Profile.find((err,response)=>{
+      alldatas = response;
+      res.render("home", {
+        stylepath: "css/home.css",
+        path: "home",
+        data,
+        feed:feeds,
+        alldata:alldatas,
+      });
+    })
     /*await data.connected.forEach( async element =>{
     console.log("Checking for posts of email id ",element)
     await getpostdata(element);
   })*/
-   setTimeout(() => {
-     res.render("home", {
-     stylepath: "css/home.css",
-     path: "home",
-     data,
-     feed:feeds,
-     alldata:alldatas,
-   });
- }, "2000")
+     
 
 });
 app.post("/home", (req, res) => {
@@ -333,7 +357,6 @@ async function checkacc(email) {
       if (err) {
         console.log(err);
       } else {
-        console.log("Result : ", docs);
         if (docs == null) valacc = 0;
         else valacc = 1;
       }
@@ -452,7 +475,6 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
             console.log("Something wrong when updating data!", err);
           }
 
-          console.log(doc);
         }
       );
     } else {
@@ -483,8 +505,6 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
           if (err) {
             console.log("Something wrong when updating data!", err);
           }
-
-          console.log(doc);
         }
       );
       Login.findOneAndUpdate(
@@ -495,8 +515,6 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
           if (err) {
             console.log("Something wrong when updating data!", err);
           }
-
-          console.log(doc);
         }
       );
     }
@@ -529,11 +547,11 @@ query.count(function (err, count) {
 
 //LOGIN CHECK
 const check = async (req) => {
-  //console.log(req.body.form);
   if (req.body.form === "Join") {
     email = req.body.email;
     emailsend = email;
     var pass = req.body.password;
+
     var uid = c + 1;
     await checkacc(email);
 
@@ -549,6 +567,7 @@ const check = async (req) => {
         message = "Password must atleast contain one special character";
         return 1;
       } else {
+        
         if (valacc == 0) {
           const data = new Login({
             user_id: uid,
@@ -646,20 +665,17 @@ async function show_posts(email){
 }
 
 async function add_post(uname,post1,about){
-  console.log(email)
-  /*Login.findOne({ email_id: email },async (er, user) => {
-    console.log(user);
-    user.posts.push(post1)
-     await Login.updateOne(
-        {email_id:email},
-        {posts:user.posts},
-        {upsert:true}
-    )}*/
     const data = new Post({
       email_id: email,
       post: post1,
     });
     data.save();
+    Post.find({email_id:email},{},(err,result)=>{
+      Login.findOneAndUpdate({ email_id: email },{
+        posts: result
+      },{new:true},(err,docs)=>{
+      })
+    });
     console.log("new record created");
 }
 
@@ -700,10 +716,10 @@ app.get("/feed",(req,res)=>{
 })
 app.post("/feed",urlencodedParaser,async (req,res)=>{
     //add_post(curr_user,req.body.txtarea)
-    console.log(data.profile.name,req.body.txtarea)
+    
     var post = await req.body.txtarea;
-    add_post(data.profile.name,post)
-    res.redirect(301,"/show-posts")
+    add_post(data.profile.name,post);
+    res.redirect("/home") 
 })
 // run()
 // async function run(){
