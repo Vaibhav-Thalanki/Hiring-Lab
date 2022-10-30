@@ -129,6 +129,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-
+uploads/*
+!uploads
 
 # qweasdzxcqweasdzxc!1
