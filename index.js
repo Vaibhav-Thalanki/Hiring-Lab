@@ -314,8 +314,8 @@ app.get("/home", async (req, res) => {
     Post.find({email_id:{$in:data.connected}}).sort({"createdAt":-1}).exec(function(err, feed) {
       
       feeds=feed
-    });
-    alldatas=[]
+      alldatas=[]
+    console.log("feeds",feeds);
     Profile.find((err,response)=>{
       alldatas = response;
       var name = req.session.name
@@ -328,6 +328,8 @@ app.get("/home", async (req, res) => {
         name
       });
     })
+    });
+    
     /*await data.connected.forEach( async element =>{
     console.log("Checking for posts of email id ",element)
     await getpostdata(element);
