@@ -1,15 +1,12 @@
+// loading all imports
 const express = require("express");
 const app = express();
 const path = require("path");
-const assert = require("assert");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
-const profiles = require("./utils/profiles.js");
 const fs = require("fs");
 const multer = require("multer"); // for image file upload
 const bodyParser = require("body-parser");
-const User = require("./userSchema");
-const res = require("express/lib/response.js");
 // session storage
 const sessionstorage = require("node-sessionstorage");
 const session = require("express-session");
@@ -32,22 +29,16 @@ var emailsend = null;
 var ID = 1;
 var IDcontinue = 1;
 var email;
+
+// middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
-// app.use(session({
-//   secret: 'some secret',
-//   cookie: {maxAge: 300000},
-//   saveUninitialized: false,
-//   store
-// }));
 app.use(
   bodyParser.urlencoded({
     extended: true,
   })
 );
-// app.use((req,res,next)=>{
-//   next();
-// })
+
 //PROFILE PICTURE
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -152,7 +143,6 @@ app.get("/", (req, res) => {
 app.post("/", async (req, res) => {
   message = null;
   var c = await check(req);
-  console.log(c, "doneee");
 
   if (c == 1) res.redirect("/"); //signup
   else if (c == 2) {
@@ -176,7 +166,7 @@ app.get("/landing", (req, res) => {
 
 var nametosearch = null;
 var SearchPersonData = null;
-//GETTING NAME TO SEARCH FROM HEADER
+
 //Extract the path which is searching the name in header.js
 app.post("/:path/search", function (req, res) {
   console.log("From path: ", req.params.path);
@@ -190,7 +180,6 @@ app.post("/:path/search", function (req, res) {
       console.log("No record found");
       res.redirect(a);
     } else {
-      //console.log(result);
       SearchPersonData = result;
       res.redirect("/profilePage");
     }
@@ -213,14 +202,12 @@ app.post("/:custom/test", (req, res) => {
     console.log(email);
     if (result === "pass") {
       Login.findOne({ email_id: email }, (er, found) => {
-        console.log(found);
         if (!found.courses) found.courses = [];
         var courseToBeAdded = "course" + String(finalID);
         var newcourse = eval(courseToBeAdded);
         newcourse.score = score;
         found.courses.push(newcourse);
         data.courses.push(newcourse);
-        console.log("again data is", data);
         found.save();
       });
     }
@@ -252,7 +239,6 @@ app.post("/maincourse", (req, res) => {
 });
 
 app.get("/maincourse", (req, res) => {
-  console.log(email);
   Course.find({}, (err, resp) => {
     if (resp.length === 0) {
       Course.insertMany([course1, course2, course3], () => {});
@@ -300,12 +286,10 @@ async function getpostdata(element) {
   var c = 0;
   //db.posts.find({email_id:{$in:['a@11','a@1']}})
   await Post.findOne({ email_id: element }, (err, prof) => {
-    console.log(prof, "the posts of ", element, " are ", prof.posts);
     if (prof.posts[0] != "") {
       prof.posts.forEach((p) => {
         posts[c] = p;
         c = c + 1;
-        console.log(c, posts);
       });
     }
   }).clone();
@@ -315,10 +299,7 @@ async function getpostdata(element) {
 
 app.get("/home", async (req, res) => {
   var feeds = [];
-  var feedswithemail = {
-    feeds: [],
-    email: "",
-  };
+
   // RECOMMEND FEEDS BASED ON CREATION DATE
   Post.find({ email_id: { $in: data.connected } })
     .sort({ createdAt: -1 })
@@ -339,12 +320,8 @@ app.get("/home", async (req, res) => {
         });
       });
     });
-
-  /*await data.connected.forEach( async element =>{
-    console.log("Checking for posts of email id ",element)
-    await getpostdata(element);
-  })*/
 });
+
 app.post("/home", (req, res) => {
   res.redirect("/home");
 });
@@ -359,7 +336,6 @@ async function checkacc(email) {
       if (err) {
         console.log(err);
       } else {
-        console.log(docs);
         if (docs == null) valacc = 0;
         else valacc = 1;
       }
@@ -395,7 +371,6 @@ app.get("/profilePage", (req, res) => {
   });
 });
 app.post("/profilePage", (req, res) => {
-  console.log("req is ", req.body);
   Login.findOne({ email_id: email }, (er, found) => {
     found.connected.push(req.body.connectperson);
     found.save();
@@ -407,7 +382,6 @@ app.post("/profilePage", (req, res) => {
 //PROFILE
 app.get("/profile", (req, res) => {
   curr_user = data.email_id;
-  console.log(` Current_user is ${curr_user}`);
   Profile.findOne({ email_id: email }, (err, element) => {
     if (element == null) {
       req.session.name = "Username";
@@ -456,15 +430,7 @@ app.get("/session", function (req, res) {
 });
 
 app.post("/profile", upload.single("image"), (req, res, next) => {
-  console.log(
-    req.body.uname,
-    email,
-    req.body.cinfo,
-    req.body.add,
-    req.body.exp,
-    req.body.edu,
-    req.body.skill
-  );
+
   req.session.name = req.body.uname;
   data.profile.name = req.body.uname;
   data.profile.contactInfo = req.body.cinfo;
@@ -475,7 +441,7 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
   data.profile.about = req.body.abt;
 
   Profile.findOne({ email_id: email }, function (err, result) {
-    //console.log(result);
+   
     if (result == null) {
       const profile = new Profile({
         name: req.body.uname,
@@ -489,7 +455,6 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
         profilePicture: {},
       });
       pdata = profile;
-      console.log("creating new");
       profile.save();
       Login.findOneAndUpdate(
         { email_id: email },
@@ -497,7 +462,7 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
         { new: true },
         (err, doc) => {
           if (err) {
-            console.log("Something wrong when updating data!", err);
+            console.log("Something went wrong when updating data!", err);
           }
         }
       );
@@ -528,7 +493,7 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
         { new: true },
         (err, doc) => {
           if (err) {
-            console.log("Something wrong when updating data!", err);
+            console.log("Something went wrong when updating data!", err);
           }
           pdata = doc;
         }
@@ -539,7 +504,7 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
         { new: true },
         (err, doc) => {
           if (err) {
-            console.log("Something wrong when updating data!", err);
+            console.log("Something went wrong when updating data!", err);
           }
         }
       );
@@ -573,10 +538,10 @@ query.count(function (err, count) {
   else c = count;
 });
 
-//LOGIN CHECK
+//LOGIN SIGNUP CHECK
 const check = async (req) => {
   if (req.body.form === "Join") {
-    console.log("setting ", req.body.email);
+    console.log("setting email session variable ", req.body.email);
     sessionstorage.setItem("email_session", req.body.email);
     email = sessionstorage.getItem("email_session");
 
@@ -610,7 +575,6 @@ const check = async (req) => {
           message = "Account Succesfully added";
           valacc = -1;
           emailsend = email;
-          console.log("gonna send");
           setTimeout(() => {
             let mailDetails = {
               from: "naghaakshayaa@gmail.com",
@@ -636,7 +600,6 @@ const check = async (req) => {
           }, 15000);
 
           console.log("out of mail");
-          //res.render("index",{message:message});
           return 3;
         } else {
           message = "Account already exists";
@@ -646,55 +609,30 @@ const check = async (req) => {
       }
     }
   } else if (req.body.form === "Login") {
-    console.log("setting ", req.body.loginemail);
+    console.log("setting email session variable ", req.body.loginemail);
     sessionstorage.setItem("email_session", req.body.loginemail);
     email = sessionstorage.getItem("email_session");
     const password = req.body.loginpassword; //destructuring the req object to get the email and password
     var response = await Login.findOne({
       email_id: email,
-    }); //to find whether a user already exist
+    }); 
     if (!response) {
-      //req.flash("message", "User doesnt exist..Please Sign Up");
-      //res.redirect("/");
-      console.log("Not Success");
       message = "Account doesn't exists";
       return 1;
     } else {
       email = req.body.loginemail;
-      console.log(response);
       if (response.password === password) {
         pdata = await Profile.find({ email_id: email });
         pdata = pdata[0];
         data = response;
-        console.log("Success");
         return 2;
       } else {
         message = "Invalid Login Credentials";
-        console.log("Not Success");
         return 1;
       }
     }
-    /*const login = profiles.login(req.body.email, req.body.password);
-    if (login === 0) {
-  }
-};      message = "Invalid Credentials";
-      return 1;
-    } else {
-      message = "Login Succesful";
-    }
-    return 2;*/
   }
 };
-
-//SECTION
-// add_post("a@gmail.com","fourth post as walter")
-const global_ans = [];
-
-async function show_posts(email) {
-  console.log("inside show post");
-  const user = await Login.where("email_id").equals(email).select("posts -_id");
-  return user[0].posts;
-}
 
 async function add_post(uname, post1, about) {
   const data = new Post({
@@ -717,39 +655,8 @@ async function add_post(uname, post1, about) {
   console.log("new record created");
 }
 
-app.get("/show-posts", async (req, res) => {
-  /*show_posts(curr_user).then((ans)=>{
-    console.log(ans)
-    // global_ans.push(ans)
-    res.render('posts.ejs',{global_ans:ans})
 
-  }).catch((err)=>{
-    console.log("oops an error has occured!")
-  });
-  // console.log(`ans is ${ans2}`)
-  console.log(`global ans is ${global_ans}`)
-  // res.render('posts.ejs',{global_ans:global_ans})*/
-  var postss = [];
-  var c = 0;
-  await Post.find({ email_id: email }, function (err, docs) {
-    if (err) {
-      console.log(err);
-    } else {
-      docs.forEach((element) => {
-        postss[c] = element.post;
-        c = c + 1;
-      });
-    }
-  }).clone();
-  console.log(postss);
-  res.render("posts.ejs", { post: postss });
-});
-
-app.get("/feed", (req, res) => {
-  res.render("feed.ejs", { curr_user: curr_user });
-});
 app.post("/feed", urlencodedParaser, async (req, res) => {
-  //add_post(curr_user,req.body.txtarea)
   if (typeof req.body.txtarea == "undefined") {
     Post.findOne(
       { $and: [{ email_id: req.body.postby }, { post: req.body.post }] },
@@ -759,7 +666,6 @@ app.post("/feed", urlencodedParaser, async (req, res) => {
         } else {
           var newppl = response.peopleliked;
           newppl.push(email);
-          console.log(newppl);
           Post.findOneAndUpdate(
             { email_id: req.body.postby, post: req.body.post },
             {
@@ -779,15 +685,7 @@ app.post("/feed", urlencodedParaser, async (req, res) => {
     res.redirect("/home");
   }
 });
-// run()
-// async function run(){
-//     const user=await Login.create ({
-//        name:"Basha",
-//        posts:['Posted1',"posted2"]
-//     });
-//     await user.save()
-//     console.log(user)
-// }
+
 
 //CHAT
 const chat = mongoose.model("Chat", chatSchema);
@@ -825,7 +723,7 @@ app.post("/chat", (req, res) => {
       .find({ key: b })
       .sort({ createdAt: +1 })
       .exec(function (err, result) {
-        console.log(result);
+
         chat
           .find({ user2: data.email_id })
           .sort({ createdAt: +1 })
@@ -849,7 +747,6 @@ app.post("/chat", (req, res) => {
     a[1] = req.body.user2;
     a.sort();
     var b = a.join("");
-    console.log(b);
     const ch = new chat({
       key: b,
       user1: req.body.user1,
@@ -866,7 +763,6 @@ app.post("/chat", (req, res) => {
             .find({ user2: data.email_id })
             .sort({ createdAt: +1 })
             .exec(function (err, result1) {
-              console.log(result);
               res.render("chat", {
                 stylepath: "css/chat.css",
                 path: "chat",

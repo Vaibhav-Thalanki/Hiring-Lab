@@ -54,22 +54,22 @@
      <%if(emailsend == null || typeof emailsend == 'undefined'){}else{%>
         var emailid = "<%=emailsend%>";
         <%}%>
-      var otp = 1234; //Math.floor(Math.random() * 10000) + 1;
+      var otp = Math.floor(Math.random() * 10000) + 1;
 
-//      function sendEmail() {
-//        var params = {
-//          name: "User",
-//          email: emailid,
-//          message: otp
-//        }
-//        const serviceID = "service_e9fheny";
-//        const templateID = "template_r2obcfw";
-//       emailjs.send(serviceID, templateID,params)
-//        .then((res)=>{
-//          alert("Mail Sent");
-//        }).catch((err) => console.log(err));
-// }
-//   sendEmail();
+     function sendEmail() {
+       var params = {
+         name: "User",
+         email: emailid,
+         message: otp
+       }
+       const serviceID = "service_e9fheny";
+       const templateID = "template_r2obcfw";
+      emailjs.send(serviceID, templateID,params)
+       .then((res)=>{
+         alert("Mail Sent");
+       }).catch((err) => console.log(err));
+}
+  sendEmail();
   alert("mail is commented, otp is 1234");
 
      let digitValidate = function(ele){
@@ -84,7 +84,6 @@
     }
     if(num!=otp)
     {
-      //alert("Invalid OTP");
       document.getElementById("error").innerText="Retry!! Invalid OTP";
       for(var i=0;i<4;i++)
       document.querySelectorAll('input')[i].value=null;
