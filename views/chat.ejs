@@ -1,6 +1,6 @@
 <%- include('header') -%>
     <div class="container-chat">
-        <%if(user2 === ""){}else{%>
+        <%if(user2 === " "){}else{%>
           <%alldatas.forEach((dat)=>{{if(dat.email_id===user2){ %>
       <div class="chatbox">
         <div class="top-bar">
@@ -21,16 +21,13 @@
         </div>
         <div class="middle">
           <div class="voldemort">
-            <%console.log("looking for "+user1+user2)%>
-            <%console.log(chatdata)%>
             <%chatdata.forEach((chat)=>{{if(chat.user1===data.email_id){ %>
-              <%console.log(chat.message);%>
+             
               <div class="outgoing">
                 <div class="bubble bubble2">
                   <%=chat.message%>
                 </div></div>
                 <%}else{%>
-                    <%console.log(chat.message);%>
                   <div class="incoming">
                     <div class="bubble bubble1">
                       <%=chat.message%><br>
@@ -66,8 +63,12 @@
         <%}%>
       <div class="messages">
         <div class="people">
+          <% var noncon=[]%>
             <%allchatdata.forEach((chat)=>{%>
-              <%if(!data.connected.includes(chat.user1) && chat.user2==data.email_id){%>
+
+              <%if(!data.connected.includes(chat.user1) && chat.user2==data.email_id &&!noncon.includes(chat.user1)){%>
+                <%noncon.push(chat.user1)%>
+
                 <%alldatas.forEach((dat)=>{{if(dat.email_id===chat.user1){%>
                   <div class="person" onclick="clickfn('<%=chat.user1%>')">
                     <span id="title" class="title1"><%=dat.name%></span><br>

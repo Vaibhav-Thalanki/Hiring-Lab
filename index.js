@@ -8,23 +8,25 @@ const profiles = require("./utils/profiles.js");
 const fs = require("fs");
 const multer = require("multer"); // for image file upload
 const bodyParser = require("body-parser");
-const User=require("./userSchema")
+const User = require("./userSchema");
 const res = require("express/lib/response.js");
 // session storage
-const sessionstorage = require('node-sessionstorage');
-const session = require('express-session');
-var urlencodedParaser=bodyParser.urlencoded({extended:true})
-app.use(session({
-  secret: 'Your_Secret_Key',
-  resave: true,
-  saveUninitialized: true
-}))
-const router=express.Router();
-var curr_user="xxxx";
-
+const sessionstorage = require("node-sessionstorage");
+const session = require("express-session");
+var urlencodedParaser = bodyParser.urlencoded({ extended: true });
+app.use(
+  session({
+    secret: "Your_Secret_Key",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+const router = express.Router();
+var curr_user = "xxxx";
 
 const port = process.env.PORT || 3000;
 var data = null;
+var pdata = null;
 var message = null;
 var emailsend = null;
 var ID = 1;
@@ -69,11 +71,11 @@ async function main() {
 }
 
 //SCHEMAS
-const userSchema=new mongoose.Schema({
-  name:String,
-  post:[String],
-  connected_users:[String]
-})
+const userSchema = new mongoose.Schema({
+  name: String,
+  post: [String],
+  connected_users: [String],
+});
 
 const courseSchema = new mongoose.Schema({
   courseName: String,
@@ -83,17 +85,25 @@ const courseSchema = new mongoose.Schema({
   score: Number,
 });
 
-const postSchema = new mongoose.Schema({
-  email_id: String,
-  post: String,
-},{ timestamps: true });
+const postSchema = new mongoose.Schema(
+  {
+    email_id: String,
+    post: String,
+    likes: Number,
+    peopleliked: [String],
+  },
+  { timestamps: true }
+);
 
-const chatSchema = new mongoose.Schema({
-  key: String,
-  user1: String,
-  user2: String,
-  message: String,
-},{ timestamps: true });
+const chatSchema = new mongoose.Schema(
+  {
+    key: String,
+    user1: String,
+    user2: String,
+    message: String,
+  },
+  { timestamps: true }
+);
 
 const profileSchema = new mongoose.Schema({
   name: String,
@@ -119,10 +129,8 @@ const LoginSchema = new mongoose.Schema({
   courses: [courseSchema],
   profile: profileSchema,
   connected: [String],
-  posts:[postSchema],
+  posts: [postSchema],
 });
-
-
 
 //MAIL CONFIGURE
 let mailTransporter = nodemailer.createTransport({
@@ -212,7 +220,7 @@ app.post("/:custom/test", (req, res) => {
         newcourse.score = score;
         found.courses.push(newcourse);
         data.courses.push(newcourse);
-        console.log('again data is',data);
+        console.log("again data is", data);
         found.save();
       });
     }
@@ -229,6 +237,7 @@ app.get("/course1", (req, res) => {
     stylepath: "css/course1.css",
     path: "course1",
     data,
+    pdata,
   });
 });
 app.post("/course1", (req, res) => {
@@ -254,6 +263,7 @@ app.get("/maincourse", (req, res) => {
         courses: resp,
         path: "maincourse",
         data,
+        pdata,
       });
     }
   });
@@ -285,54 +295,55 @@ const course3 = new Course({
   courseImg: "https://blog.logrocket.com/wp-content/uploads/2020/06/CSS-3.png",
 });
 
-var posts=[];
-async function getpostdata(element){
-  var c=0;
+var posts = [];
+async function getpostdata(element) {
+  var c = 0;
   //db.posts.find({email_id:{$in:['a@11','a@1']}})
   await Post.findOne({ email_id: element }, (err, prof) => {
-    console.log(prof,"the posts of ",element," are ",prof.posts)
-    if(prof.posts[0]!=''){
-        prof.posts.forEach(p => {
-        posts[c]=p;
-        c=c+1;
-        console.log(c,posts)
-      })
+    console.log(prof, "the posts of ", element, " are ", prof.posts);
+    if (prof.posts[0] != "") {
+      prof.posts.forEach((p) => {
+        posts[c] = p;
+        c = c + 1;
+        console.log(c, posts);
+      });
     }
- }).clone();
- return true;
+  }).clone();
+  return true;
 }
 //HOME
 
 app.get("/home", async (req, res) => {
-    var feeds=[]
-    var feedswithemail = {
-      feeds : [],
-      email:"",
-    }
-    // RECOMMEND FEEDS BASED ON CREATION DATE
-    Post.find({email_id:{$in:data.connected}}).sort({"createdAt":-1}).exec(function(err, feed) {
-      feeds=feed
-      alldatas=[]
-    console.log("feeds",feeds);
-    Profile.find((err,response)=>{
-      alldatas = response;
-      var name = req.session.name
-      res.render("home", {
-        stylepath: "css/home.css",
-        path: "home",
-        data,
-        feed:feeds,
-        alldata:alldatas,
-        name
+  var feeds = [];
+  var feedswithemail = {
+    feeds: [],
+    email: "",
+  };
+  // RECOMMEND FEEDS BASED ON CREATION DATE
+  Post.find({ email_id: { $in: data.connected } })
+    .sort({ createdAt: -1 })
+    .exec(function (err, feed) {
+      feeds = feed;
+      alldatas = [];
+      Profile.find((err, response) => {
+        alldatas = response;
+        var name = req.session.name;
+        res.render("home", {
+          stylepath: "css/home.css",
+          path: "home",
+          data,
+          feed: feeds,
+          alldata: alldatas,
+          name,
+          pdata,
+        });
       });
-    })
     });
 
-    /*await data.connected.forEach( async element =>{
+  /*await data.connected.forEach( async element =>{
     console.log("Checking for posts of email id ",element)
     await getpostdata(element);
   })*/
-
 });
 app.post("/home", (req, res) => {
   res.redirect("/home");
@@ -348,6 +359,7 @@ async function checkacc(email) {
       if (err) {
         console.log(err);
       } else {
+        console.log(docs);
         if (docs == null) valacc = 0;
         else valacc = 1;
       }
@@ -366,6 +378,7 @@ app.get("/profilePage", (req, res) => {
           connectedAlreadyCheck: found.connected,
           data,
           image: null,
+          pdata,
         });
       } else {
         res.render("profilePage", {
@@ -375,6 +388,7 @@ app.get("/profilePage", (req, res) => {
           connectedAlreadyCheck: found.connected,
           data,
           image: found2.profilePicture,
+          pdata,
         });
       }
     });
@@ -392,48 +406,54 @@ app.post("/profilePage", (req, res) => {
 
 //PROFILE
 app.get("/profile", (req, res) => {
-  console.log("data is", data);
-  curr_user=data.email_id;
-  console.log(` Current_user is ${curr_user}`)
+  curr_user = data.email_id;
+  console.log(` Current_user is ${curr_user}`);
   Profile.findOne({ email_id: email }, (err, element) => {
     if (element == null) {
-      req.session.name = "Username"
+      req.session.name = "Username";
       res.render("profile", {
         stylepath: "css/profileStyle.css",
         data: data,
         path: "profile",
         image: null,
+        pdata,
       });
     } else {
       req.session.name = element.name;
-      if (element.profilePicture=={} || JSON.stringify(element.profilePicture) === '{}' || element.profilePicture == null || typeof element.profilePicture == 'undefined') {
+      if (
+        element.profilePicture === {} ||
+        JSON.stringify(element.profilePicture) === "{}" ||
+        element.profilePicture === null
+      ) {
         res.render("profile", {
           stylepath: "css/profileStyle.css",
           data: data,
           path: "profile",
           image: null,
+          pdata,
         });
-      }else{
-      res.render("profile", {
-        stylepath: "css/profileStyle.css",
-        data: data,
-        path: "profile",
-        image: element.profilePicture,
-      });
-    }
+      } else {
+        res.render("profile", {
+          stylepath: "css/profileStyle.css",
+          data: data,
+          path: "profile",
+          image: element.profilePicture,
+          pdata,
+        });
+      }
     }
   });
 });
-app.get("/session", function(req, res){
-  var name = req.session.name
-  return res.send(name)
+app.get("/session", function (req, res) {
+  var name = req.session.name;
+  return res.send(name);
   /*  To destroy session you can use
       this function
    req.session.destroy(function(error){
       console.log("Session Destroyed")
   })
   */
-})
+});
 
 app.post("/profile", upload.single("image"), (req, res, next) => {
   console.log(
@@ -468,6 +488,7 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
         skills: req.body.skill,
         profilePicture: {},
       });
+      pdata = profile;
       console.log("creating new");
       profile.save();
       Login.findOneAndUpdate(
@@ -478,7 +499,6 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
           if (err) {
             console.log("Something wrong when updating data!", err);
           }
-
         }
       );
     } else {
@@ -492,6 +512,7 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
         education: req.body.edu,
         skills: req.body.skill,
       });
+
       Profile.findOneAndUpdate(
         { email_id: email },
         {
@@ -509,6 +530,7 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
           if (err) {
             console.log("Something wrong when updating data!", err);
           }
+          pdata = doc;
         }
       );
       Login.findOneAndUpdate(
@@ -523,8 +545,8 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
       );
     }
   });
-  console.log(req.file);
   if (req.file == null || typeof req.file === "undefined") {
+    res.redirect("/profile");
   } else {
     var img = {
       data: fs.readFileSync(
@@ -536,10 +558,12 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
       { email_id: email },
       { $set: { profilePicture: img } },
       { new: true },
-      (err, result) => {}
+      (err, result) => {
+        pdata = result;
+        res.redirect("/profile");
+      }
     );
   }
-  res.redirect("/profile");
 });
 
 var c = 0; //find the count of datas present
@@ -551,11 +575,10 @@ query.count(function (err, count) {
 
 //LOGIN CHECK
 const check = async (req) => {
-
   if (req.body.form === "Join") {
-    console.log("setting ",req.body.email);
-  sessionstorage.setItem('email_session', req.body.email);
-    email = sessionstorage.getItem('email_session');
+    console.log("setting ", req.body.email);
+    sessionstorage.setItem("email_session", req.body.email);
+    email = sessionstorage.getItem("email_session");
 
     emailsend = email;
     var pass = req.body.password;
@@ -575,14 +598,13 @@ const check = async (req) => {
         message = "Password must atleast contain one special character";
         return 1;
       } else {
-
         if (valacc == 0) {
           const data = new Login({
             user_id: uid,
             email_id: email,
             password: pass,
             profile: { name: "" },
-            connected: [],
+            connected: [email],
           });
           data.save();
           message = "Account Succesfully added";
@@ -624,9 +646,9 @@ const check = async (req) => {
       }
     }
   } else if (req.body.form === "Login") {
-    console.log("setting ",req.body.loginemail);
-  sessionstorage.setItem('email_session', req.body.loginemail);
-    email = sessionstorage.getItem('email_session');
+    console.log("setting ", req.body.loginemail);
+    sessionstorage.setItem("email_session", req.body.loginemail);
+    email = sessionstorage.getItem("email_session");
     const password = req.body.loginpassword; //destructuring the req object to get the email and password
     var response = await Login.findOne({
       email_id: email,
@@ -641,6 +663,8 @@ const check = async (req) => {
       email = req.body.loginemail;
       console.log(response);
       if (response.password === password) {
+        pdata = await Profile.find({ email_id: email });
+        pdata = pdata[0];
         data = response;
         console.log("Success");
         return 2;
@@ -662,143 +686,200 @@ const check = async (req) => {
   }
 };
 
-
 //SECTION
 // add_post("a@gmail.com","fourth post as walter")
-const global_ans=[];
+const global_ans = [];
 
-async function show_posts(email){
-    console.log("inside show post")
-  const user=await Login.where("email_id").equals(email).select("posts -_id");
+async function show_posts(email) {
+  console.log("inside show post");
+  const user = await Login.where("email_id").equals(email).select("posts -_id");
   return user[0].posts;
 }
 
-async function add_post(uname,post1,about){
-    const data = new Post({
-      email_id: email,
-      post: post1,
-    });
-    data.save();
-    Post.find({email_id:email},{},(err,result)=>{
-      Login.findOneAndUpdate({ email_id: email },{
-        posts: result
-      },{new:true},(err,docs)=>{
-      })
-    });
-    console.log("new record created");
+async function add_post(uname, post1, about) {
+  const data = new Post({
+    email_id: email,
+    post: post1,
+    likes: 0,
+    peopleliked: [],
+  });
+  data.save();
+  Post.find({ email_id: email }, {}, (err, result) => {
+    Login.findOneAndUpdate(
+      { email_id: email },
+      {
+        posts: result,
+      },
+      { new: true },
+      (err, docs) => {}
+    );
+  });
+  console.log("new record created");
 }
 
+app.get("/show-posts", async (req, res) => {
+  /*show_posts(curr_user).then((ans)=>{
+    console.log(ans)
+    // global_ans.push(ans)
+    res.render('posts.ejs',{global_ans:ans})
 
-app.get("/show-posts",async (req,res)=>{
-
-  var postss=[]
-  var c=0
-  await Post.find({ email_id:email }, function (err, docs) {
-  if (err){
+  }).catch((err)=>{
+    console.log("oops an error has occured!")
+  });
+  // console.log(`ans is ${ans2}`)
+  console.log(`global ans is ${global_ans}`)
+  // res.render('posts.ejs',{global_ans:global_ans})*/
+  var postss = [];
+  var c = 0;
+  await Post.find({ email_id: email }, function (err, docs) {
+    if (err) {
       console.log(err);
-  }
-  else{
-    docs.forEach(element => {
-      postss[c]=element.post;
-      c=c+1;
-      console.log(element.post);
-    });
-  }
-}).clone();
-  console.log(postss)
-  res.render('posts.ejs',{post:postss})
-})
+    } else {
+      docs.forEach((element) => {
+        postss[c] = element.post;
+        c = c + 1;
+      });
+    }
+  }).clone();
+  console.log(postss);
+  res.render("posts.ejs", { post: postss });
+});
 
-app.get("/feed",(req,res)=>{
-  res.render('feed.ejs',{curr_user:curr_user})
-})
-app.post("/feed",urlencodedParaser,async (req,res)=>{
-    //add_post(curr_user,req.body.txtarea)
-
+app.get("/feed", (req, res) => {
+  res.render("feed.ejs", { curr_user: curr_user });
+});
+app.post("/feed", urlencodedParaser, async (req, res) => {
+  //add_post(curr_user,req.body.txtarea)
+  if (typeof req.body.txtarea == "undefined") {
+    Post.findOne(
+      { $and: [{ email_id: req.body.postby }, { post: req.body.post }] },
+      (err, response) => {
+        if (response.peopleliked.includes(email)) {
+          res.redirect("/home");
+        } else {
+          var newppl = response.peopleliked;
+          newppl.push(email);
+          console.log(newppl);
+          Post.findOneAndUpdate(
+            { email_id: req.body.postby, post: req.body.post },
+            {
+              likes: response.likes + 1,
+              peopleliked: newppl,
+            },
+            (err, ress) => {
+              res.redirect("/home");
+            }
+          );
+        }
+      }
+    );
+  } else {
     var post = await req.body.txtarea;
-    add_post(data.profile.name,post);
-    res.redirect("/home")
-})
+    add_post(data.profile.name, post);
+    res.redirect("/home");
+  }
+});
+// run()
+// async function run(){
+//     const user=await Login.create ({
+//        name:"Basha",
+//        posts:['Posted1',"posted2"]
+//     });
+//     await user.save()
+//     console.log(user)
+// }
 
 //CHAT
 const chat = mongoose.model("Chat", chatSchema);
-var logindatas=[]
+var logindatas = [];
 app.get("/chat", (req, res) => {
-  Profile.find((err,response)=>{
-    logindatas = response
-    console.log(response);
-    chat.find({user2:data.email_id}).sort({createdAt:+1}).exec(function(err, result){
-      console.log(result)
-      res.render("chat", {
-        stylepath: "css/chat.css",
-        path: "chat",
-        data,
-        user1:"",
-        user2:"",
-        alldatas:logindatas,
-        allchatdata:result
+  Profile.find((err, response) => {
+    logindatas = response;
+    chat
+      .find({ user2: data.email_id })
+      .sort({ createdAt: +1 })
+      .exec(function (err, result) {
+        res.render("chat", {
+          stylepath: "css/chat.css",
+          path: "chat",
+          data,
+          pdata,
+          user1: " ",
+          user2: " ",
+          alldatas: logindatas,
+          allchatdata: result,
+        });
       });
-    });
-});
+  });
 });
 
-app.post("/chat",(req,res)=>{
-  console.log(req.body.user1,req.body.user2,req.body.mess)
-  if(req.body.mess==="-1"){
-    var a=[]
-    a[0] =req.body.user1
-    a[1]=req.body.user2
+app.post("/chat", (req, res) => {
+  if (req.body.mess === "-1") {
+    var a = [];
+    a[0] = req.body.user1;
+    a[1] = req.body.user2;
     a.sort();
-    var b = a.join('');
+    var b = a.join("");
     console.log(b);
-    chat.find({key:b}).sort({createdAt:+1}).exec(function(err, result){
-      console.log(result)
-      chat.find({user2:data.email_id}).sort({createdAt:+1}).exec(function(err, result1){
-    res.render("chat", {
-      stylepath: "css/chat.css",
-      path: "chat",
-      data,
-      user1:req.body.user1,
-      user2:req.body.user2,
-      alldatas:logindatas,
-      chatdata:result,
-      allchatdata:result1,
-    });
+    chat
+      .find({ key: b })
+      .sort({ createdAt: +1 })
+      .exec(function (err, result) {
+        console.log(result);
+        chat
+          .find({ user2: data.email_id })
+          .sort({ createdAt: +1 })
+          .exec(function (err, result1) {
+            res.render("chat", {
+              stylepath: "css/chat.css",
+              path: "chat",
+              data,
+              pdata,
+              user1: req.body.user1,
+              user2: req.body.user2,
+              alldatas: logindatas,
+              chatdata: result,
+              allchatdata: result1,
+            });
+          });
       });
-    });
-  }else{
-    var a=[]
-    a[0] =req.body.user1
-    a[1]=req.body.user2
+  } else {
+    var a = [];
+    a[0] = req.body.user1;
+    a[1] = req.body.user2;
     a.sort();
-    var b = a.join('');
+    var b = a.join("");
     console.log(b);
     const ch = new chat({
-      key:b,
+      key: b,
       user1: req.body.user1,
-      user2:req.body.user2,
+      user2: req.body.user2,
       message: req.body.mess,
     });
-    ch.save(function(err, doc) {
-  console.log("Document inserted succussfully!");
-  chat.find({key:b}).sort({createdAt:+1}).exec(function(err, result){
-    chat.find({user2:data.email_id}).sort({createdAt:+1}).exec(function(err, result1){
-    console.log(result)
-  res.render("chat", {
-    stylepath: "css/chat.css",
-    path: "chat",
-    data,
-    user1:req.body.user1,
-    user2:req.body.user2,
-    alldatas:logindatas,
-    chatdata:result,
-    allchatdata:result1,
-  });
-  });
-  });
-});
-
+    ch.save(function (err, doc) {
+      console.log("Document inserted succussfully!");
+      chat
+        .find({ key: b })
+        .sort({ createdAt: +1 })
+        .exec(function (err, result) {
+          chat
+            .find({ user2: data.email_id })
+            .sort({ createdAt: +1 })
+            .exec(function (err, result1) {
+              console.log(result);
+              res.render("chat", {
+                stylepath: "css/chat.css",
+                path: "chat",
+                data,
+                pdata,
+                user1: req.body.user1,
+                user2: req.body.user2,
+                alldatas: logindatas,
+                chatdata: result,
+                allchatdata: result1,
+              });
+            });
+        });
+    });
   }
-
-
-})
+});

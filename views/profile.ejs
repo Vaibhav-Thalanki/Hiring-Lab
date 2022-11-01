@@ -143,14 +143,13 @@
     ></script>
     <script>
       <%if(data.profile.name == "" || typeof data.profile.name == 'undefined'){%>
-        <%console.log(data.email_id)%>
+        
         document.getElementById("username").innerText = "Username";
         document.getElementById("about").innerText = "About";
         document.getElementById("contactinfo").innerText = "Contact Info";
         document.getElementById("address").innerText = "Address";
         document.getElementById("email_id").innerText = '<%=data.email_id%>';
          <%} else {%>
-        <%console.log(data.email_id)%>
         document.getElementById("username").innerText = '<%=data.profile.name%>';
         document.getElementById("about").innerText = '<%=data.profile.about%>';
         document.getElementById("contactinfo").innerText = '<%=data.profile.contactInfo%>';
@@ -166,7 +165,6 @@
 
 
       function myEditFunction() {
-        console.log("hahah")
         $(".display-content1").css("display", "none");
         $(".edit-content1").css("display", "block");
 

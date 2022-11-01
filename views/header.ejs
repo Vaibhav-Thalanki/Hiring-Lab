@@ -50,10 +50,21 @@
 
         <a href="http://localhost:3000/profile">
           <div id="profile">
+            
+            
+            <%if (pdata==null || pdata.profilePicture === null  || pdata.profilePicture==={} || JSON.stringify(pdata.profilePicture) === '{}' ) { %>
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIg74DLmQxFVxzS_-jAsHnWeJGfNZEgQtWsA_cYgmmpg&s"
               alt=""
             />
+            <%}else{%>
+              
+              <img src="data:profilePicture/<%=pdata.profilePicture.contentType%>;base64,
+          <%=pdata.profilePicture.data.toString('base64')%>"   alt=""
+            height="40px"
+            width="40px"
+            class="profile"/>
+              <%}%>
             <span><%=data.profile.name%></span>
           </div>
         </a>

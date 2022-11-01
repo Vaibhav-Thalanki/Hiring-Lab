@@ -93,7 +93,7 @@ body {
   }
 
 
-.profile{
+.profile-sidebar-need{
   position: absolute;
   left: 30%;
   top: 7%;
@@ -384,7 +384,7 @@ div.header-search> input{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; 
 }
 .header div#profile img{
   height: 35px;

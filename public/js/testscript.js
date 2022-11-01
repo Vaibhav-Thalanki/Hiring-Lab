@@ -163,7 +163,7 @@ const Showscore = () => {
 
   //display the highscore window
   viewscore.style.display = "block";
-  if (score >= 0) {
+  if (score >= 7) {
     showhighscore.textContent = `Your final score is ${score}. You have passed!`;
     result = "pass";
   } else {
