@@ -14,14 +14,14 @@ a{
 body {
   display: grid;
   font-family:'Lato', sans-serif;
-  min-height: 100%;
+  min-height: 90%;
 }
 
 .container-chat {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  margin-top: -100px;
+  position: absolute;
+  width: 90%;
+  height: 80%;
+  margin-top: 100px;
 }
 
 .messages {
@@ -29,7 +29,7 @@ body {
   background: aliceblue;
   opacity: 0.5;
   width: 30%;
-  height: 540px;
+  height: 100%;
   top: -1%;
   margin-top: 1%;
   margin-left: 3%;
@@ -46,7 +46,7 @@ body {
   color: #000000;
   width: 100%;
   left:-11%;
-  top: 24.7%;
+  top: 2%;
   line-height: 0.7em;
 }
   .title{
@@ -56,23 +56,37 @@ body {
      margin-right: 30%;
      letter-spacing: 1px;
    }
+   .preview {
+     font-size: 15px;
+   }
+
+   .title1{
+      text-transform: uppercase;
+      font-size: 15px;
+      font-weight: bold;
+      margin-right: 30%;
+      letter-spacing: 1px;
+      color: green;
+    }
+    .preview1 {
+      font-size: 15px;
+      color: green;
+    }
   .time {
     font-size: 15px;
     position: absolute;
     right: 10px;
     margin-top: 2px;
   }
-  .preview {
-    font-size: 15px;
-  }
+
 
 .person {
-  padding: 20px 0 12px 12px;
+  padding: 12px 0 12px 0px;
   border-bottom: 1px solid  #79C7C5;
   line-height: 20px;
   cursor: pointer;
-  width: 95%;
-  margin-left: 44px;
+  width: 90%;
+  margin-left: 35px;
 }
   .person:hover {
     background:  Ivory;
@@ -102,12 +116,12 @@ body {
 }
 
 .chatbox {
-  position: absolute;
+  position: relative;
   left: 35%;
-  height: 540px;
+  height: 100%;
   top:-1%;
   width: 60%;
-  border-radius: 0 10px 10px 0;
+  border-radius: 10px 10px 10px 10px;
   border: 2px solid DeepSkyBlue;
   margin-top: 1%;
   box-shadow: 5px 5px 15px rgba(#777777, 0.5);
@@ -134,12 +148,11 @@ body {
 .name {
   position: absolute;
   top: 22px;
-  text-transform: uppercase;
   color: black;
   font-size: .8em;
-  letter-spacing: 2px;
-  font-weight: 500;
-  left: 60px;
+  letter-spacing: 1px;
+  font-weight: 750;
+  left: 10px;
 }
 
 .menu {
@@ -180,7 +193,7 @@ body {
 
 .middle {
   position: absolute;
-  background: Ivory;
+  background: lightgrey;
   width: 100%;
   opacity: 0.85;
   top: 60px;
@@ -188,15 +201,15 @@ body {
 }
 
 .incoming {
-  position: absolute;
+  position: relative;
   width: 50%;
   height: 35%;
-  padding: 20px;
+  padding: 5px;
 }
   .incoming .bubble {
-    background: lightgrey;
+    background: #79C7C5;
   }
-  
+
 
 
 .bubble {
@@ -214,11 +227,11 @@ body {
 }
 
 .outgoing {
-  position: absolute;
-  padding: 20px;
+  position: relative;
+  padding: 5px;
   right: 0;
   top: 15%;
-  width: 50%;
+  width: 98%;
   height: 35%;
 }
 .outgoing .bubble {
@@ -235,7 +248,7 @@ body {
   width: 100%;
   height: 55px;
   bottom: 0;
-  background: Ivory;
+  background: white;
   border-radius: 0 0 10px 10px;
 }
 .bottom-bar .chat img
@@ -258,12 +271,12 @@ body {
 #type {
   padding: 7px;
   width: 74%;
-  left: 10%;
+  left: 2%;
   position: absolute;
   border: 1px grey solid;
   border-radius: 20px;
   top: 13px;
-  background: Ivory;
+  background: white;
   color: DeepSkyBlue;
 
 
@@ -290,6 +303,24 @@ button {
   outline: 0;
 }
 button:hover {
+  transform: scale(1.1);
+  transition: all .3s ease-in-out;
+  color: black;
+}
+
+.button {
+  position: absolute;
+  border: 0;
+  font-size: 1em;
+  color: DeepSkyBlue;
+  top:  19px;
+  opacity: 0.8;
+  right: 17px;
+  cursor: pointer;
+  background: none;
+  outline: 0;
+}
+.button:hover {
   transform: scale(1.1);
   transition: all .3s ease-in-out;
   color: black;
@@ -324,7 +355,7 @@ body {
 div.header-left h3{
 height: 40px;
 margin-right: 10px;
-text-align: left !important; 
+text-align: left !important;
 margin-top: 10px;
 }
 div.header-left{

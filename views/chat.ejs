@@ -1,14 +1,10 @@
 <%- include('header') -%>
     <div class="container-chat">
+        <%if(user2 === ""){}else{%>
+          <%alldatas.forEach((dat)=>{{if(dat.email_id===user2){ %>
       <div class="chatbox">
         <div class="top-bar">
-          <div class="avatar">
-            <img
-              src="https://th.bing.com/th/id/OIP.87l-uBbYME9uU42ahbluKwHaHa?w=176&h=180&c=7&r=0&o=5&pid=1.7"
-              alt="user-img"
-            />
-          </div>
-          <div class="name">Keerthana</div>
+          <div class="name"><%=dat.name%> &emsp;&emsp;&emsp;<%=dat.email_id%></div>
           <div class="icons">
             <img
               src="https://th.bing.com/th?q=Symbol+for+Call&w=120&h=120&c=1&rs=1&qlt=90&cb=1&pid=InlineBlock&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247"
@@ -25,7 +21,23 @@
         </div>
         <div class="middle">
           <div class="voldemort">
-            <div class="incoming">
+            <%console.log("looking for "+user1+user2)%>
+            <%console.log(chatdata)%>
+            <%chatdata.forEach((chat)=>{{if(chat.user1===data.email_id){ %>
+              <%console.log(chat.message);%>
+              <div class="outgoing">
+                <div class="bubble bubble2">
+                  <%=chat.message%>
+                </div></div>
+                <%}else{%>
+                    <%console.log(chat.message);%>
+                  <div class="incoming">
+                    <div class="bubble bubble1">
+                      <%=chat.message%><br>
+                    </div></div>
+                  <%}}})%>
+
+            <!--<div class="incoming">
               <div class="bubble">Hi, TechnoVIT is coming up...</div>
               <br />
               <div class="bubble">Hey, yeah i am aware of it</div>
@@ -40,40 +52,40 @@
               <div class="bubble">Yes, I am!!</div>
               <br />
               <div class="bubble">Okay, Good Bye!!</div>
-            </div>
+            </div>-->
           </div>
         </div>
         <div class="bottom-bar">
           <div class="chat">
-            <img
-              src="https://img.icons8.com/external-basicons-line-edtgraphics/2x/external-Photo-images-basicons-line-edtgraphics-2.png"
-              alt=""
-            />
-            <input id="type" type="text" placeholder="Type a message..." />
-            <button type="submit">Send</button>
+              <input id="type" type="text" placeholder="Type a message..." />
+              <input type="submit" value="Send" onclick="newmess()" class="button">
           </div>
         </div>
       </div>
+      <%}}})%>
+        <%}%>
       <div class="messages">
-        <div class="profile">
-          <div class="avatar">
-            <img
-              src="https://th.bing.com/th/id/OIP.87l-uBbYME9uU42ahbluKwHaHa?w=176&h=180&c=7&r=0&o=5&pid=1.7"
-              alt="user-img"
-            />
-          </div>
-          <div class="name2">
-            User
-            <p class="email">user123@gmail.com</p>
-          </div>
-        </div>
         <div class="people">
-          <div class="person">
-            <span class="title">Keerthana </span>
-            <span class="time">2:50pm</span><br />
-            <span class="preview">What are you getting... Oh, oops...</span>
+            <%allchatdata.forEach((chat)=>{%>
+              <%if(!data.connected.includes(chat.user1) && chat.user2==data.email_id){%>
+                <%alldatas.forEach((dat)=>{{if(dat.email_id===chat.user1){%>
+                  <div class="person" onclick="clickfn('<%=chat.user1%>')">
+                    <span id="title" class="title1"><%=dat.name%></span><br>
+                    <span id="preview" class="preview1"><%=chat.user1%></span>
+                  </div>
+              <%}}})%>
+              <%}})%>
+          <% data.connected.forEach((element)=>{ %>
+            <%if(element!=data.email_id){%>
+            <%alldatas.forEach((dat)=>{{if(dat.email_id===element){ %>
+          <div class="person" onClick="clickfn('<%=element%>')">
+            <span class="title"><%=dat.name%></span><br>
+            <span class="preview"><%=element%></span>
           </div>
-          <div class="person">
+            <%}}})%>
+            <%}%>
+          <%})%>
+          <!--<div class="person">
             <span class="title">Vaibhav Thalanki</span>
             <span class="time">2:25pm</span><br />
             <span class="preview">Have you did this anytime?</span>
@@ -82,16 +94,34 @@
             <span class="title">Vignesh</span>
             <span class="time">2:12pm</span><br />
             <span class="preview">Do you have class tomorrow?</span>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
+    <form class="" action="/chat" method="post" hidden>
+      <input type="text" id="user1" name="user1" value="user1">
+      <input type="text" id="user2" name="user2" value="user2">
+      <input type="text" id="message" name="mess" value="-1">
+      <input type="submit" id="submit" value="submit">
+    </form>
     <script type="text/javascript">
-      const person = document.getElementsByClassName("person");
-      person.addEventListener("click", function onClick(event) {
-        document.getElementsByClassName("person").style.backgroundColor =
-          "salmon";
-      });
+      var person = document.getElementsByClassName("person");
+      function clickfn(ee)
+      {
+        var email2 = "<%=data.email_id%>"
+        document.getElementById('user2').value=ee;
+        document.getElementById('user1').value=email2;
+        document.getElementById('submit').click();
+      }
+
+      function newmess(){
+        var a =   document.getElementById('type').value;
+        document.getElementById('user2').value='<%=user2%>';
+        document.getElementById('user1').value='<%=user1%>';
+        document.getElementById('message').value = a;
+        clickfn('<%=user2%>');
+      }
+
     </script>
   </body>
 </html>

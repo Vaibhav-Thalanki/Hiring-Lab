@@ -11,7 +11,7 @@ const bodyParser = require("body-parser");
 const User=require("./userSchema")
 const res = require("express/lib/response.js");
 // session storage
-const sessionstorage = require('node-sessionstorage'); 
+const sessionstorage = require('node-sessionstorage');
 const session = require('express-session');
 var urlencodedParaser=bodyParser.urlencoded({extended:true})
 app.use(session({
@@ -88,6 +88,13 @@ const postSchema = new mongoose.Schema({
   post: String,
 },{ timestamps: true });
 
+const chatSchema = new mongoose.Schema({
+  key: String,
+  user1: String,
+  user2: String,
+  message: String,
+},{ timestamps: true });
+
 const profileSchema = new mongoose.Schema({
   name: String,
   email_id: String,
@@ -138,7 +145,7 @@ app.post("/", async (req, res) => {
   message = null;
   var c = await check(req);
   console.log(c, "doneee");
-  
+
   if (c == 1) res.redirect("/"); //signup
   else if (c == 2) {
     res.redirect("/profile"); //login
@@ -278,15 +285,6 @@ const course3 = new Course({
   courseImg: "https://blog.logrocket.com/wp-content/uploads/2020/06/CSS-3.png",
 });
 
-//CHAT
-app.get("/chat", (req, res) => {
-  res.render("chat", {
-    stylepath: "css/chat.css",
-    path: "chat",
-    data,
-  });
-});
-
 var posts=[];
 async function getpostdata(element){
   var c=0;
@@ -304,6 +302,7 @@ async function getpostdata(element){
  return true;
 }
 //HOME
+
 app.get("/home", async (req, res) => {
     var feeds=[]
     var feedswithemail = {
@@ -312,7 +311,6 @@ app.get("/home", async (req, res) => {
     }
     // RECOMMEND FEEDS BASED ON CREATION DATE
     Post.find({email_id:{$in:data.connected}}).sort({"createdAt":-1}).exec(function(err, feed) {
-      
       feeds=feed
       alldatas=[]
     console.log("feeds",feeds);
@@ -329,12 +327,11 @@ app.get("/home", async (req, res) => {
       });
     })
     });
-    
+
     /*await data.connected.forEach( async element =>{
     console.log("Checking for posts of email id ",element)
     await getpostdata(element);
   })*/
-     
 
 });
 app.post("/home", (req, res) => {
@@ -428,10 +425,8 @@ app.get("/profile", (req, res) => {
   });
 });
 app.get("/session", function(req, res){
-
   var name = req.session.name
   return res.send(name)
-
   /*  To destroy session you can use
       this function
    req.session.destroy(function(error){
@@ -556,12 +551,12 @@ query.count(function (err, count) {
 
 //LOGIN CHECK
 const check = async (req) => {
-  
+
   if (req.body.form === "Join") {
     console.log("setting ",req.body.email);
   sessionstorage.setItem('email_session', req.body.email);
     email = sessionstorage.getItem('email_session');
-    
+
     emailsend = email;
     var pass = req.body.password;
 
@@ -580,7 +575,7 @@ const check = async (req) => {
         message = "Password must atleast contain one special character";
         return 1;
       } else {
-        
+
         if (valacc == 0) {
           const data = new Login({
             user_id: uid,
@@ -696,17 +691,6 @@ async function add_post(uname,post1,about){
 
 app.get("/show-posts",async (req,res)=>{
 
-  /*show_posts(curr_user).then((ans)=>{
-    console.log(ans)
-    // global_ans.push(ans)
-    res.render('posts.ejs',{global_ans:ans})
-
-  }).catch((err)=>{
-    console.log("oops an error has occured!")
-  });
-  // console.log(`ans is ${ans2}`)
-  console.log(`global ans is ${global_ans}`)
-  // res.render('posts.ejs',{global_ans:global_ans})*/
   var postss=[]
   var c=0
   await Post.find({ email_id:email }, function (err, docs) {
@@ -730,42 +714,91 @@ app.get("/feed",(req,res)=>{
 })
 app.post("/feed",urlencodedParaser,async (req,res)=>{
     //add_post(curr_user,req.body.txtarea)
-    
+
     var post = await req.body.txtarea;
     add_post(data.profile.name,post);
-    res.redirect("/home") 
+    res.redirect("/home")
 })
-// run()
-// async function run(){
-//     const user=await Login.create ({
-//        name:"Basha",
-//        posts:['Posted1',"posted2"]
-//     });
-//     await user.save()
-//     console.log(user)
-// }
+
+//CHAT
+const chat = mongoose.model("Chat", chatSchema);
+var logindatas=[]
+app.get("/chat", (req, res) => {
+  Profile.find((err,response)=>{
+    logindatas = response
+    console.log(response);
+    chat.find({user2:data.email_id}).sort({createdAt:+1}).exec(function(err, result){
+      console.log(result)
+      res.render("chat", {
+        stylepath: "css/chat.css",
+        path: "chat",
+        data,
+        user1:"",
+        user2:"",
+        alldatas:logindatas,
+        allchatdata:result
+      });
+    });
+});
+});
+
+app.post("/chat",(req,res)=>{
+  console.log(req.body.user1,req.body.user2,req.body.mess)
+  if(req.body.mess==="-1"){
+    var a=[]
+    a[0] =req.body.user1
+    a[1]=req.body.user2
+    a.sort();
+    var b = a.join('');
+    console.log(b);
+    chat.find({key:b}).sort({createdAt:+1}).exec(function(err, result){
+      console.log(result)
+      chat.find({user2:data.email_id}).sort({createdAt:+1}).exec(function(err, result1){
+    res.render("chat", {
+      stylepath: "css/chat.css",
+      path: "chat",
+      data,
+      user1:req.body.user1,
+      user2:req.body.user2,
+      alldatas:logindatas,
+      chatdata:result,
+      allchatdata:result1,
+    });
+      });
+    });
+  }else{
+    var a=[]
+    a[0] =req.body.user1
+    a[1]=req.body.user2
+    a.sort();
+    var b = a.join('');
+    console.log(b);
+    const ch = new chat({
+      key:b,
+      user1: req.body.user1,
+      user2:req.body.user2,
+      message: req.body.mess,
+    });
+    ch.save(function(err, doc) {
+  console.log("Document inserted succussfully!");
+  chat.find({key:b}).sort({createdAt:+1}).exec(function(err, result){
+    chat.find({user2:data.email_id}).sort({createdAt:+1}).exec(function(err, result1){
+    console.log(result)
+  res.render("chat", {
+    stylepath: "css/chat.css",
+    path: "chat",
+    data,
+    user1:req.body.user1,
+    user2:req.body.user2,
+    alldatas:logindatas,
+    chatdata:result,
+    allchatdata:result1,
+  });
+  });
+  });
+});
+
+  }
 
 
-// add_post("jeet","post39");
-
-// async function show_posts(Name){
-//   const user=await userSchema.where("name").equals(Name).select("post -_id");
-//   return user[0].post
-// }
-
-// app.get("/show_posts",(req,res)=>{
-
-//   console.log("redirected ")
-
-//   const post=show_posts("jeet")
-//       const p=post[0]
-//   res.render( "posts.ejs",{p:p} )
-// })
-
-
-
-
-
-// exports.curr_user=curr_user
-// const feedRouter=require('./routes/feed')
-// app.use('/feed',feedRouter)
+})
