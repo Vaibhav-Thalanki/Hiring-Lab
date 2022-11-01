@@ -107,10 +107,18 @@
             <p><%=element.post%></p>
           </div>
           <div class="feed-input-options">
+            <form action="/feed" method="POST">
             <div class="input-option">
-              <i class="fa-solid fa-heart" style="color: gray"></i>
-              <h4>Like</h4>
+              <input type="hidden" name="post" value='<%=element.post%>' id="">
+              <input type="hidden" name="postby" value='<%=element.email_id%>' id="">
+              <input type="hidden" value='<%=pdata.email_id%>' name='likebywhom'>
+              <button name="like">
+                <i class="fa-solid fa-heart" style="color: gray"></i>
+              </button>
+              
+              <h4><%=element.likes%></h4>
             </div>
+          </form>
             <div class="input-option">
               <i class="fa-solid fa-comment-dots"></i>
               <h4>Comment</h4>
@@ -123,52 +131,52 @@
         </div>
         <%}}})%>
           <% }) %>
-      <!-- Widget -->
-      <div id="widget">
-        <div class="widget-header">
-          <h2>The Hiring Lab</h2>
-          <i class="fa-solid fa-circle-info"></i>
+    </div>
+    <!-- Widget -->
+    <div id="widget">
+      <div class="widget-header">
+        <h2>The Hiring Lab</h2>
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <!-- Article 1 -->
+      <div class="widget-article">
+        <div class="widget-article-left">
+          <i class="fa-solid fa-circle"></i>
         </div>
-        <!-- Article 1 -->
-        <div class="widget-article">
-          <div class="widget-article-left">
-            <i class="fa-solid fa-circle"></i>
-          </div>
-          <div class="widget-article-right">
-            <h4>Trends in AI</h4>
-            <p>Top News - 4390 readers</p>
-          </div>
+        <div class="widget-article-right">
+          <h4>Trends in AI</h4>
+          <p>Top News - 4390 readers</p>
         </div>
-        <!-- Article 2 -->
-        <div class="widget-article">
-          <div class="widget-article-left">
-            <i class="fa-solid fa-circle"></i>
-          </div>
-          <div class="widget-article-right">
-            <h4>Employee hiring patterns</h4>
-            <p>Top News - 1290 readers</p>
-          </div>
+      </div>
+      <!-- Article 2 -->
+      <div class="widget-article">
+        <div class="widget-article-left">
+          <i class="fa-solid fa-circle"></i>
         </div>
-        <!-- Article 3 -->
-        <div class="widget-article">
-          <div class="widget-article-left">
-            <i class="fa-solid fa-circle"></i>
-          </div>
-          <div class="widget-article-right">
-            <h4>Competitive</h4>
-            <p>Top News - 783 readers</p>
-          </div>
+        <div class="widget-article-right">
+          <h4>Employee hiring patterns</h4>
+          <p>Top News - 1290 readers</p>
         </div>
-        <!-- Article 4 -->
-        <div class="widget-article">
+      </div>
+      <!-- Article 3 -->
+      <div class="widget-article">
+        <div class="widget-article-left">
+          <i class="fa-solid fa-circle"></i>
+        </div>
+        <div class="widget-article-right">
+          <h4>Competitive</h4>
+          <p>Top News - 783 readers</p>
+        </div>
+      </div>
+      <!-- Article 4 -->
+      <div class="widget-article">
 
-          <div class="widget-article-left">
-            <i class="fa-solid fa-circle"></i>
-          </div>
-          <div class="widget-article-right">
-            <h4>Remote Jobs</h4>
-            <p>Top News - 8614 readers</p>
-          </div>
+        <div class="widget-article-left">
+          <i class="fa-solid fa-circle"></i>
+        </div>
+        <div class="widget-article-right">
+          <h4>Remote Jobs</h4>
+          <p>Top News - 8614 readers</p>
         </div>
       </div>
     </div>

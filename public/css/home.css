@@ -8,6 +8,13 @@ body{
     flex-direction: column;
     align-items: center;
 }
+button{
+    border: none;
+    background-color: inherit;
+}
+button:hover{
+    cursor: pointer;
+}
 .click-buttons{
   background-color: black;
   border: none;
