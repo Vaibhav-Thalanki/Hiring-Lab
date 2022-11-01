@@ -20,9 +20,7 @@
                 <span>
                   <p id="address">Address</p>
                 </span>
-                <!-- <button class="click-button" onclick="myProfileEditFunction()">
-                  Edit
-                </button> -->
+              
               </div>
             </div>
             <div id="edit-profdetails">
@@ -50,12 +48,7 @@
                     </tr>
                     <tr>
                       <td>
-                        <!-- <button
-                          class="click-button"
-                          onclick="myProfileSubmitFunction()"
-                        >
-                          Submit
-                        </button> -->
+                        
                       </td>
                     </tr>
                   </table>
@@ -69,17 +62,13 @@
               <h2>Experience</h2>
               <div class="edit-content1">
                   <textarea type="text" width=20% name="exp" id="edited-content1" rows="8" cols="80"><%if(data.profile == null || typeof data.profile == 'undefined'){%>Enter your experience <%}else{%><%=data.profile.experience%><%}%></textarea><br/>
-                  <!-- <button class="click-button" onclick="mySubmitFunction1()">
-                    Submit
-                  </button> -->
+                  
 
               </div>
 
               <div class="display-content1">
                 <p id="show-final-content1">Enter your work Experience</p>
-                <!-- <button class="click-button" onclick="myEditFunction1()">
-                  Edit
-                </button> -->
+                
               </div>
             </div>
 
@@ -87,16 +76,12 @@
               <h2>Education</h2>
               <div class="edit-content2">
                   <textarea type="text" name="edu" id="edited-content2" rows="8" cols="80"><%if(data.profile == null || typeof data.profile == 'undefined'){%>Enter your education<%}else{%><%=data.profile.education%><%}%></textarea><br/>
-                  <!-- <button class="click-button" onclick="mySubmitFunction2()">
-                    Submit
-                  </button> -->
+                  
 
               </div>
               <div class="display-content2">
                 <p id="show-final-content2">Enter your Education</p>
-                <!-- <button class="click-button" onclick="myEditFunction2()">
-                  Edit
-                </button> -->
+                
 
               </div>
             </div>
@@ -105,7 +90,8 @@
               <div class="edit-content3">
                   <textarea name="skill" type="text" id="edited-content3" rows="8" cols="80"><%if(data.profile == null || typeof data.profile == 'undefined'){%>Enter your skills <%}else{%><%=data.profile.skills%><%}%></textarea><br />
                   <br><br>
-                  <label for="image"><h3>Profile Picture</h3></label>
+                  <label for="image"><h3>Profile Picture</h3> <small> (png)</small></label>
+                  <br>
                   <br>
                   <input type="file" id="image" name="image" value="" >
                   <br> <br> <br>
@@ -194,30 +180,19 @@
 
       }
       function mySubmitFunction() {
-        //const edit_content1 = document.getElementById("edited-content1").value;
+
         $(".display-content1").css("display", "block");
         $(".edit-content1").css("display", "none");
-      //  document.getElementById("show-final-content1").innerText ="edit_content1";
-
-        //const edit_content2 = document.getElementById("edited-content2").value;
+     
         $(".display-content2").css("display", "block");
         $(".edit-content2").css("display", "none");
-      //  document.getElementById("show-final-content2").innerText = "edit_content2";
-
-        //const edit_content3 = document.getElementById("edited-content3").value;
+      
         $(".display-content3").css("display", "block");
         $(".edit-content3").css("display", "none");
-        //document.getElementById("show-final-content3").innerText = "edit_content3";
-          /*const u_name = document.getElementById("uname").value;
-          const about = document.getElementById("abt").value;
-          const contact_info = document.getElementById("cinfo").value;
-          const address = document.getElementById("add").value;*/
+        
           $("#details").css("display", "block");
           $("#edit-profdetails").css("display", "none");
-          /*document.getElementById("username").innerText = "u_name";
-          document.getElementById("about").innerText = "about";
-          document.getElementById("contactinfo").innerText = "contact_info";
-          document.getElementById("address").innerText = "address";*/
+          
       }
     </script>
   </body>
