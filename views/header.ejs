@@ -22,10 +22,15 @@
         </a>
         <div class="header-search">
           <form action="/<%=path%>/search" onsubmit="clickk()" method="post">
-            <input style="border:none;background: none;outline: none;" id="search" type="text" name= "name" placeholder="Search"/>
-             <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              style="border: none; background: none; outline: none"
+              id="search"
+              type="text"
+              name="name"
+              placeholder="Search"
+            />
+            <i class="fa-solid fa-magnifying-glass"></i>
           </form>
-
         </div>
       </div>
       <div class="header-right">
@@ -47,24 +52,33 @@
             <h5>Courses</h5>
           </div>
         </a>
+        <a href="http://localhost:3000/landing">
+          <div class="headerOptions">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <h5>LogOut</h5>
+          </div>
+        </a>
 
         <a href="http://localhost:3000/profile">
           <div id="profile">
-            
-            
-            <%if (pdata==null || pdata.profilePicture === null  || pdata.profilePicture==={} || JSON.stringify(pdata.profilePicture) === '{}' ) { %>
+            <%if (pdata==null || pdata.profilePicture === null ||
+            pdata.profilePicture==={} || JSON.stringify(pdata.profilePicture)
+            === '{}' ) { %>
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIg74DLmQxFVxzS_-jAsHnWeJGfNZEgQtWsA_cYgmmpg&s"
               alt=""
             />
             <%}else{%>
-              
-              <img src="data:profilePicture/<%=pdata.profilePicture.contentType%>;base64,
-          <%=pdata.profilePicture.data.toString('base64')%>"   alt=""
-            height="40px"
-            width="40px"
-            class="profile"/>
-              <%}%>
+
+            <img
+              src="data:profilePicture/<%=pdata.profilePicture.contentType%>;base64,
+          <%=pdata.profilePicture.data.toString('base64')%>"
+              alt=""
+              height="40px"
+              width="40px"
+              class="profile"
+            />
+            <%}%>
             <span><%=data.profile.name%></span>
           </div>
         </a>
@@ -72,14 +86,13 @@
     </div>
   </body>
   <script type="text/javascript">
-      var input = document.getElementById("search");
-      input.addEventListener("keypress", function(event) {
-    // If the user presses the "Enter" key on the keyboard
-    if (event.key === "Enter") {
-      var nametosearch = input.value;
-    }
+    var input = document.getElementById("search");
+    input.addEventListener("keypress", function (event) {
+      // If the user presses the "Enter" key on the keyboard
+      if (event.key === "Enter") {
+        var nametosearch = input.value;
+      }
     });
-    function click(){
-      
-    }
+    function click() {}
   </script>
+</html>

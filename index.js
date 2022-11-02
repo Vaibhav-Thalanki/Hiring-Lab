@@ -430,7 +430,30 @@ app.get("/session", function (req, res) {
 });
 
 app.post("/profile", upload.single("image"), (req, res, next) => {
-
+  if (
+    req.body.skill != null &&
+    (req.body.skill.includes("\r") || req.body.skill.includes("\n"))
+  ) {
+    req.body.skill = req.body.skill.replaceAll("\r", " ");
+    req.body.skill = req.body.skill.replaceAll("\n", ", ");
+    req.body.skill = req.body.skill.replaceAll("\\", " ");
+  }
+  if (
+    req.body.edu != null &&
+    (req.body.edu.includes("\r") || req.body.edu.includes("\n"))
+  ) {
+    req.body.edu = req.body.edu.replaceAll("\r", " ");
+    req.body.edu = req.body.edu.replaceAll("\n", ", ");
+    req.body.edu = req.body.edu.replaceAll("\\", " ");
+  }
+  if (
+    req.body.exp != null &&
+    (req.body.exp.includes("\r") || req.body.exp.includes("\n"))
+  ) {
+    req.body.exp = req.body.exp.replaceAll("\r", " ");
+    req.body.exp = req.body.exp.replaceAll("\n", ", ");
+    req.body.exp = req.body.exp.replaceAll("\\", " ");
+  }
   req.session.name = req.body.uname;
   data.profile.name = req.body.uname;
   data.profile.contactInfo = req.body.cinfo;
@@ -441,7 +464,6 @@ app.post("/profile", upload.single("image"), (req, res, next) => {
   data.profile.about = req.body.abt;
 
   Profile.findOne({ email_id: email }, function (err, result) {
-   
     if (result == null) {
       const profile = new Profile({
         name: req.body.uname,
@@ -554,7 +576,7 @@ const check = async (req) => {
     if (req.body.password != req.body.passwordRepeat) {
       message = "Passwords don't match...";
       return 1;
-    } else if (req.body.password.length < 2) {
+    } else if (req.body.password.length < 7) {
       message = "Password too short";
       return 1;
     } else {
@@ -615,7 +637,7 @@ const check = async (req) => {
     const password = req.body.loginpassword; //destructuring the req object to get the email and password
     var response = await Login.findOne({
       email_id: email,
-    }); 
+    });
     if (!response) {
       message = "Account doesn't exists";
       return 1;
@@ -655,7 +677,6 @@ async function add_post(uname, post1, about) {
   console.log("new record created");
 }
 
-
 app.post("/feed", urlencodedParaser, async (req, res) => {
   if (typeof req.body.txtarea == "undefined") {
     Post.findOne(
@@ -685,7 +706,6 @@ app.post("/feed", urlencodedParaser, async (req, res) => {
     res.redirect("/home");
   }
 });
-
 
 //CHAT
 const chat = mongoose.model("Chat", chatSchema);
@@ -723,7 +743,6 @@ app.post("/chat", (req, res) => {
       .find({ key: b })
       .sort({ createdAt: +1 })
       .exec(function (err, result) {
-
         chat
           .find({ user2: data.email_id })
           .sort({ createdAt: +1 })
