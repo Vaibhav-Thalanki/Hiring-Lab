@@ -37,28 +37,28 @@
 ### IMAGES
 
 Step1:
-![Landing Page](uploads/landing)
+![Landing Page](uploads/landing.JPG)
 
 Step2:
-![Login/Signup](uploads/login)
+![Login/Signup](uploads/login.JPG)
 
 Step3,4:
-![Login/Signup](uploads/profile)
+![Login/Signup](uploads/profile.JPG)
 
 Step5:
-![Courses](uploads/courses)
+![Courses](uploads/courses.JPG)
 
-![Courses](uploads/courses1)
+![Courses](uploads/courses1.JPG)
 
 Step6:
-![Feed](uploads/feed)
+![Feed](uploads/feed.JPG)
 
 Step8:
-![Search](uploads/search)
+![Search](uploads/search.JPG)
 
 Step9:
-![Connect](uploads/connect)
+![Connect](uploads/connect.JPG)
 
 Step10:
-![Chat](uploads/chat)
+![Chat](uploads/chat.JPG)
 
